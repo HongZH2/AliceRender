@@ -1,7 +1,7 @@
 project(GRAPHICS_API)
 
-set(GRAPHICS_DIR ${ALICE_RENDERE_DIR}/GraphicsAPI)
-set(CORE_DIR ${ALICE_RENDERE_DIR}/RenderCore)
+set(GRAPHICS_DIR ${ALICE_RENDER_DIR}/GraphicsAPI)
+set(CORE_DIR ${ALICE_RENDER_DIR}/RenderCore)
 file(GLOB_RECURSE CORE_SRC ${CORE_DIR}/*.cpp)
 
 option(IS_OPENGL "option for OPENGL API" ON)
@@ -10,8 +10,8 @@ if (IS_OPENGL)
     message("\t---- OPENGL USED -----")
 
     include_directories(
-        ${ALICE_RENDERE_DIR}/Dependencies/glew/include
-        ${ALICE_RENDERE_DIR}/Dependencies/
+        ${ALICE_RENDER_DIR}/Dependencies/glew/include
+        ${ALICE_RENDER_DIR}/Dependencies/
         ${CORE_DIR}
         ${GRAPHICS_DIR}/opengl
     )
@@ -26,7 +26,7 @@ if (IS_OPENGL)
 
     target_link_libraries(
         ${PROJECT_NAME}
-        ${ALICE_RENDERE_DIR}/Dependencies/glew/lib/libGLEW.dylib
+        ${ALICE_RENDER_DIR}/Dependencies/glew/lib/libGLEW.a
     )
 endif(IS_OPENGL)
 
