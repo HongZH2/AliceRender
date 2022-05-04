@@ -7,7 +7,7 @@
 #define ALICEENGINE_STATUS_CALL_H
 
 #include "graphic_predeclared.h"
-#include "RenderEngine/RenderModules/status_mod.h"
+#include "RenderModules/status_mod.h"
 
 namespace AliceAPI {
 

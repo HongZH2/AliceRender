@@ -6,7 +6,7 @@
 #define ALICEENGINE_DRAW_CALL_H
 
 #include "graphic_predeclared.h"
-#include "RenderEngine/RenderModules/draw_mod.h"
+#include "RenderModules/draw_mod.h"
 
 namespace AliceAPI {
 

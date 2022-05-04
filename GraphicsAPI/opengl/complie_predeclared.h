@@ -6,7 +6,7 @@
 #define ALICEENGINE_COMPLIE_PREDECLARED_H
 
 #include "graphic_predeclared.h"
-#include "RenderEngine/RenderModules/initialization_mod.h"
+#include "RenderModules/initialization_mod.h"
 
 namespace AliceAPI {
 

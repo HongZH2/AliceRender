@@ -6,7 +6,7 @@
 #define ALICEENGINE_TEXTURE_H
 
 #include "graphic_predeclared.h"
-#include "RenderEngine/RenderModules/texture_mod.h"
+#include "RenderModules/texture_mod.h"
 
 namespace AliceAPI {
 

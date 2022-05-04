@@ -3,7 +3,6 @@
 //
 
 #include "shader_program.h"
-#include "RenderLog/render_log.h"
 
 namespace AliceAPI {
 
@@ -145,8 +144,7 @@ void ShaderProgram::getProgramStatus() {
     if(len_log > 1){
         auto compiler_log = (GLcharARB*)malloc(len_log);
         glGetProgramInfoLog(program_id_, len_log, &slen, compiler_log);
-        RenderLog & render_log = RenderLog::getInstance();
-        render_log.submitLog("-- Shader Program Error : \n%s\n", compiler_log);
+        printf("-- Shader Program Error : \n%s\n", compiler_log);
         free(compiler_log);
     }
 }

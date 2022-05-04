@@ -6,7 +6,7 @@
 #define ALICEENGINE_SHADER_H
 
 #include "graphic_predeclared.h"
-#include "RenderEngine/RenderModules/shader_mod.h"
+#include "RenderModules/shader_mod.h"
 
 namespace AliceAPI {
 

@@ -3,9 +3,6 @@
 //
 
 #include "shader.h"
-#include "RenderLog/render_log.h"
-#include "graphic_predeclared.h"
-#include <cstring>
 
 namespace AliceAPI {
 
@@ -39,10 +36,9 @@ void Shader::getShaderStatus() {
     if(len_log > 1){
         auto compiler_log = (GLcharARB*)malloc(len_log);
         glGetShaderInfoLog(shader_id_, len_log, &slen, compiler_log);
-        RenderLog & render_log = RenderLog::getInstance();
         std::string s_type;
         type_ == AE_VERTEX_SHADER ? s_type = "Vertex": s_type = "Fragment"; 
-        render_log.submitLog("-- %s Shader Error : \n%s\n", s_type.c_str(), compiler_log);
+        printf("-- %s Shader Error : \n%s\n", s_type.c_str(), compiler_log);
         free(compiler_log);
     }
 }

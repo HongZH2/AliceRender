@@ -3,7 +3,6 @@
 //
 
 #include "frame_buffer.h"
-#include "RenderLog/render_log.h"
 
 
 namespace AliceAPI {

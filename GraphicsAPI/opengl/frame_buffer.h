@@ -6,7 +6,7 @@
 #define ALICEENGINE_FRAME_BUFFER_H
 
 #include "graphic_predeclared.h"
-#include "RenderEngine/RenderModules/fbo_mod.h"
+#include "RenderModules/fbo_mod.h"
 #include "texture_2d.h"
 
 

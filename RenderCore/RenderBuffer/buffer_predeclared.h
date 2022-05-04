@@ -1,0 +1,16 @@
+//
+// Created by zhanghong50 on 2022/1/25.
+//
+
+#ifndef ALICEENGINE_BUFFER_PREDECLARED_H
+#define ALICEENGINE_BUFFER_PREDECLARED_H
+
+
+namespace AliceAPI {
+
+#define MAX_NUM_FBO 15
+
+}
+
+
+#endif //ALICEENGINE_BUFFER_PREDECLARED_H
