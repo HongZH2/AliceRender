@@ -12,4 +12,3 @@ set(ALICE_RENDER_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 # add_subdirectory(RenderCore)
 add_subdirectory(GraphicsAPI)
-add_subdirectory(Demo)

@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/28.
 //
 
-#ifndef ALICEENGINE_INITIALIZATION_MOD_H
-#define ALICEENGINE_INITIALIZATION_MOD_H
+#ifndef ALICE_ENGINE_INITIALIZATION_MOD_H
+#define ALICE_ENGINE_INITIALIZATION_MOD_H
 
 #include "module_predeclared.h"
 
@@ -24,4 +24,4 @@ public:
 
 
 
-#endif //ALICEENGINE_INITIALIZATION_MOD_H
+#endif //ALICE_ENGINE_INITIALIZATION_MOD_H

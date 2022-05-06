@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/26.
 //
 
-#ifndef ALICEENGINE_SHADER_PROGRAM_H
-#define ALICEENGINE_SHADER_PROGRAM_H
+#ifndef ALICE_ENGINE_SHADER_PROGRAM_H
+#define ALICE_ENGINE_SHADER_PROGRAM_H
 
 #include "shader.h"
 #include "texture_2d.h"
@@ -69,4 +69,4 @@ protected:
 }
 
 
-#endif //ALICEENGINE_SHADER_PROGRAM_H
+#endif //ALICE_ENGINE_SHADER_PROGRAM_H

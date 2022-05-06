@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/26.
 //
 
-#ifndef ALICEENGINE_DRAW_CALL_H
-#define ALICEENGINE_DRAW_CALL_H
+#ifndef ALICE_ENGINE_DRAW_CALL_H
+#define ALICE_ENGINE_DRAW_CALL_H
 
 #include "graphic_predeclared.h"
 #include "RenderModules/draw_mod.h"
@@ -27,4 +27,4 @@ public:
 
 
 
-#endif //ALICEENGINE_DRAW_CALL_H
+#endif //ALICE_ENGINE_DRAW_CALL_H

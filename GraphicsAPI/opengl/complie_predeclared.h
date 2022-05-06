@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/28.
 //
 
-#ifndef ALICEENGINE_COMPLIE_PREDECLARED_H
-#define ALICEENGINE_COMPLIE_PREDECLARED_H
+#ifndef ALICE_ENGINE_COMPLIE_PREDECLARED_H
+#define ALICE_ENGINE_COMPLIE_PREDECLARED_H
 
 #include "graphic_predeclared.h"
 #include "RenderModules/initialization_mod.h"
@@ -20,4 +20,4 @@ public:
 }
 
 
-#endif //ALICEENGINE_COMPLIE_PREDECLARED_H
+#endif //ALICE_ENGINE_COMPLIE_PREDECLARED_H

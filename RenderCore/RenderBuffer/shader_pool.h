@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/2/1.
 //
 
-#ifndef ALICEENGINE_SHADER_POOL_H
-#define ALICEENGINE_SHADER_POOL_H
+#ifndef ALICE_ENGINE_SHADER_POOL_H
+#define ALICE_ENGINE_SHADER_POOL_H
 
 #include "RenderModules/shader_mod.h"
 
@@ -29,4 +29,4 @@ private:
 
 
 
-#endif //ALICEENGINE_SHADER_POOL_H
+#endif //ALICE_ENGINE_SHADER_POOL_H

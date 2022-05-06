@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/13.
 //
 
-#ifndef ALICEENGINE_SHADER_H
-#define ALICEENGINE_SHADER_H
+#ifndef ALICE_ENGINE_SHADER_H
+#define ALICE_ENGINE_SHADER_H
 
 #include "graphic_predeclared.h"
 #include "RenderModules/shader_mod.h"
@@ -31,4 +31,4 @@ public:
 }
 
 
-#endif //ALICEENGINE_SHADER_H
+#endif //ALICE_ENGINE_SHADER_H

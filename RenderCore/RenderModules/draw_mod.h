@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/19.
 //
 
-#ifndef ALICEENGINE_DRAW_MOD_H
-#define ALICEENGINE_DRAW_MOD_H
+#ifndef ALICE_ENGINE_DRAW_MOD_H
+#define ALICE_ENGINE_DRAW_MOD_H
 
 #include "data_mod.h"
 
@@ -33,4 +33,4 @@ public:
 
 
 
-#endif //ALICEENGINE_DRAW_MOD_H
+#endif //ALICE_ENGINE_DRAW_MOD_H

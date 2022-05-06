@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/26.
 //
 
-#ifndef ALICEENGINE_TEXTURE_POOL_H
-#define ALICEENGINE_TEXTURE_POOL_H
+#ifndef ALICE_ENGINE_TEXTURE_POOL_H
+#define ALICE_ENGINE_TEXTURE_POOL_H
 
 #include "RenderModules/texture_mod.h"
 
@@ -42,4 +42,4 @@ private:
 }
 
 
-#endif //ALICEENGINE_TEXTURE_POOL_H
+#endif //ALICE_ENGINE_TEXTURE_POOL_H

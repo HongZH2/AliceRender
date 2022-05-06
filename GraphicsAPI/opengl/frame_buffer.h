@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/13.
 //
 
-#ifndef ALICEENGINE_FRAME_BUFFER_H
-#define ALICEENGINE_FRAME_BUFFER_H
+#ifndef ALICE_ENGINE_FRAME_BUFFER_H
+#define ALICE_ENGINE_FRAME_BUFFER_H
 
 #include "graphic_predeclared.h"
 #include "RenderModules/fbo_mod.h"
@@ -33,4 +33,4 @@ public:
 }
 
 
-#endif //ALICEENGINE_FRAME_BUFFER_H
+#endif //ALICE_ENGINE_FRAME_BUFFER_H

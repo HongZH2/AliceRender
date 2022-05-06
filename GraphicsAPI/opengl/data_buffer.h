@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/13.
 //
 
-#ifndef ALICEENGINE_DATA_BUFFER_H
-#define ALICEENGINE_DATA_BUFFER_H
+#ifndef ALICE_ENGINE_DATA_BUFFER_H
+#define ALICE_ENGINE_DATA_BUFFER_H
 
 #include "graphic_predeclared.h"
 #include "RenderModules/data_mod.h"
@@ -31,4 +31,4 @@ public:
 }
 
 
-#endif //ALICEENGINE_DATA_BUFFER_H
+#endif //ALICE_ENGINE_DATA_BUFFER_H

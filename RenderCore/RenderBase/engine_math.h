@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/13.
 //
 
-#ifndef ALICEENGINE_ENGINE_MATH_H
-#define ALICEENGINE_ENGINE_MATH_H
+#ifndef ALICE_ENGINE_ENGINE_MATH_H
+#define ALICE_ENGINE_ENGINE_MATH_H
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -126,4 +126,4 @@ inline T Gtranspose(T const & mat){
 }
 
 
-#endif //ALICEENGINE_ENGINE_MATH_H
+#endif //ALICE_ENGINE_ENGINE_MATH_H

@@ -2,8 +2,8 @@
 // Created by HongZh on 2022/03/07, 14:48:18
 //
 
-#ifndef ALICEENGINE_TEXTURE_CUBE_H
-#define ALICEENGINE_TEXTURE_CUBE_H
+#ifndef ALICE_ENGINE_TEXTURE_CUBE_H
+#define ALICE_ENGINE_TEXTURE_CUBE_H
 
 #include "graphic_predeclared.h"
 #include "texture_2d.h"
@@ -22,4 +22,4 @@ public:
 }
 
 
-#endif //ALICEENGINE_TEXTURE_CUBE_H
+#endif //ALICE_ENGINE_TEXTURE_CUBE_H

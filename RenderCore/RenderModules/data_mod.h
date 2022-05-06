@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/19.
 //
 
-#ifndef ALICEENGINE_DATA_MOD_H
-#define ALICEENGINE_DATA_MOD_H
+#ifndef ALICE_ENGINE_DATA_MOD_H
+#define ALICE_ENGINE_DATA_MOD_H
 
 #include "module_predeclared.h"
 
@@ -107,4 +107,4 @@ private:
 
 
 
-#endif //ALICEENGINE_DATA_MOD_H
+#endif //ALICE_ENGINE_DATA_MOD_H

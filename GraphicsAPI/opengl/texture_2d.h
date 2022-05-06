@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/13.
 //
 
-#ifndef ALICEENGINE_TEXTURE_H
-#define ALICEENGINE_TEXTURE_H
+#ifndef ALICE_ENGINE_TEXTURE_H
+#define ALICE_ENGINE_TEXTURE_H
 
 #include "graphic_predeclared.h"
 #include "RenderModules/texture_mod.h"
@@ -30,4 +30,4 @@ public:
 }
 
 
-#endif //ALICEENGINE_TEXTURE_H
+#endif //ALICE_ENGINE_TEXTURE_H

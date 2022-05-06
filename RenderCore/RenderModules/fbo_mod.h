@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/19.
 //
 
-#ifndef ALICEENGINE_FBO_MOD_H
-#define ALICEENGINE_FBO_MOD_H
+#ifndef ALICE_ENGINE_FBO_MOD_H
+#define ALICE_ENGINE_FBO_MOD_H
 
 #include "texture_mod.h"
 #include "module_predeclared.h"
@@ -52,4 +52,4 @@ protected:
 }
 
 
-#endif //ALICEENGINE_FBO_MOD_H
+#endif //ALICE_ENGINE_FBO_MOD_H

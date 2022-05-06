@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/25.
 //
 
-#ifndef ALICEENGINE_FBO_POOL_H
-#define ALICEENGINE_FBO_POOL_H
+#ifndef ALICE_ENGINE_FBO_POOL_H
+#define ALICE_ENGINE_FBO_POOL_H
 
 
 
@@ -32,4 +32,4 @@ private:
 }
 
 
-#endif //ALICEENGINE_FBO_POOL_H
+#endif //ALICE_ENGINE_FBO_POOL_H

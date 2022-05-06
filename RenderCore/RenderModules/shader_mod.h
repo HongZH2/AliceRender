@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/19.
 //
 
-#ifndef ALICEENGINE_SHADER_MOD_H
-#define ALICEENGINE_SHADER_MOD_H
+#ifndef ALICE_ENGINE_SHADER_MOD_H
+#define ALICE_ENGINE_SHADER_MOD_H
 
 #include "texture_mod.h"
 #include "module_predeclared.h"
@@ -71,4 +71,4 @@ public:
 }
 
 
-#endif //ALICEENGINE_SHADER_MOD_H
+#endif //ALICE_ENGINE_SHADER_MOD_H

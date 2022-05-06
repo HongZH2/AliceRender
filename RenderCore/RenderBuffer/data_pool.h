@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/2/1.
 //
 
-#ifndef ALICEENGINE_DATA_POOL_H
-#define ALICEENGINE_DATA_POOL_H
+#ifndef ALICE_ENGINE_DATA_POOL_H
+#define ALICE_ENGINE_DATA_POOL_H
 
 #include "RenderModules/data_mod.h"
 
@@ -33,4 +33,4 @@ private:
 
 
 
-#endif //ALICEENGINE_DATA_POOL_H
+#endif //ALICE_ENGINE_DATA_POOL_H

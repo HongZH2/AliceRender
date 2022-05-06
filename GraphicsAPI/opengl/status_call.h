@@ -3,8 +3,8 @@
 // Created by zhanghong50 on 2022/1/13.
 //
 
-#ifndef ALICEENGINE_STATUS_CALL_H
-#define ALICEENGINE_STATUS_CALL_H
+#ifndef ALICE_ENGINE_STATUS_CALL_H
+#define ALICE_ENGINE_STATUS_CALL_H
 
 #include "graphic_predeclared.h"
 #include "RenderModules/status_mod.h"
@@ -36,4 +36,4 @@ public:
 }
 
 
-#endif //ALICEENGINE_STATUS_CALL_H
+#endif //ALICE_ENGINE_STATUS_CALL_H

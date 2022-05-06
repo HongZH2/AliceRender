@@ -2,8 +2,8 @@
 // Created by HongZh on 2022/04/21, 14:08:46
 //
 
-#ifndef ALICEENGINE_MODULE_PREDECLARED_H
-#define ALICEENGINE_MODULE_PREDECLARED_H
+#ifndef ALICE_ENGINE_MODULE_PREDECLARED_H
+#define ALICE_ENGINE_MODULE_PREDECLARED_H
 
 #include <vector>
 #include <map>
@@ -178,4 +178,4 @@ static std::map<uint32_t , std::string> remain_key ={
 
 }
 
-#endif //ALICEENGINE_MODULE_PREDECLARED_H
+#endif //ALICE_ENGINE_MODULE_PREDECLARED_H

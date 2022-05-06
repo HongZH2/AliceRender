@@ -2,8 +2,8 @@
 // Created by HongZh on 2022/02/25, 10:59:02
 //
 
-#ifndef ALICEENGINE_STATUS_MODULE_H
-#define ALICEENGINE_STATUS_MODULE_H
+#ifndef ALICE_ENGINE_STATUS_MODULE_H
+#define ALICE_ENGINE_STATUS_MODULE_H
 
 #include "module_predeclared.h"
 
@@ -88,4 +88,4 @@ protected:
 }
 
 
-#endif // ALICEENGINE_STATUS_MODULE_H
+#endif // ALICE_ENGINE_STATUS_MODULE_H

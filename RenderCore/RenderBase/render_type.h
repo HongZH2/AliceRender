@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/13.
 //
 
-#ifndef ALICEENGINE_GENERAL_INCLUDE_H
-#define ALICEENGINE_GENERAL_INCLUDE_H
+#ifndef ALICE_ENGINE_GENERAL_INCLUDE_H
+#define ALICE_ENGINE_GENERAL_INCLUDE_H
 
 #include <map>
 #include <string>
@@ -77,4 +77,4 @@ static std::map<TextureType, std::string> tex_prefix = {
 }
 
 
-#endif //ALICEENGINE_GENERAL_INCLUDE_H
+#endif //ALICE_ENGINE_GENERAL_INCLUDE_H
