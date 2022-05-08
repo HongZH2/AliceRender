@@ -19,10 +19,10 @@ void DataBuffer::createBuffer(const AE_BUFFER_USEAGE & usage,
                             const AE_BUFFER_TYPE & buf_t, 
                             const uint32_t & size){
     if(!is_allocated_){
-        glGenBuffers(1, &buf_id_);
         usage_= usage;
         data_t_= data_t;
         buf_t_ = buf_t;
+        glGenBuffers(1, &buf_id_);
         bindBuffer();
         switch (data_t) {
             case AE_FLOAT:{
@@ -85,7 +85,7 @@ void DataBuffer::setUpBuffer(const uint32_t & offset, const uint32_t & size, flo
     if(is_allocated_){
         bindBuffer();
         // load data by update subdata
-        glBufferSubData(GL_DEFS[usage_], offset * sizeof(float), size * sizeof(float), &buffer);
+        glBufferSubData(GL_DEFS[usage_], offset * sizeof(float), size * sizeof(float), buffer);
         unbindBuffer();
     }
 }
@@ -94,7 +94,7 @@ void DataBuffer::setUpBuffer(const uint32_t & offset, const uint32_t & size, uin
     if(is_allocated_){
         bindBuffer();
         // load data by update subdata
-        glBufferSubData(GL_DEFS[usage_], offset * sizeof(uint32_t), size * sizeof(uint32_t), &buffer);
+        glBufferSubData(GL_DEFS[usage_], offset * sizeof(uint32_t), size * sizeof(uint32_t), buffer);
         unbindBuffer();
     }
 }

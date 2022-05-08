@@ -31,13 +31,6 @@ struct VariableInfo{
 
 
 class ShaderModule {
-protected:    
-    std::string name_;
-    std::unordered_map<std::string, AttachedTexInfo> tex_info_;
-    std::unordered_map<std::string, VariableInfo> uniform_info_;
-    std::unordered_map<std::string, VariableInfo> attrib_info_;
-
-    ShaderModule();
 public:
     static std::shared_ptr<ShaderModule> getInstancePtr();
     virtual ~ShaderModule();
@@ -66,6 +59,14 @@ public:
     virtual void setUniformMat4f(const std::string & key, const GMat4 & mat4_val) = 0;
 
     virtual void setUniformTexture(const std::string & key, std::shared_ptr<TextureModule> tex) = 0;
+    
+protected:    
+    std::string name_;
+    std::unordered_map<std::string, AttachedTexInfo> tex_info_;
+    std::unordered_map<std::string, VariableInfo> uniform_info_;
+    std::unordered_map<std::string, VariableInfo> attrib_info_;
+
+    ShaderModule();
 };
 
 }
