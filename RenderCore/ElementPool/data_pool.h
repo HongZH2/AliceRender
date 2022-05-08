@@ -6,9 +6,11 @@
 #define ALICE_ENGINE_DATA_POOL_H
 
 #include "RenderModules/data_mod.h"
+#include "RenderElement/buffer_data.h"
 
 namespace AliceAPI {
 
+// data pool for data block
 
 class DataPool {
 public:
@@ -17,10 +19,14 @@ public:
     DataPool(const DataPool &) = delete;
     DataPool& operator=(const DataPool &) = delete;
 
-    std::shared_ptr<DataBlock<float>> getBlockF();
-    std::shared_ptr<DataBlock<uint32_t>> getBlockI();
-    std::shared_ptr<DataBlock<float>> queryBlockF(const uint32_t & id);
-    std::shared_ptr<DataBlock<uint32_t>> queryBlockI(const uint32_t & id);
+    // TODO: data pool has two functions: one for data block
+    static std::shared_ptr<DataBlock<float>> getBlockF();  // apply for a buffer block 申请一块float block
+    static std::shared_ptr<DataBlock<uint32_t>> getBlockI(); // apply for a buffer block 申请一块int block
+    static std::shared_ptr<DataBlock<float>> queryBlockF(const uint32_t & id);
+    static std::shared_ptr<DataBlock<uint32_t>> queryBlockI(const uint32_t & id);
+
+    // TODO: data pool has two functions: another for data modules
+    
 private:
     uint32_t num_of_blockF_ = 0;
     uint32_t num_of_blockI_ = 0;

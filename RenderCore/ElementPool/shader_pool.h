@@ -17,7 +17,7 @@ public:
     ShaderPool& operator=(const ShaderPool&)=delete;
     ~ShaderPool();
 
-    static void loadShader(const struct ShaderInfo & shader_info);
+    static std::shared_ptr<ShaderModule> loadShader(const struct ShaderInfo & shader_info);
     static std::shared_ptr<ShaderModule> getShaderModule(const std::string & name);
 private:
     std::unordered_map<std::string, std::shared_ptr<ShaderModule>> shader_pool_;

@@ -10,23 +10,36 @@
 
 namespace AliceAPI {
 
-template <class T>
-class DataBuffer: public DataBlock<T>{
+class DataBuffer: public BufferModule{
 public:
     DataBuffer();
     ~DataBuffer();
-
-    virtual void createBuffer(const AE_BUFFER_USEAGE & useage, const AE_DATA_TYPE & data_t, const AE_BUFFER_TYPE & buf_t, const uint32_t & capacity) override;
-    virtual void resizeBuffer(const uint32_t & capacity);
+    virtual void createBuffer(const AE_BUFFER_USEAGE & usage, 
+                                const AE_DATA_TYPE & data_t, 
+                                const AE_BUFFER_TYPE & buf_t, 
+                                const uint32_t & size) override;
+    virtual void createBuffer(const AE_BUFFER_USEAGE & usage,
+                                 const AE_DATA_TYPE & data_t,  
+                                 const AE_BUFFER_TYPE & buf_t, 
+                                 const uint32_t & size,
+                                 float * buffer) override;
+    virtual void createBuffer(const AE_BUFFER_USEAGE & usage,
+                                const AE_DATA_TYPE & data_t,  
+                                const AE_BUFFER_TYPE & buf_t, 
+                                const uint32_t & size,
+                                uint32_t * buffer) override;
+    virtual void setUpBuffer(const uint32_t & offset, const uint32_t & size, float* buffer) override;
+    virtual void setUpBuffer(const uint32_t & offset, const uint32_t & size, uint32_t* buffer) override;
+    
+    virtual void copyBuffer(std::shared_ptr<BufferModule> buffer) override;
     virtual void deleteBuffer() override;
+
     virtual void bindBuffer() override;
     virtual void unbindBuffer() override;
-    virtual void setUpBuffer() override;   
-    virtual void appendBuffer(std::shared_ptr<DataChunk<T>> & chunk) override; 
-    virtual void updateBuffer(const uint32_t & chunk_id) override;
+  
     virtual void enableVAO(const uint32_t & loc) override;    // vertex attribute
     virtual void disableVAO(const uint32_t & loc) override;
-    virtual void setUpLayout(const std::shared_ptr<DataInfo<T>> & info, const uint32_t & loc) override; // set VAO
+    virtual void setUpLayout(const uint32_t & offset, const uint32_t & span, const uint32_t & stride, const uint32_t & loc) override;
 };
 }
 

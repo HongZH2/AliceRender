@@ -11,7 +11,7 @@
 #include "RenderModules/draw_mod.h"
 #include "RenderModules/shader_mod.h"
 #include "RenderModules/status_mod.h"
-#include "render_parameter.h"
+#include "RenderElement/render_parameter.h"
 
 namespace AliceAPI {
 

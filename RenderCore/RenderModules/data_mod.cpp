@@ -6,41 +6,19 @@
 #include "data_buffer.h"
 namespace AliceAPI {
 
-
-template <class T>
-DataChunk<T>::DataChunk(){
+BufferModule::BufferModule(){
 
 }
 
-template <class T>
-DataChunk<T>::~DataChunk(){
-
+BufferModule::~BufferModule(){
+    
 }
 
-template<class T>
-DataBlock<T>::DataBlock() {
+std::shared_ptr<BufferModule> BufferModule::getInstancePtr(){
+    std::shared_ptr<BufferModule> buffer = std::make_shared<DataBuffer>();
+    return buffer;
 }
 
-template<class T>
-DataBlock<T>::~DataBlock() {
-
-}
-
-template<class T>
-std::shared_ptr<DataBlock<T>> DataBlock<T>::getInstancePtr(){
-    std::shared_ptr<DataBuffer<T>> block = std::make_shared<DataBuffer<T>>();
-    return block;
-}
-
-template<class T>
-DataInfo<T>::DataInfo(){
-
-}
-
-template<class T>
-DataInfo<T>::~DataInfo(){
-
-}
 
 DataModule::DataModule(){
 

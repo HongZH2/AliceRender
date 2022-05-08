@@ -14,7 +14,6 @@ namespace AliceAPI {
 class DrawCall: public DrawModule {
 public:
     DrawCall();
-    DrawCall(uint32_t n_vertices);
     ~DrawCall();
 
     virtual void drawElement() override;

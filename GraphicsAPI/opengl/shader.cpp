@@ -17,7 +17,7 @@ Shader::~Shader() {
 }
 
 void Shader::createShader() {
-    shader_id_ = glCreateShader(type_);
+    shader_id_ = glCreateShader(GL_DEFS[type_]);
 }
 
 void Shader::linkShaderSource(const char *data, int32_t length) {

@@ -11,9 +11,6 @@ namespace AliceAPI {
 DrawCall::DrawCall() {
 
 }
-DrawCall::DrawCall(uint32_t n_vertices) {
-    num_vertices_ = n_vertices;
-}
 
 DrawCall::~DrawCall() {
 
