@@ -7,18 +7,20 @@
 namespace AliceAPI{
 
 template <class T>
-DataInfo<T>::DataInfo(std::shared_ptr<DataChunk<T>> chunk_ptr, 
+DataInfo<T>::DataInfo(std::shared_ptr<DataChunk<T>> start_chunk, 
              std::shared_ptr<DataBlock<T>> block_ptr,
              const std::string & key, 
              uint32_t span,
              uint32_t offset, 
-             uint32_t stride){
-    chunk_ptr_ = chunk_ptr;
+             uint32_t stride,
+             uint32_t chunk_span){
+    start_chunk_ = start_chunk;
     block_ptr_ = block_ptr;
     name_ = key;
     span_ = span;
     offset_ = offset;
     stride_ = stride;
+    chunk_span_ = chunk_span;
 }
 
 template <class T>
@@ -28,7 +30,7 @@ DataInfo<T>::~DataInfo(){
 
 template <class T>
 std::shared_ptr<DataChunk<T>> DataInfo<T>::getChunkPtr(){
-    return chunk_ptr_;
+    return start_chunk_;
 }
 
 template <class T>
@@ -186,4 +188,87 @@ void DataBlock<T>::setLayout(const uint32_t & offset, const uint32_t & span, con
 
 template class DataBlock<float>;
 template class DataBlock<uint32_t>;
+
+
+DataModule::DataModule(){
+
+}
+
+DataModule::~DataModule(){
+
+}
+
+void DataModule::addInfoF(std::shared_ptr<DataInfo<float>> infoF){
+    infoF_[infoF->getName()] = infoF;
+}
+
+void DataModule::addInfoF(std::shared_ptr<DataInfo<uint32_t>> infoUI){
+    infoUI_[infoUI->getName()] = infoUI;
+}
+
+void DataModule::setIndiceInfo(std::shared_ptr<DataInfo<uint32_t>> indice_info){
+    indice_info_ = indice_info;
+}
+
+void DataModule::setDrawModule(std::shared_ptr<DrawModule> draw_module){
+    draw_module_ = draw_module;
+}
+
+void DataModule::bindDataModule(const std::unordered_map<std::string, VariableInfo> & attribute_list){
+    for(auto & [key, info]: infoF_){
+        if(attribute_list.find(key) != attribute_list.end()){
+            uint32_t loc = attribute_list.at(key).loc_;
+            info->getBlockPtr()->bindBlock();
+            uint32_t offset = info->getOffset() + info->getChunkPtr()->getChunkOffset();
+            uint32_t span = info->getSpan();
+            uint32_t stride = info->getStride();
+            info->getBlockPtr()->setLayout(offset, span, stride, loc);
+            info->getBlockPtr()->enableVertexAttrib(loc);
+            info->setLocation(loc);
+        }
+    }
+    for(auto & [key, info]: infoUI_){
+        if(attribute_list.find(key) != attribute_list.end()){
+            uint32_t loc = attribute_list.at(key).loc_;
+            info->getBlockPtr()->bindBlock();
+            uint32_t offset = info->getOffset() + info->getChunkPtr()->getChunkOffset();
+            uint32_t span = info->getSpan();
+            uint32_t stride = info->getStride();
+            info->getBlockPtr()->setLayout(offset, span, stride, loc);
+            info->getBlockPtr()->enableVertexAttrib(loc);
+            info->setLocation(loc);
+        }
+    }
+    if(indice_info_){
+        indice_info_->getBlockPtr()->bindBlock();
+    }
+}
+
+void DataModule::unbindDataModule(){
+    for(auto & [key, info]: infoF_){
+        uint32_t loc = info->getLocation();
+        info->getBlockPtr()->unbindBlock();
+        info->getBlockPtr()->disableVertxAttrib(loc);
+    }
+    for(auto & [key, info]: infoUI_){
+        uint32_t loc = info->getLocation();
+        info->getBlockPtr()->unbindBlock();
+        info->getBlockPtr()->disableVertxAttrib(loc);
+    }
+    if(indice_info_){
+        indice_info_->getBlockPtr()->unbindBlock();
+    }
+}
+
+void DataModule::draw(){
+    if(!draw_module_){
+        return;
+    }
+    auto draw_t =  draw_module_->getDrawType();
+    if(indice_info_ && (draw_t == AE_DRAW_ELEMENT ||  draw_t == AE_DRAW_ELEMENT_INSTANCE)){
+        draw_module_->setOffset(indice_info_->getOffset() + indice_info_->getChunkPtr()->getChunkOffset());
+    }
+    draw_module_->draw();
+}
+
 }

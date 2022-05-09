@@ -53,19 +53,6 @@ protected:
     BufferModule();
 };
 
-/*
-* Data Module: a package of DataBlocks
-* TODO: 
-*/
-class DataModule {
-public:
-    DataModule();
-    ~DataModule();
-
-    void bindBuffers();
-    void unbindBuffers();
-private:
-};
 
 }
 

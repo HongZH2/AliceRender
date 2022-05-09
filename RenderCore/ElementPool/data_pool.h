@@ -5,7 +5,7 @@
 #ifndef ALICE_ENGINE_DATA_POOL_H
 #define ALICE_ENGINE_DATA_POOL_H
 
-#include "RenderModules/data_mod.h"
+#include "RenderModules/buffer_mod.h"
 #include "RenderElement/buffer_data.h"
 
 namespace AliceAPI {

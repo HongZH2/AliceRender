@@ -6,7 +6,7 @@
 #define ALICE_ENGINE_DATA_BUFFER_H
 
 #include "graphic_predeclared.h"
-#include "RenderModules/data_mod.h"
+#include "RenderModules/buffer_mod.h"
 
 namespace AliceAPI {
 

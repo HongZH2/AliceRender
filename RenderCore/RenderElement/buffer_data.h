@@ -5,7 +5,9 @@
 #ifndef ALICE_ENGINE_DATA_BUFFER_H
 #define ALICE_ENGINE_DATA_BUFFER_H
 
-#include "RenderModules/data_mod.h"
+#include "RenderModules/buffer_mod.h"
+#include "RenderModules/shader_mod.h"
+#include "RenderModules/draw_mod.h"
 
 namespace AliceAPI {
 
@@ -50,22 +52,33 @@ private:
 template <class T>
 class DataInfo {
 public:
-    DataInfo(std::shared_ptr<DataChunk<T>> chunk_ptr, 
+    DataInfo(std::shared_ptr<DataChunk<T>> start_chunk, 
              std::shared_ptr<DataBlock<T>> block_ptr,
              const std::string & key = "", 
              uint32_t span = 3,
              uint32_t offset = 0, 
-             uint32_t stride = 0);
+             uint32_t stride = 0,
+             uint32_t chunk_span_ = 1);
     ~DataInfo();
 
+    inline const std::string & getName(){return name_;}
+    inline const uint32_t & getOffset(){return offset_;}
+    inline const uint32_t & getSpan(){return span_;}
+    inline const uint32_t & getStride(){return stride_;}
+    inline const uint32_t & getChunkSpan(){return chunk_span_;}
+    inline const uint32_t & getLocation(){return loc_;}
+    inline void setLocation(const uint32_t & loc){loc_ = loc;}
+    
     std::shared_ptr<DataChunk<T>> getChunkPtr();
     std::shared_ptr<DataBlock<T>> getBlockPtr();
 private:
     uint32_t span_ = 3;  // span of data. For instance, [(x, y, z),...] the span will be 3. 1,2,3,4 will be acceptable.
-    uint32_t offset_ = 0;  // local offset of element in the chunk
+    uint32_t offset_ = 0;  // local offset of element in the first chunk
     uint32_t stride_ = 0;   // stride, 0 stands for the tightly pack
+    uint32_t chunk_span_ = 1;  // chunk span stands for number of chunks that data info describs from the start chunk. 
+    uint32_t loc_ = 0; // location in the shaders
     std::string name_;  // key for shader
-    std::shared_ptr<DataChunk<T>> chunk_ptr_; // restore the data block ptr.
+    std::shared_ptr<DataChunk<T>> start_chunk_; // restore the data block ptr.
     std::weak_ptr<DataBlock<T>> block_ptr_; 
 };
 
@@ -114,6 +127,31 @@ protected:
     
     std::vector<std::shared_ptr<DataChunk<T>>> chunks_;
     std::shared_ptr<BufferModule> buffer_module_;  // buffer module to do actual operations
+};
+
+/*
+*  DataModule: batch all the Datainfo for one draw call 
+*/
+
+class DataModule{
+public:
+    DataModule();
+    ~DataModule();
+
+    void addInfoF(std::shared_ptr<DataInfo<float>> infoF);
+    void addInfoF(std::shared_ptr<DataInfo<uint32_t>> infoUI);
+    void setIndiceInfo(std::shared_ptr<DataInfo<uint32_t>> indice_info);
+    void setDrawModule(std::shared_ptr<DrawModule> draw_module);
+
+    void bindDataModule(const std::unordered_map<std::string, VariableInfo> & attribute_list);
+    void unbindDataModule();
+    void draw();
+    
+private:
+    std::unordered_map<std::string, std::shared_ptr<DataInfo<float>>> infoF_;
+    std::unordered_map<std::string, std::shared_ptr<DataInfo<uint32_t>>> infoUI_;
+    std::shared_ptr<DataInfo<uint32_t>> indice_info_;
+    std::shared_ptr<DrawModule> draw_module_;
 };
 
 }

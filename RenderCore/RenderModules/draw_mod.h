@@ -5,7 +5,7 @@
 #ifndef ALICE_ENGINE_DRAW_MOD_H
 #define ALICE_ENGINE_DRAW_MOD_H
 
-#include "data_mod.h"
+#include "module_predeclared.h"
 
 namespace AliceAPI {
 
@@ -14,15 +14,17 @@ public:
     static std::shared_ptr<DrawModule> getInstance(const uint32_t & n_vertices, 
                                                     const AE_DRAWCALL_TYPE & draw_t = AE_DRAW_ELEMENT,
                                                     const AE_DRAWCALL_USEAGE & usage = AE_TRIANGLES,
-                                                    const uint32_t & offset = 0,
-                                                    const uint32_t & n_instances = 0);
+                                                    const uint32_t & n_instances = 0,
+                                                    const uint32_t & offset = 0);
     virtual ~DrawModule();
     virtual void draw();
 
     void setDrawUsage(const AE_DRAWCALL_USEAGE & usage); // you can change the draw type in the running time
     void setNumOfVertices(const uint32_t & n_vertices);
     void setNumOfInstances(const uint32_t & n_instances);
+    void setOffset(const uint32_t & offset);
 
+    const AE_DRAWCALL_TYPE & getDrawType();
 protected:
     uint32_t num_vertices_ = 0;
     uint32_t num_instances_ = 0;
