@@ -28,19 +28,18 @@ class DataInfo;
 template <class T>
 class DataChunk{
 public:
-    explicit DataChunk(T * buffer, const uint32_t & size){
-        buffer_ = buffer;
-        buf_size_ = size;
-    }
-    ~DataChunk() = default;
-    T * buffer_ = nullptr; // buffer
-    uint32_t buf_size_ = 0;
+    explicit DataChunk(std::vector<T> & data, uint32_t copy = 1);
+    ~DataChunk();
 
     inline void setChunkOffset(const uint32_t & offset){chunk_offset_ = offset;}
     inline void setChunkID(const int32_t & id){chunk_id_ = id;}
     inline const uint32_t & getChunkOffset(){return chunk_offset_;}
     inline const int32_t & getChunkID(){return chunk_id_;}
+    inline T * & getBuffer(){return buffer_;}
+    inline const uint32_t & getBufferSize(){return buf_size_;}
 private:
+    T * buffer_ = nullptr;
+    uint32_t buf_size_ = 0;
     uint32_t chunk_offset_ = 0;
     int32_t chunk_id_ = -1;   // sub data block id    
 };
@@ -94,7 +93,7 @@ public:
     void createBlock(const AE_BUFFER_USEAGE & usage, 
                         const AE_DATA_TYPE & data_t, 
                         const AE_BUFFER_TYPE & draw_t,
-                        const uint32_t & capacity,
+                        const uint32_t & capacity = 0,
                         std::shared_ptr<DataChunk<T>> chunk = nullptr);  // create a datablock with capacity, if the buffer is null, you can fill it later by setUpBlock
     void addChunk(std::shared_ptr<DataChunk<T>> chunk); // attach chunk to Block
     void updateChunk(std::shared_ptr<DataChunk<T>> chunk);

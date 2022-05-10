@@ -7,6 +7,23 @@
 namespace AliceAPI{
 
 template <class T>
+DataChunk<T>::DataChunk(std::vector<T> & data, uint32_t copy){
+    uint32_t size = data.size();
+    buf_size_ = size * copy;
+    buffer_ = (T*) malloc(size * copy * sizeof(T));
+    for(size_t i = 0; i < copy; ++i){
+        memcpy(buffer_ + i * size, &data[0], size * sizeof(T));
+    }
+}
+
+template <class T>
+DataChunk<T>::~DataChunk<T>(){
+    if(buffer_)
+        free(buffer_);
+}
+
+
+template <class T>
 DataInfo<T>::DataInfo(std::shared_ptr<DataChunk<T>> start_chunk, 
              std::shared_ptr<DataBlock<T>> block_ptr,
              const std::string & key, 
@@ -38,8 +55,6 @@ std::shared_ptr<DataBlock<T>> DataInfo<T>::getBlockPtr(){
     return block_ptr_.lock();
 }
 
-template class DataInfo<float>;
-template class DataInfo<uint32_t>;
 
 template <class T>
 DataBlock<T>::DataBlock(const uint32_t & id): 
@@ -64,13 +79,16 @@ void DataBlock<T>::createBlock(const AE_BUFFER_USEAGE &usage,
     usage_ = usage;
     data_t_= data_t;
     buf_t_ = draw_t;
+    if(capacity == 0){
+        return;
+    }
     block_capacity_ = capacity;
-    if(chunk && chunk->buffer_){
-        buffer_module_->createBuffer(usage, data_t, draw_t, capacity, chunk->buffer_);
+    if(chunk && chunk->getBufferSize()){
+        buffer_module_->createBuffer(usage, data_t, draw_t, capacity, chunk->getBuffer());
         chunks_.emplace_back(chunk);
         chunk->setChunkOffset(block_size_);
         chunk->setChunkID(num_of_chunks_);
-        block_size_ +=  chunk->buf_size_;
+        block_size_ +=  chunk->getBufferSize();
         num_of_chunks_ += 1;
     }
     else{
@@ -81,23 +99,30 @@ void DataBlock<T>::createBlock(const AE_BUFFER_USEAGE &usage,
 
 template <class T>
 void DataBlock<T>::addChunk(std::shared_ptr<DataChunk<T>> chunk){
-    if(!is_allocated_){
+    if(!is_allocated_ && block_capacity_ != 0){
         return;
     }
     chunks_.emplace_back(chunk);
     chunk->setChunkOffset(block_size_);
     chunk->setChunkID(num_of_chunks_);
-    block_size_ +=  chunk->buf_size_;
+    block_size_ +=  chunk->getBufferSize();
     num_of_chunks_ += 1;
 }
 
 template <class T>
 void DataBlock<T>::setUpBlock(){
     if(!is_allocated_){
-        return;
+        if(block_capacity_ == 0){
+            block_capacity_ = block_size_;
+            buffer_module_->createBuffer(usage_, data_t_, buf_t_, block_capacity_);
+            is_allocated_ = true;
+        }
+        else{
+            return;
+        }
     }
     for(auto & chunk: chunks_){
-       buffer_module_->setUpBuffer(chunk->getChunkOffset(), chunk->buf_size_, chunk->buffer_);
+       buffer_module_->setUpBuffer(chunk->getChunkOffset(), chunk->getBufferSize(), chunk->getBuffer());
     }
     is_allocated_ = true;
 }
@@ -128,7 +153,7 @@ void DataBlock<T>::updateChunk(std::shared_ptr<DataChunk<T>> chunk){
     if(!is_allocated_ || buf_t_ != AE_DYNAMIC_DRAW){  // 不是动态的buffer，不能更新
         return;
     }
-    buffer_module_->setUpBuffer(chunk->getChunkOffset(), chunk->buf_size_, chunk->buffer_);
+    buffer_module_->setUpBuffer(chunk->getChunkOffset(), chunk->getBufferSize(), chunk->getBuffer());
 }
 
 template <class T>
@@ -183,11 +208,6 @@ void DataBlock<T>::setLayout(const uint32_t & offset, const uint32_t & span, con
     }
     buffer_module_->setUpLayout(offset, span, stride, loc);
 }
-
-
-
-template class DataBlock<float>;
-template class DataBlock<uint32_t>;
 
 
 DataModule::DataModule(){
@@ -270,5 +290,12 @@ void DataModule::draw(){
     }
     draw_module_->draw();
 }
+
+template class DataChunk<float>;
+template class DataChunk<uint32_t>;
+template class DataInfo<float>;
+template class DataInfo<uint32_t>;
+template class DataBlock<float>;
+template class DataBlock<uint32_t>;
 
 }
