@@ -150,7 +150,7 @@ void DataBlock<T>::resizeBlock(const uint32_t & capacity){
 
 template <class T>
 void DataBlock<T>::updateChunk(std::shared_ptr<DataChunk<T>> chunk){
-    if(!is_allocated_ || buf_t_ != AE_DYNAMIC_DRAW){  // 不是动态的buffer，不能更新
+    if(!is_allocated_ || buf_t_ != AE_DYNAMIC_DRAW || block_capacity_ == 0){  // 不是动态的buffer，不能更新
         return;
     }
     buffer_module_->setUpBuffer(chunk->getChunkOffset(), chunk->getBufferSize(), chunk->getBuffer());

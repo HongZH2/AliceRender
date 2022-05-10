@@ -83,7 +83,7 @@ namespace AliceAPI {
 
 #define AE_DEFINITION_MAP(i, t) {i, t},
 static std::map<int32_t, uint32_t> GL_DEFS{ AE_DEFINITION(AE_DEFINITION_MAP)};
-#undef AE_BUFFER_T_MAP
+#undef AE_DEFINITION_MAP
 
 enum ERROR_CODE{
     SHADER_UPDATE_TEXTURE_ERROR = 0
