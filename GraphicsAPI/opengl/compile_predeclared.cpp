@@ -13,8 +13,8 @@ InitGraphic::InitGraphic() {
     {
         printf("Error: %s\n", glewGetErrorString(err));
     }
-    printf("%s\n", "GLEW::Initialization Success!");
-    printf("OpenGL %s\n is used.", glGetString(GL_VERSION));
+    // printf("%s\n", "GLEW::Initialization Success!");
+    // printf("OpenGL %s\n is used.", glGetString(GL_VERSION));
 }
 
 
