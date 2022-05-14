@@ -7,6 +7,7 @@
 
 #include <map>
 #include <string>
+#include "RenderModules/module_predeclared.h"
 
 namespace AliceAPI {
 
