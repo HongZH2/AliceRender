@@ -5,7 +5,7 @@
 #ifndef ALICE_ENGINE_TEXTURE_MOD_H
 #define ALICE_ENGINE_TEXTURE_MOD_H
 
-#include "module_predeclared.h"
+#include "RenderBase/render_type.h"
 
 namespace AliceAPI {
 

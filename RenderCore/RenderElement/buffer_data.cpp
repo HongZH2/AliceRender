@@ -218,11 +218,11 @@ DataModule::~DataModule(){
 
 }
 
-void DataModule::addInfoF(std::shared_ptr<DataInfo<float>> infoF){
+void DataModule::addInfo(std::shared_ptr<DataInfo<float>> infoF){
     infoF_[infoF->getName()] = infoF;
 }
 
-void DataModule::addInfoF(std::shared_ptr<DataInfo<uint32_t>> infoUI){
+void DataModule::addInfo(std::shared_ptr<DataInfo<uint32_t>> infoUI){
     infoUI_[infoUI->getName()] = infoUI;
 }
 

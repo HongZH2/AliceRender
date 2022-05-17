@@ -12,13 +12,6 @@
 namespace AliceAPI {
 
 
-// TODO:
-#ifdef __APPLE__
-    #define FBO_OFFSET 2.0
-#else
-    #define FBO_OFFSET 1.0
-#endif
-
 enum MeshType{
     NONE_MESH = 0,
     PREDECLARED_PLANE,

@@ -11,9 +11,16 @@
 #include <string>
 #include <memory>
 #include "RenderBase/engine_math.h"
-#include "RenderBase/render_type.h"
 
 namespace AliceAPI {
+
+
+// FBO
+#ifdef __APPLE__
+    #define FBO_OFFSET 2.0
+#else
+    #define FBO_OFFSET 1.0
+#endif
 
 #define MAX_NUM_TEXTURE 50
 /*

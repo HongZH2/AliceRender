@@ -137,8 +137,8 @@ public:
     DataModule();
     ~DataModule();
 
-    void addInfoF(std::shared_ptr<DataInfo<float>> infoF);
-    void addInfoF(std::shared_ptr<DataInfo<uint32_t>> infoUI);
+    void addInfo(std::shared_ptr<DataInfo<float>> infoF);
+    void addInfo(std::shared_ptr<DataInfo<uint32_t>> infoUI);
     void setIndiceInfo(std::shared_ptr<DataInfo<uint32_t>> indice_info);
     void setDrawModule(std::shared_ptr<DrawModule> draw_module);
 
