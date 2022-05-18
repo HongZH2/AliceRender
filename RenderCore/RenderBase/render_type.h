@@ -11,7 +11,6 @@
 
 namespace AliceAPI {
 
-
 enum MeshType{
     NONE_MESH = 0,
     PREDECLARED_PLANE,

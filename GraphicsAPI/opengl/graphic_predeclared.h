@@ -16,12 +16,17 @@ namespace AliceAPI {
 
 #define AE_DEFINITION(mapFunc)			\
 	mapFunc (0, GL_UNSIGNED_BYTE)		\
-    mapFunc (1, GL_FLOAT)               \
-    mapFunc (2, GL_FLOAT_VEC3)          \
-    mapFunc (3, GL_FLOAT_MAT4)          \
-    mapFunc (4, GL_SAMPLER_2D)          \
-    mapFunc (5, GL_SAMPLER_CUBE)         \
-    mapFunc (50, GL_ELEMENT_ARRAY_BUFFER)          \
+    mapFunc (1, GL_BYTE)                \
+    mapFunc (2, GL_INT)                 \
+    mapFunc (3, GL_UNSIGNED_INT)        \
+    mapFunc (4, GL_SHORT)               \
+    mapFunc (5, GL_UNSIGNED_SHORT)      \
+    mapFunc (6, GL_FLOAT)               \
+    mapFunc (7, GL_FLOAT_VEC3)          \
+    mapFunc (8, GL_FLOAT_MAT4)          \
+    mapFunc (9, GL_SAMPLER_2D)          \
+    mapFunc (10, GL_SAMPLER_CUBE)         \
+    mapFunc (50, GL_ELEMENT_ARRAY_BUFFER)  \
     mapFunc (51, GL_ARRAY_BUFFER)          \
     mapFunc (100, GL_STATIC_DRAW)          \
     mapFunc (101, GL_DYNAMIC_DRAW)          \
@@ -89,6 +94,8 @@ enum ERROR_CODE{
     SHADER_UPDATE_TEXTURE_ERROR = 0
 };
 
+
+#define SizeOf sizeof(float)
 
 }
 

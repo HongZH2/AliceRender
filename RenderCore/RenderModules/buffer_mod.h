@@ -15,21 +15,11 @@ public:
     static std::shared_ptr<BufferModule> getInstancePtr();
     ~BufferModule();
     virtual void createBuffer(const AE_BUFFER_USEAGE & useage, 
-                            const AE_DATA_TYPE & data_t, 
-                            const AE_BUFFER_TYPE & buf_t, 
-                            const uint32_t & size) = 0;
-    virtual void createBuffer(const AE_BUFFER_USEAGE & useage, 
                                 const AE_DATA_TYPE & data_t, 
                                 const AE_BUFFER_TYPE & buf_t, 
                                 const uint32_t & size,
-                                float * buffer) = 0;  // create a buffer with size.
-    virtual void createBuffer(const AE_BUFFER_USEAGE & useage, 
-                            const AE_DATA_TYPE & data_t, 
-                            const AE_BUFFER_TYPE & buf_t, 
-                            const uint32_t & size,
-                            uint32_t * buffer) = 0;  // create a buffer with size.                                               
-    virtual void setUpBuffer(const uint32_t & offset, const uint32_t & size, float* buffer) = 0;
-    virtual void setUpBuffer(const uint32_t & offset, const uint32_t & size, uint32_t* buffer) = 0;
+                                void * buffer) = 0;                                           
+    virtual void setUpBuffer(const uint32_t & offset, const uint32_t & size, void* buffer) = 0;
     
     virtual void copyBuffer(std::shared_ptr<BufferModule> buffer) = 0;
     virtual void deleteBuffer() = 0;
@@ -39,7 +29,7 @@ public:
    
     virtual void enableVAO(const uint32_t & loc) = 0;
     virtual void disableVAO(const uint32_t & loc) = 0; 
-    virtual void setUpLayout(const uint32_t & offset, const uint32_t & span, const uint32_t & stride, const uint32_t & loc) = 0; // set VAO
+    virtual void setUpLayout(const uint64_t & offset, const uint32_t & span, const uint32_t & stride, const uint32_t & loc) = 0; // set VAO
 
     inline const uint32_t & getBufferID(){return buf_id_;}
     inline const uint32_t & getBufferSize(){return buf_size_;}

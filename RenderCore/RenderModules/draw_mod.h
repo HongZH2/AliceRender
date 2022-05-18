@@ -9,6 +9,8 @@
 
 namespace AliceAPI {
 
+
+
 class DrawModule {
 public:
     static std::shared_ptr<DrawModule> getInstance(const uint32_t & n_vertices, 
@@ -28,7 +30,8 @@ public:
 protected:
     uint32_t num_vertices_ = 0;
     uint32_t num_instances_ = 0;
-    uint32_t offset_ = 0;
+    uint64_t offset_ = 0;
+    AE_DATA_TYPE data_t_ = AE_UINT;   // indice data
     AE_DRAWCALL_USEAGE usage_ = AE_TRIANGLES;
     AE_DRAWCALL_TYPE draw_t_ = AE_DRAW_ELEMENT;
 

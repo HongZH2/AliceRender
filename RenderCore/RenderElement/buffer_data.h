@@ -19,7 +19,6 @@ class DataChunk;
 
 template <class T>
 class DataInfo;
-
 /*
 * sub data chunk
 * data chunk refers to a chunk of seqential buffer. 
@@ -45,6 +44,25 @@ private:
 };
 
 /*
+*  the construct function will make multiple copies for the input data
+*/
+template <class T>
+DataChunk<T>::DataChunk(std::vector<T> & data, uint32_t copy){
+    uint32_t size = data.size();
+    buf_size_ = size * copy;
+    buffer_ = (T*) malloc(size * copy * sizeof(T));
+    for(size_t i = 0; i < copy; ++i){
+        memcpy(buffer_ + i * size, &data[0], size * sizeof(T));
+    }
+}
+
+template <class T>
+DataChunk<T>::~DataChunk<T>(){
+    if(buffer_)
+        free(buffer_);
+}
+
+/*
 * Class DataInfo: specialy data information for applying data
 * 类DataInfo 存储单个data buffer的信息，比如，gpu buffer ID， offset，size 等
 */
@@ -54,11 +72,11 @@ public:
     DataInfo(std::shared_ptr<DataChunk<T>> start_chunk, 
              std::shared_ptr<DataBlock<T>> block_ptr,
              const std::string & key = "", 
-             uint32_t span = 3,
              uint32_t offset = 0, 
              uint32_t stride = 0,
-             uint32_t chunk_span_ = 1);
-    ~DataInfo();
+             uint32_t span = 3,
+             uint32_t chunk_span = 1);
+    ~DataInfo() = default;
 
     inline const std::string & getName(){return name_;}
     inline const uint32_t & getOffset(){return offset_;}
@@ -81,6 +99,33 @@ private:
     std::weak_ptr<DataBlock<T>> block_ptr_; 
 };
 
+template <class T>
+DataInfo<T>::DataInfo(std::shared_ptr<DataChunk<T>> start_chunk, 
+             std::shared_ptr<DataBlock<T>> block_ptr,
+             const std::string & key, 
+             uint32_t offset, 
+             uint32_t stride,
+             uint32_t span,
+             uint32_t chunk_span){
+    start_chunk_ = start_chunk;
+    block_ptr_ = block_ptr;
+    name_ = key;
+    span_ = span;
+    offset_ = offset;
+    stride_ = stride;
+    chunk_span_ = chunk_span;
+}
+
+template <class T>
+std::shared_ptr<DataChunk<T>> DataInfo<T>::getChunkPtr(){
+    return start_chunk_;
+}
+
+template <class T>
+std::shared_ptr<DataBlock<T>> DataInfo<T>::getBlockPtr(){
+    return block_ptr_.lock();
+}
+
 /*
 * Data Block a abstract class for buffer opertion
 */
@@ -88,7 +133,7 @@ template <class T>
 class DataBlock {
 public:
     explicit DataBlock(const uint32_t & id);
-    virtual ~DataBlock();
+    virtual ~DataBlock() = default;
 
     void createBlock(const AE_BUFFER_USEAGE & usage, 
                         const AE_DATA_TYPE & data_t, 
@@ -127,6 +172,147 @@ protected:
     std::vector<std::shared_ptr<DataChunk<T>>> chunks_;
     std::shared_ptr<BufferModule> buffer_module_;  // buffer module to do actual operations
 };
+
+
+template <class T>
+DataBlock<T>::DataBlock(const uint32_t & id): buffer_module_(BufferModule::getInstancePtr()), block_id_(id){
+}
+
+template <class T>
+void DataBlock<T>::createBlock(const AE_BUFFER_USEAGE &usage, 
+                                const AE_DATA_TYPE &data_t, 
+                                const AE_BUFFER_TYPE &draw_t, 
+                                const uint32_t &capacity, 
+                                std::shared_ptr<DataChunk<T>> chunk){
+    if(is_allocated_){
+        return;
+    }
+    usage_ = usage;
+    data_t_= data_t;
+    buf_t_ = draw_t;
+    if(capacity == 0){
+        return;
+    }
+    block_capacity_ = capacity;
+    if(chunk && chunk->getBufferSize()){
+        buffer_module_->createBuffer(usage, data_t, draw_t, capacity * sizeof(T), (void*)chunk->getBuffer());
+        chunks_.emplace_back(chunk);
+        chunk->setChunkOffset(block_size_);
+        chunk->setChunkID(num_of_chunks_);
+        block_size_ +=  chunk->getBufferSize();
+        num_of_chunks_ += 1;
+    }
+    else{
+        buffer_module_->createBuffer(usage, data_t, draw_t, capacity * sizeof(T), (void*) nullptr);
+    }
+    is_allocated_ = true;
+}
+
+template <class T>
+void DataBlock<T>::addChunk(std::shared_ptr<DataChunk<T>> chunk){
+    if(!is_allocated_ && block_capacity_ != 0){
+        return;
+    }
+    chunks_.emplace_back(chunk);
+    chunk->setChunkOffset(block_size_);
+    chunk->setChunkID(num_of_chunks_);
+    block_size_ +=  chunk->getBufferSize();
+    num_of_chunks_ += 1;
+}
+
+template <class T>
+void DataBlock<T>::setUpBlock(){
+    if(!is_allocated_){
+        if(block_capacity_ == 0){
+            block_capacity_ = block_size_;
+            buffer_module_->createBuffer(usage_, data_t_, buf_t_, block_capacity_* sizeof(T), (void*)nullptr);
+            is_allocated_ = true;
+        }
+        else{
+            return;
+        }
+    }
+    for(auto & chunk: chunks_){
+       buffer_module_->setUpBuffer(chunk->getChunkOffset(), chunk->getBufferSize() * sizeof(T), chunk->getBuffer());
+    }
+    is_allocated_ = true;
+}
+
+template <class T>
+void DataBlock<T>::resizeBlock(const uint32_t & capacity){
+    if(!is_allocated_){
+        block_capacity_ = capacity;
+        return;
+    }
+    block_capacity_ = capacity;
+    std::shared_ptr<BufferModule> new_buffer = BufferModule::getInstancePtr();
+    new_buffer->createBuffer(usage_, data_t_, buf_t_, capacity * sizeof(T), (void *)nullptr);
+    new_buffer->copyBuffer(buffer_module_);
+    buffer_module_ = new_buffer;
+}
+
+
+template <class T>
+void DataBlock<T>::updateChunk(std::shared_ptr<DataChunk<T>> chunk){
+    if(!is_allocated_ || buf_t_ != AE_DYNAMIC_DRAW || block_capacity_ == 0){  // 不是动态的buffer，不能更新
+        return;
+    }
+    buffer_module_->setUpBuffer(chunk->getChunkOffset(), chunk->getBufferSize() * sizeof(T), chunk->getBuffer());
+}
+
+template <class T>
+void DataBlock<T>::deleteBlock(){
+    if(!is_allocated_){
+        return;
+    }
+    buffer_module_->deleteBuffer();
+    num_of_chunks_ = 0;
+    block_capacity_= 0;
+    block_size_ = 0;
+    is_allocated_ = false;
+}
+
+template <class T>
+void DataBlock<T>::bindBlock(){
+    if(!is_allocated_){
+        return;
+    }
+    buffer_module_->bindBuffer();
+}
+
+template <class T>
+void DataBlock<T>::unbindBlock(){
+    if(!is_allocated_){
+        return;
+    }
+    buffer_module_->unbindBuffer();
+}
+
+template <class T>
+void DataBlock<T>::enableVertexAttrib(const uint32_t & loc){
+    if(!is_allocated_){
+        return;
+    }
+    buffer_module_->enableVAO(loc);
+}
+
+template <class T>
+void DataBlock<T>::disableVertxAttrib(const uint32_t & loc){
+    if(!is_allocated_){
+        return;
+    }
+    buffer_module_->disableVAO(loc);
+}
+
+
+template <class T>
+void DataBlock<T>::setLayout(const uint32_t & offset, const uint32_t & span, const uint32_t & stride, const uint32_t & loc){
+    if(!is_allocated_){
+        return;
+    }
+    buffer_module_->setUpLayout(offset * sizeof(T), span, stride, loc);
+}
+
 
 /*
 *  DataModule: batch all the Datainfo for one draw call 

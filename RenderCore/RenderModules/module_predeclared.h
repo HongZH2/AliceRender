@@ -23,6 +23,7 @@ namespace AliceAPI {
 #endif
 
 #define MAX_NUM_TEXTURE 50
+
 /*
 * define Engine API TYPE and USEAGE
 * TODO: TO BE EXTENDED
@@ -33,6 +34,11 @@ namespace AliceAPI {
 // data Type
 enum AE_DATA_TYPE {
     AE_UBYTE = 0,
+    AE_BYTE,
+    AE_INT,
+    AE_UINT,
+    AE_SHORT,
+    AE_USHORT,
     AE_FLOAT,
     AE_FLOAT_VEC3,
     AE_FLOAT_MAT4,
@@ -182,6 +188,7 @@ static std::map<uint32_t , std::string> remain_key ={
     {NORM_MAT, "NormMat"},
     {TEX_LOD, "Lod"},
 };
+
 
 
 }

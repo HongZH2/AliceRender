@@ -17,20 +17,19 @@ DrawCall::~DrawCall() {
 }
 
 void DrawCall::drawElement() {
-    glDrawElements(GL_DEFS[usage_], num_vertices_, GL_UNSIGNED_INT, (void*)(offset_ * sizeof(uint32_t)));
+    glDrawElements(GL_DEFS[usage_], num_vertices_, GL_DEFS[data_t_], (void*)(offset_));
 }
 
-
 void DrawCall::drawArrays() {
-    glDrawArrays(GL_DEFS[usage_], 0, num_vertices_);  // to do offset
+   glDrawArrays(GL_DEFS[usage_], offset_, num_vertices_);  // to do offset
 }
 
 void DrawCall::drawArraysInstance(){
-    glDrawArraysInstancedARB(GL_DEFS[usage_], 0, num_vertices_, num_instances_);
+    glDrawArraysInstancedARB(GL_DEFS[usage_], offset_, num_vertices_, num_instances_);
 }
 
 void DrawCall::drawElementInstance(){
-    glDrawElementsInstancedARB(GL_DEFS[usage_], num_vertices_, GL_UNSIGNED_INT, (void*)(offset_ * sizeof(uint32_t)), num_instances_);
+    glDrawElementsInstancedARB(GL_DEFS[usage_], num_vertices_, GL_DEFS[data_t_], (void*)(offset_), num_instances_);
 }
 
 }
