@@ -16,6 +16,7 @@ struct ShaderInfo{
     std::string frag;
     std::string geom;
     std::string name;
+    uint32_t id;
 };
 
 struct AttachedTexInfo{
