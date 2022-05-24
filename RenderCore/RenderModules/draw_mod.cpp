@@ -40,12 +40,14 @@ void DrawModule::draw(){
 std::shared_ptr<DrawModule> DrawModule::getInstance(const uint32_t & n_vertices, 
                                                     const AE_DRAWCALL_TYPE & draw_t,
                                                     const AE_DRAWCALL_USEAGE & usage,
+                                                    const AE_DATA_TYPE & data_t,
                                                     const uint32_t & n_instances,
                                                     const uint32_t & offset){
     std::shared_ptr<DrawModule> instance_ptr = std::make_shared<DrawCall>();
     instance_ptr->num_vertices_ = n_vertices;
     instance_ptr->draw_t_ = draw_t;
     instance_ptr->usage_ = usage;
+    instance_ptr->data_t_ = data_t;
     instance_ptr->offset_ = offset;
     instance_ptr->num_instances_ = n_instances;
     return instance_ptr;

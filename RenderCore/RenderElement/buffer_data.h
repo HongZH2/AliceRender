@@ -32,9 +32,9 @@ public:
 
     inline void setChunkOffset(const uint32_t & offset){chunk_offset_ = offset;}
     inline void setChunkID(const int32_t & id){chunk_id_ = id;}
+    inline T * & getBuffer(){return buffer_;}
     inline const uint32_t & getChunkOffset(){return chunk_offset_;}
     inline const int32_t & getChunkID(){return chunk_id_;}
-    inline T * & getBuffer(){return buffer_;}
     inline const uint32_t & getBufferSize(){return buf_size_;}
 private:
     T * buffer_ = nullptr;
@@ -184,15 +184,12 @@ void DataBlock<T>::createBlock(const AE_BUFFER_USEAGE &usage,
                                 const AE_BUFFER_TYPE &draw_t, 
                                 const uint32_t &capacity, 
                                 std::shared_ptr<DataChunk<T>> chunk){
-    if(is_allocated_){
+    if(is_allocated_ || capacity  == 0){
         return;
     }
     usage_ = usage;
     data_t_= data_t;
     buf_t_ = draw_t;
-    if(capacity == 0){
-        return;
-    }
     block_capacity_ = capacity;
     if(chunk && chunk->getBufferSize()){
         buffer_module_->createBuffer(usage, data_t, draw_t, capacity * sizeof(T), (void*)chunk->getBuffer());
@@ -310,7 +307,7 @@ void DataBlock<T>::setLayout(const uint32_t & offset, const uint32_t & span, con
     if(!is_allocated_){
         return;
     }
-    buffer_module_->setUpLayout(offset * sizeof(T), span, stride, loc);
+    buffer_module_->setUpLayout(offset * sizeof(T), span, stride * sizeof(T), loc);
 }
 
 
@@ -326,17 +323,14 @@ public:
     void addInfo(std::shared_ptr<DataInfo<float>> infoF);
     void addInfo(std::shared_ptr<DataInfo<uint32_t>> infoUI);
     void setIndiceInfo(std::shared_ptr<DataInfo<uint32_t>> indice_info);
-    void setDrawModule(std::shared_ptr<DrawModule> draw_module);
 
     void bindDataModule(const std::unordered_map<std::string, VariableInfo> & attribute_list);
     void unbindDataModule();
-    void draw();
     
 private:
     std::unordered_map<std::string, std::shared_ptr<DataInfo<float>>> infoF_;
     std::unordered_map<std::string, std::shared_ptr<DataInfo<uint32_t>>> infoUI_;
     std::shared_ptr<DataInfo<uint32_t>> indice_info_;
-    std::shared_ptr<DrawModule> draw_module_;
 };
 
 }

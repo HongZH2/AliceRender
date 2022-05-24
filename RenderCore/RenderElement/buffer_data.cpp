@@ -27,33 +27,37 @@ void DataModule::setIndiceInfo(std::shared_ptr<DataInfo<uint32_t>> indice_info){
     indice_info_ = indice_info;
 }
 
-void DataModule::setDrawModule(std::shared_ptr<DrawModule> draw_module){
-    draw_module_ = draw_module;
-}
-
 void DataModule::bindDataModule(const std::unordered_map<std::string, VariableInfo> & attribute_list){
     for(auto & [key, info]: infoF_){
         if(attribute_list.find(key) != attribute_list.end()){
             uint32_t loc = attribute_list.at(key).loc_;
-            info->getBlockPtr()->bindBlock();
-            uint64_t offset = info->getOffset() + info->getChunkPtr()->getChunkOffset();
-            uint32_t span = info->getSpan();
-            uint32_t stride = info->getStride();
-            info->getBlockPtr()->setLayout(offset, span, stride, loc);
-            info->getBlockPtr()->enableVertexAttrib(loc);
-            info->setLocation(loc);
+            auto block = info->getBlockPtr();
+            auto chunk = info->getChunkPtr();
+            if(block && chunk){
+                block->bindBlock();
+                uint64_t offset = info->getOffset() + chunk->getChunkOffset();
+                uint32_t span = info->getSpan();
+                uint32_t stride = info->getStride();
+                block->setLayout(offset, span, stride, loc);
+                block->enableVertexAttrib(loc);
+                info->setLocation(loc);
+            }
         }
     }
     for(auto & [key, info]: infoUI_){
         if(attribute_list.find(key) != attribute_list.end()){
             uint32_t loc = attribute_list.at(key).loc_;
-            info->getBlockPtr()->bindBlock();
-            uint32_t offset = info->getOffset() + info->getChunkPtr()->getChunkOffset();
-            uint32_t span = info->getSpan();
-            uint32_t stride = info->getStride();
-            info->getBlockPtr()->setLayout(offset, span, stride, loc);
-            info->getBlockPtr()->enableVertexAttrib(loc);
-            info->setLocation(loc);
+            auto block = info->getBlockPtr();
+            auto chunk = info->getChunkPtr();
+            if(block && chunk){
+                block->bindBlock();
+                uint32_t offset = info->getOffset() + chunk->getChunkOffset();
+                uint32_t span = info->getSpan();
+                uint32_t stride = info->getStride();
+                block->setLayout(offset, span, stride, loc);
+                block->enableVertexAttrib(loc);
+                info->setLocation(loc);
+            }
         }
     }
     if(indice_info_){
@@ -75,14 +79,6 @@ void DataModule::unbindDataModule(){
     if(indice_info_){
         indice_info_->getBlockPtr()->unbindBlock();
     }
-}
-
-void DataModule::draw(){
-    if(!draw_module_){
-        return;
-    }
-    auto draw_t =  draw_module_->getDrawType();
-    draw_module_->draw();
 }
 
 }

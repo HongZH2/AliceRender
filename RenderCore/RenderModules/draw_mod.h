@@ -16,6 +16,7 @@ public:
     static std::shared_ptr<DrawModule> getInstance(const uint32_t & n_vertices, 
                                                     const AE_DRAWCALL_TYPE & draw_t = AE_DRAW_ELEMENT,
                                                     const AE_DRAWCALL_USEAGE & usage = AE_TRIANGLES,
+                                                    const AE_DATA_TYPE & data_t = AE_UINT,
                                                     const uint32_t & n_instances = 0,
                                                     const uint32_t & offset = 0);
     virtual ~DrawModule();

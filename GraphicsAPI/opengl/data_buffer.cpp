@@ -67,9 +67,7 @@ void DataBuffer::unbindBuffer() {
 }
 
 void DataBuffer::setUpLayout(const uint64_t & offset, const uint32_t & span, const uint32_t & stride, const uint32_t & loc) {
-    bindBuffer();
     glVertexAttribPointer(loc, span, GL_DEFS[data_t_], GL_FALSE, stride, (void*)(offset));
-    unbindBuffer();
 }
 
 
