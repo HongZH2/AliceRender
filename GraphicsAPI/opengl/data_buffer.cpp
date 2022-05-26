@@ -71,8 +71,6 @@ void DataBuffer::setUpLayout(const uint64_t & offset, const uint32_t & span, con
 }
 
 
-
-
 void DataBuffer::enableVAO(const uint32_t & loc) {
     glEnableVertexAttribArray(loc);
 }

@@ -7,6 +7,10 @@
 namespace AliceAPI{
 
 
+BlockBase::BlockBase(){
+    
+}
+
 DataModule::DataModule(){
 
 }
@@ -61,7 +65,9 @@ void DataModule::bindDataModule(const std::unordered_map<std::string, VariableIn
         }
     }
     if(indice_info_){
-        indice_info_->getBlockPtr()->bindBlock();
+        auto block = indice_info_->getBlockPtr();
+        if(block)
+            block->bindBlock();
     }
 }
 

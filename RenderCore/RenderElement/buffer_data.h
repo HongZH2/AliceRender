@@ -126,11 +126,27 @@ std::shared_ptr<DataBlock<T>> DataInfo<T>::getBlockPtr(){
     return block_ptr_.lock();
 }
 
+
+/* 
+*  The base class for DataBlock
+*/
+class BlockBase{
+public:
+    BlockBase();
+    ~BlockBase() = default;
+
+protected:    
+    AE_BUFFER_USEAGE usage_ = AE_ARRAY_BUFFER;   // useage
+    AE_DATA_TYPE data_t_ = AE_FLOAT; // data type
+    AE_BUFFER_TYPE buf_t_ = AE_STATIC_DRAW; // buffer type
+};
+
+
 /*
 * Data Block a abstract class for buffer opertion
 */
 template <class T>
-class DataBlock {
+class DataBlock : public BlockBase{
 public:
     explicit DataBlock(const uint32_t & id);
     virtual ~DataBlock() = default;
@@ -165,9 +181,6 @@ protected:
     uint32_t block_size_ = 0;
     uint32_t num_of_chunks_ = 0; 
     bool is_allocated_ = false;
-    AE_BUFFER_USEAGE usage_ = AE_ARRAY_BUFFER;   // useage
-    AE_DATA_TYPE data_t_ = AE_FLOAT; // data type
-    AE_BUFFER_TYPE buf_t_ = AE_STATIC_DRAW; // buffer type
     
     std::vector<std::shared_ptr<DataChunk<T>>> chunks_;
     std::shared_ptr<BufferModule> buffer_module_;  // buffer module to do actual operations

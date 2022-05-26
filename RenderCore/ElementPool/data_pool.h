@@ -7,11 +7,23 @@
 
 #include "RenderModules/buffer_mod.h"
 #include "RenderElement/buffer_data.h"
+#include "entt/entt.hpp"
 
 namespace AliceAPI {
 
-// data pool for data block
+using BlockTypeID = uint64_t;
 
+// BlockType Hash mapping helper function 
+template <typename Type, typename Component>
+static constexpr BlockTypeID getHashType(){
+    constexpr uint32_t dtype = entt::type_hash<Type>();
+    constexpr uint32_t ctype = entt::type_hash<Component>();
+    return (uint64_t) dtype << 32 | (uint64_t) ctype;
+}
+
+/*
+* Data Pool for managing the GPU Buffer
+*/
 class DataPool {
 public:
     static DataPool & getInstance();
@@ -19,21 +31,29 @@ public:
     DataPool(const DataPool &) = delete;
     DataPool& operator=(const DataPool &) = delete;
 
-    // TODO: data pool has two functions: one for data block
-    static std::shared_ptr<DataBlock<float>> getBlockF();  // apply for a buffer block 申请一块float block
-    static std::shared_ptr<DataBlock<uint32_t>> getBlockI(); // apply for a buffer block 申请一块int block
-    static std::shared_ptr<DataBlock<float>> queryBlockF(const uint32_t & id);
-    static std::shared_ptr<DataBlock<uint32_t>> queryBlockI(const uint32_t & id);
 
-    // TODO: data pool has two functions: another for data modules
-    
+    template<typename T, typename Component = void>
+    static std::shared_ptr<DataBlock<T>> getBlock(); 
+
 private:
-    uint32_t num_of_blockF_ = 0;
-    uint32_t num_of_blockI_ = 0;
-    std::vector<std::shared_ptr<DataBlock<float>>> blocksF_;
-    std::vector<std::shared_ptr<DataBlock<uint32_t>>> blocksI_;
+    uint32_t num_of_block_ = 0;
+    std::unordered_map<BlockTypeID, std::shared_ptr<BlockBase>> blocks_;
     DataPool();
 };
+
+template<typename T, typename Component>
+std::shared_ptr<DataBlock<T>> DataPool::getBlock(){ // apply for a buffer block 申请一块float block
+    DataPool & pool = DataPool::getInstance();
+    constexpr BlockTypeID id = getHashType<T, Component>();
+    if(pool.blocks_.find(id) != pool.blocks_.end()){
+        return std::static_pointer_cast<DataBlock<T>>(pool.blocks_[id]);
+    }
+    std::shared_ptr<DataBlock<T>> block = std::make_shared<DataBlock<T>>(pool.num_of_block_);
+    pool.blocks_[id] = block;
+    pool.num_of_block_ += 1;
+    return block;
+}  
+
 
 }
 
