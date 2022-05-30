@@ -53,6 +53,10 @@ std::shared_ptr<DrawModule> DrawModule::getInstance(const uint32_t & n_vertices,
     return instance_ptr;
 }
 
+void DrawModule::setDrawCallType(const AE_DRAWCALL_TYPE & draw_t){
+    draw_t_ = draw_t;
+}
+
 void DrawModule::setDrawUsage(const AE_DRAWCALL_USEAGE & usage){
     usage_ = usage;
 }
@@ -63,10 +67,6 @@ void DrawModule::setNumOfVertices(const uint32_t & n_vertices){
 
 void DrawModule::setNumOfInstances(const uint32_t & n_instances){
     num_instances_ = n_instances;
-}
-
-void DrawModule::setOffset(const uint32_t &offset){
-    offset_ = offset;
 }
 
 const AE_DRAWCALL_TYPE & DrawModule::getDrawType(){

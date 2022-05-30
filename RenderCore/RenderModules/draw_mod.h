@@ -13,7 +13,7 @@ namespace AliceAPI {
 
 class DrawModule {
 public:
-    static std::shared_ptr<DrawModule> getInstance(const uint32_t & n_vertices, 
+    static std::shared_ptr<DrawModule> getInstance(const uint32_t & n_vertices = 0, 
                                                     const AE_DRAWCALL_TYPE & draw_t = AE_DRAW_ELEMENT,
                                                     const AE_DRAWCALL_USEAGE & usage = AE_TRIANGLES,
                                                     const AE_DATA_TYPE & data_t = AE_UINT,
@@ -22,10 +22,15 @@ public:
     virtual ~DrawModule();
     virtual void draw();
 
+    void setDrawCallType(const AE_DRAWCALL_TYPE & draw_t);
     void setDrawUsage(const AE_DRAWCALL_USEAGE & usage); // you can change the draw type in the running time
     void setNumOfVertices(const uint32_t & n_vertices);
     void setNumOfInstances(const uint32_t & n_instances);
-    void setOffset(const uint32_t & offset);
+
+    template<typename T>
+    void setOffset(const uint32_t & offset){
+        offset_ = offset * sizeof(T);
+    }
 
     const AE_DRAWCALL_TYPE & getDrawType();
 protected:

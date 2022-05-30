@@ -11,11 +11,11 @@
 namespace AliceAPI {
 
 
-struct ShaderInfo{
+struct ShaderInfo{    
+    std::string name;
     std::string vert;
     std::string frag;
     std::string geom;
-    std::string name;
     uint32_t id;
 };
 

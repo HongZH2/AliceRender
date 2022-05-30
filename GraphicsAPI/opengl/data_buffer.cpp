@@ -42,12 +42,26 @@ void DataBuffer::setUpBuffer(const uint32_t & offset, const uint32_t & size, voi
 }
 
 
-void DataBuffer::copyBuffer(std::shared_ptr<BufferModule> buffer){
+void DataBuffer::copyBuffer(const uint32_t & s_id, const uint32_t & offset){
     if(is_allocated_){
         // get a new buffer with the new capacity then copy data to it.
-        glBindBuffer(GL_COPY_READ_BUFFER, buffer->getBufferID());
-        glBindBuffer(GL_COPY_WRITE_BUFFER, buf_id_);
-        glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, buffer->getBufferSize());
+        // if(GLEW_NV_copy_buffer){
+        //     glBindBuffer(GL_COPY_READ_BUFFER, buffer->getBufferID());
+        //     glBindBuffer(GL_COPY_WRITE_BUFFER, buf_id_);
+        //     glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, buffer->getBufferSize());
+        // }  // opengl 2.1 can't not use it
+
+        // get the data from source
+        int32_t size;
+        glBindBuffer(GL_DEFS[usage_], s_id);
+        glGetBufferParameteriv(GL_DEFS[usage_], GL_BUFFER_SIZE, &size);
+        char * s_buffer = (char *) malloc(size);
+        glGetBufferSubData(GL_DEFS[usage_], 0, size, s_buffer);
+        // copy the data to another buffer
+        glBindBuffer(GL_DEFS[usage_], buf_id_);
+        glBufferSubData(GL_DEFS[usage_], 0, size, (void *)s_buffer);
+        glBindBuffer(GL_DEFS[usage_], 0);
+        free(s_buffer);
     }
 }
 

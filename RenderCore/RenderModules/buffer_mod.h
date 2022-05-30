@@ -21,7 +21,7 @@ public:
                                 void * buffer) = 0;                                           
     virtual void setUpBuffer(const uint32_t & offset, const uint32_t & size, void* buffer) = 0;
     
-    virtual void copyBuffer(std::shared_ptr<BufferModule> buffer) = 0;
+    virtual void copyBuffer(const uint32_t & s_id, const uint32_t & offset = 0) = 0;
     virtual void deleteBuffer() = 0;
     
     virtual void bindBuffer() = 0;
@@ -31,6 +31,7 @@ public:
     virtual void disableVAO(const uint32_t & loc) = 0; 
     virtual void setUpLayout(const uint64_t & offset, const uint32_t & span, const uint32_t & stride, const uint32_t & loc) = 0; // set VAO
 
+    inline const AE_BUFFER_USEAGE & getBufferUsage(){return usage_;}
     inline const uint32_t & getBufferID(){return buf_id_;}
     inline const uint32_t & getBufferSize(){return buf_size_;}
 protected:

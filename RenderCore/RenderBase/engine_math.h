@@ -9,6 +9,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/quaternion.hpp"
 #include "glm/gtx/matrix_decompose.hpp"
+#include "glm/gtx/quaternion.hpp"
 #include <math.h>
 
 namespace AliceAPI {
@@ -51,6 +52,7 @@ inline GVec3 GQuat2Euler(GQuat const& rot_quat){
     return glm::eulerAngles(rot_quat);
 }
 
+
 inline bool GDecomposeMat(GMat4 & mat, GVec3 & scale, GQuat & quat, GVec3 & translation, GVec3 & skew, GVec4 & perspective){
     return glm::decompose(mat, scale, quat, translation, skew, perspective);
 }
@@ -73,6 +75,11 @@ inline T GCross (T const& vec1, T const& vec2){
 template <typename T>
 inline T GRadians (T const& val){
     return glm::radians(val);
+}
+
+template <typename T>
+inline T GDegrees (T const& val){
+    return glm::degrees(val);
 }
 
 //TODO

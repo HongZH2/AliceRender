@@ -21,7 +21,7 @@ public:
                                  void * buffer) override;
     virtual void setUpBuffer(const uint32_t & offset, const uint32_t & size, void* buffer) override;
     
-    virtual void copyBuffer(std::shared_ptr<BufferModule> buffer) override;
+    virtual void copyBuffer(const uint32_t & s_id, const uint32_t & offset = 0) override;
     virtual void deleteBuffer() override;
 
     virtual void bindBuffer() override;
