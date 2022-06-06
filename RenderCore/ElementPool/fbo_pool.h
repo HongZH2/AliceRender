@@ -20,9 +20,9 @@ public:
     FBOPool(const FBOPool&)=delete;
     FBOPool& operator=(const FBOPool&)=delete;
 
-    std::shared_ptr<FBOModule> getFBO(const std::string & name);
-    std::shared_ptr<FBOModule> createFBO(FBOInfo & fbo_info);
-    void deleteFBO(const std::string & name);
+    static std::shared_ptr<FBOModule> getFBO(const std::string & name);
+    static std::shared_ptr<FBOModule> createFBO(FBOInfo & fbo_info);
+    static void deleteFBO(const std::string & name);
 protected:
     std::unordered_map<std::string, std::shared_ptr<FBOModule>> fbo_pool_;
 private:

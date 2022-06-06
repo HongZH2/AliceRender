@@ -52,12 +52,11 @@ void FrameBuffer::attachTexture(std::shared_ptr<TextureModule> tex) {
             bindFBO();
             tex->bindTexture();
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEFS[tex->attach_type_], GL_DEFS[tex->usage_], tex->tex_id_, 0);
-            #ifdef DEBUG
-                if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
-                    RenderLog & render_log = RenderLog::getInstance();
-                    render_log.submitLog("ERROR::FRAMEBUFFER:: %s is not complete!", name_.c_str());
-                }
-            #endif // DEBUG
+
+            if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
+                printf("%s\n", "FBO ERROR!!!");
+            }
+
             tex->unbindTexture();
             unbindFBO();
             break;

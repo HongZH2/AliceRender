@@ -55,6 +55,7 @@ enum TextureType {
     DepthTexture = 1 << 10,
     StencilTexture = 1 << 11,
     ColorDepthTexture = ColorTexture | DepthTexture,
+    DepthStencilTexture = DepthTexture | StencilTexture, 
     AllTexture = ColorTexture | DepthTexture | StencilTexture
 }; 
 

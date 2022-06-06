@@ -81,7 +81,7 @@ public:
 protected:
   int32_t prev_setting_ = 0;
   GVec4i prev_view_;
-  GVec4 prec_color_;
+  GVec4 prev_color_;
 };
 
 

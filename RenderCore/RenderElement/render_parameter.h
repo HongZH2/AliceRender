@@ -7,38 +7,34 @@
 
 #include "RenderBase/engine_math.h"
 #include "RenderBase/render_type.h"
-#include <string>
-#include <unordered_map>
+#include <variant>
 
 namespace AliceAPI {
 
+using ParamVariant = std::variant<float, double, uint32_t, int32_t, GVec3, GVec4, GVec2, GMat2, GMat3, GMat4, std::string>;
 
 class RenderParam {
 public:
     RenderParam();
     ~RenderParam();
-
-    void addParam(const std::string & key, const int32_t & val);
-    void addParam(const std::string & key, const float & val);
-    void addParam(const std::string & key, const GVec3 & vals);
-    void addParam(const std::string & key, const GMat4 & vals);
     void addParam(const TextureType & types, const std::string & name); // the name of color, normal, Bump, Roughness, Metalic
-
-    const std::unordered_map<TextureType, std::string> & getTextureMap();
-    const std::unordered_map<std::string, int32_t> & getIntMap();
-    const std::unordered_map<std::string, float> & getFloatMap();
-    const std::unordered_map<std::string, GVec3> & getVec3Map();
-    const std::unordered_map<std::string, GMat4> & getMat4Map();
+    
+    template<typename T>
+    void addParam(const std::string & key, const T & vals){
+        params[key] = vals;
+    }
+    
+    template<typename T>
+    T * getParamValue(const std::string & name){
+        if(params.find(name)!= params.end()){
+            return & std::get<T>(params.at(name));
+        }
+        return nullptr;
+    }
 
 protected:
     std::unordered_map<TextureType, std::string> texture_params_;
-    std::unordered_map<std::string, int32_t> int_params_;
-    std::unordered_map<std::string, float> float_params_;
-    std::unordered_map<std::string, GVec2> vec2_params_;
-    std::unordered_map<std::string, GVec3> vec3_params_;
-    std::unordered_map<std::string, GVec4> vec4_params_;
-    std::unordered_map<std::string, GMat3> mat3_params_;
-    std::unordered_map<std::string, GMat4> mat4_params_;
+    std::unordered_map<std::string, ParamVariant> params;
 };
 
 }

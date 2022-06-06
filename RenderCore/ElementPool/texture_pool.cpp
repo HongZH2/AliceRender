@@ -21,57 +21,67 @@ TexturePool & TexturePool::getInstance(){
 }
 
 std::shared_ptr<TextureModule> TexturePool::getTextureModule(const std::string & name){
-    if(texture_.find(name) != texture_.end()){
-        return texture_.at(name);
+    TexturePool & instance = TexturePool::getInstance();
+    if(instance.texture_.find(name) != instance.texture_.end()){
+        return instance.texture_.at(name);
     }
     return nullptr;   // if there is no such texture, return nullptr
 }
 
 // load single external texture 
-void TexturePool::loadTexture(std::shared_ptr<TextureInfo> & tex_info){
+std::shared_ptr<TextureModule> TexturePool::loadTexture(std::shared_ptr<TextureModule> & tex_mod){
+    TexturePool & instance = TexturePool::getInstance();
     // check if there is a texture with the same name
-    if(texture_.find(tex_info->name_) != texture_.end()){
-        deleteTexure(tex_info->name_);
+    if(instance.texture_.find(tex_mod->name_) != instance.texture_.end()){
+        deleteTexure(tex_mod->name_);
     }
-
     // create a texture block with one texture module
-    std::shared_ptr<TextureBlock> block = TextureBlock::getInstancePtr(tex_info->type_);
-    std::shared_ptr<TextureModule> module = std::static_pointer_cast<TextureModule>(tex_info);
-    block->addTextureModule(module);
-    texture_blocks_.emplace_back(block);
-    num_of_blocks_ += 1;
+    std::shared_ptr<TextureBlock> block = std::make_shared<TextureBlock>(tex_mod->type_);
+    block->addTextureModule(tex_mod);
+    block->setUpTexture();
+    tex_mod->block_ = block;
 
-    texture_[tex_info->name_] = module;
-    external_tex_[tex_info->name_] = module;
+    instance.texture_blocks_.emplace_back(block);
+    instance.num_of_blocks_ += 1;
+    instance.texture_[tex_mod->name_] = tex_mod;
+    instance.external_tex_[tex_mod->name_] = tex_mod;
+    return tex_mod;
 }
 
-void TexturePool::loadInternalTexture(std::shared_ptr<TextureInfo> & tex_info){
-    if(texture_.find(tex_info->name_) != texture_.end()){
-        deleteTexure(tex_info->name_);
+std::shared_ptr<TextureModule> TexturePool::loadInternalTexture(std::shared_ptr<TextureModule> & tex_mod){
+    TexturePool & instance = TexturePool::getInstance();
+    if(instance.texture_.find(tex_mod->name_) != instance.texture_.end()){
+        deleteTexure(tex_mod->name_);
     }
 
     // create a texture block with one texture module
-    std::shared_ptr<TextureBlock> block = TextureBlock::getInstancePtr(tex_info->type_);
-    std::shared_ptr<TextureModule> module = std::static_pointer_cast<TextureModule>(tex_info);
-    block->addTextureModule(module);
-    texture_blocks_.emplace_back(block);
-    num_of_blocks_ += 1;
+    std::shared_ptr<TextureBlock> block = std::make_shared<TextureBlock>(tex_mod->type_);
 
-    texture_[tex_info->name_] = module;
-    internal_tex_[tex_info->name_] = module;
+    block->addTextureModule(tex_mod);
+    block->setUpTexture();
+    tex_mod->block_ = block;
+    
+    instance.texture_blocks_.emplace_back(block);
+    instance.num_of_blocks_ += 1;
+    instance.texture_[tex_mod->name_] = tex_mod;
+    instance.internal_tex_[tex_mod->name_] = tex_mod;
+    return tex_mod;
 }
 
 void TexturePool::deleteTexure(const std::string & name){
-    if(texture_[name])
-        texture_[name]->deleteTexture();
+    TexturePool & instance = TexturePool::getInstance();
+    if(instance.texture_[name])
+        instance.texture_[name]->deleteTexture();
 }
 
 const std::unordered_map<std::string, std::shared_ptr<TextureModule>> & TexturePool::getInternalTextures(){
-    return internal_tex_;
+    TexturePool & instance = TexturePool::getInstance();
+    return instance.internal_tex_;
 }
 
 const std::unordered_map<std::string, std::shared_ptr<TextureModule>> & TexturePool::getExternalTextures(){
-    return external_tex_;
+    TexturePool & instance = TexturePool::getInstance();
+    return instance.external_tex_;
 }
 
 }

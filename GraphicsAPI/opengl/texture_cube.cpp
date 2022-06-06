@@ -15,25 +15,22 @@ TextureCube::~TextureCube(){
 
 }
 
-void TextureCube::setUpTexture(){
-    createTexture();
-    for(uint32_t id = 0; id < num_tex_; id++){
-        bindTexture(id);
-        auto tex_info = textures_[id];
-        while(tex_info){
-            glTexImage2D(GL_DEFS[textures_[id]->usage_], 0, GL_DEFS[textures_[id]->interal_type_], textures_[id]->width_, textures_[id]->height_, 0, GL_DEFS[textures_[id]->interal_type_], GL_DEFS[textures_[id]->data_t_], textures_[id]->buffer_);
-            tex_info = std::static_pointer_cast<TextureModule>(tex_info->next_);
-        }
-        setTextureParams(id);
-        setTextureFilter(id);
-        unbindTexture(id);
+void TextureCube::setUpTexture(std::shared_ptr<TextureModule> tex_mod){
+    glBindTexture(GL_DEFS[tex_mod->usage_], tex_mod->tex_id_);
+    std::shared_ptr<TextureModule> tex_info = tex_mod;
+    while(tex_info){
+        glTexImage2D(GL_DEFS[tex_info->usage_], 0, GL_DEFS[tex_info->interal_type_], tex_info->width_, tex_info->height_, 0, GL_DEFS[tex_info->interal_type_], GL_DEFS[tex_info->data_t_], tex_info->buffer_);
+        tex_info = std::static_pointer_cast<TextureModule>(tex_info->next_);
     }
+    setTextureParams(tex_mod);
+    setTextureFilter(tex_mod);
+    unbindTexture(tex_mod);
 }
 
 
-void TextureCube::setTextureParams(const uint32_t & mod_id) {
-    AE_TEXTURE_USEAGE usage = textures_[mod_id]->usage_;
-    AE_TEXTURE_PARAM param = textures_[mod_id]->param_;
+void TextureCube::setTextureParams(std::shared_ptr<TextureModule> tex_mod) {
+    AE_TEXTURE_USEAGE usage = tex_mod->usage_;
+    AE_TEXTURE_PARAM param = tex_mod->param_;
     glGenerateMipmap(GL_DEFS[usage]);
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
     glTexParameteri(GL_DEFS[usage], GL_TEXTURE_WRAP_S, GL_DEFS[param]);

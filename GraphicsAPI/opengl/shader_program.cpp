@@ -96,7 +96,7 @@ void ShaderProgram::parseUniforms(){
             default:{ //TODO
                 struct VariableInfo info;
                 info.loc_ = getUniformLocation(name);
-                info.type_ = type;
+                info.type_ = (AE_DATA_TYPE) GL_CAST[type];
                 uniform_info_[name] = std::move(info);
                 break;
             }
@@ -116,7 +116,7 @@ void ShaderProgram::parseAttribs(){
         glGetActiveAttrib(program_id_, (GLuint)i, buf_size, &length, &size, &type, name);  // store the loc of attributes
         struct VariableInfo info;
         info.loc_ = i;
-        info.type_ = type;
+        info.type_ = (AE_DATA_TYPE) GL_CAST[type];
         attrib_info_[name] = info;
     }
 }
@@ -190,31 +190,38 @@ void ShaderProgram::setUniform1f(const std::string &key, const float &val) {
     }
 }
 
-void ShaderProgram::setUniform1fv(const std::string &key, std::vector<float> vals) {
+void ShaderProgram::setUniform1fv(const std::string &key, std::vector<float> & vals) {
     GLint loc = getUniformLocation(key);
     if((int) loc != -1){
         glUniform1fv(loc, vals.size(), &vals[0]);
     }
 }
 
-void ShaderProgram::setUniform2f(const std::string &key, float val1, float val2) {
-    GLint loc = getUniformLocation(key);
-    if((int) loc != -1){
-        glUniform2f(loc, val1, val2);
-    }
-}
+// void ShaderProgram::setUniform2f(const std::string &key, float val1, float val2) {
+//     GLint loc = getUniformLocation(key);
+//     if((int) loc != -1){
+//         glUniform2f(loc, val1, val2);
+//     }
+// }
 
-void ShaderProgram::setUniform3f(const std::string &key, float val1, float val2, float val3) {
-    GLint loc = getUniformLocation(key);
-    if((int) loc != -1){
-        glUniform3f(loc, val1, val2, val3);
-    }
-}
+// void ShaderProgram::setUniform3f(const std::string &key, float val1, float val2, float val3) {
+//     GLint loc = getUniformLocation(key);
+//     if((int) loc != -1){
+//         glUniform3f(loc, val1, val2, val3);
+//     }
+// }
 
-void ShaderProgram::setUniform4f(const std::string &key, float val1, float val2, float val3, float val4) {
+// void ShaderProgram::setUniform4f(const std::string &key, float val1, float val2, float val3, float val4) {
+//     GLint loc = getUniformLocation(key);
+//     if((int) loc != -1){
+//         glUniform4f(loc, val1, val2, val3, val4);
+//     }
+// }
+
+void ShaderProgram::setUniformMat3f(const std::string &key, const GMat3 &mat3_val) {
     GLint loc = getUniformLocation(key);
     if((int) loc != -1){
-        glUniform4f(loc, val1, val2, val3, val4);
+        glUniformMatrix3fv(loc, 1, GL_FALSE, & mat3_val[0][0]);
     }
 }
 
@@ -222,6 +229,13 @@ void ShaderProgram::setUniformMat4f(const std::string &key, const GMat4 &mat4_va
     GLint loc = getUniformLocation(key);
     if((int) loc != -1){
         glUniformMatrix4fv(loc, 1, GL_FALSE, & mat4_val[0][0]);
+    }
+}
+
+void ShaderProgram::setUniformVec2(const std::string &key, const GVec2 &vec) {
+    GLint loc = getUniformLocation(key);
+    if((int) loc != -1){
+        glUniform2fv(loc, 1, &vec[0]);
     }
 }
 

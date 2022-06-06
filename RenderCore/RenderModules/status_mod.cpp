@@ -106,8 +106,14 @@ void StatusSaver::saveAndApply(){
 }
 
 void StatusSaver::resetStatus(){
-    status_setting_ = prev_setting_;
-    applyStatus();     
+    // color_ = prev_color_;
+    // view_ = prev_view_;
+    // if(status_setting_ & set_colorbuffer)
+    //     status_ops_->setBufferColor(color_);
+    // if(status_setting_ & set_viewport)
+    //     status_ops_->viewport(view_);
+    status_setting_ = prev_setting_;     
+    applyStatus(); 
 }
 
 void StatusSaver::setViewPort(const GVec4i & rect){
@@ -119,7 +125,7 @@ void StatusSaver::setViewPort(const GVec4i & rect){
 }
 
 void StatusSaver::setBufferColor(const GVec4 & color){
-    prec_color_ = color_;
+    prev_color_ = color_;
     color_ = color;
     status_setting_ |= set_colorbuffer;
 }

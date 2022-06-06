@@ -21,14 +21,16 @@ FBOPool & FBOPool::getInstance() {
 }
 
 std::shared_ptr<FBOModule>FBOPool::getFBO(const std::string & name){
-    if(fbo_pool_.find(name) != fbo_pool_.end()){
-        return fbo_pool_[name];
+    FBOPool & instance = FBOPool::getInstance();
+    if(instance.fbo_pool_.find(name) != instance.fbo_pool_.end()){
+        return instance.fbo_pool_[name];
     }
     return nullptr;
 }
 
 std::shared_ptr<FBOModule> FBOPool::createFBO(FBOInfo & fbo_info){
-    if(fbo_pool_.find(fbo_info.name_) != fbo_pool_.end()){
+    FBOPool & instance = FBOPool::getInstance();
+    if(instance.fbo_pool_.find(fbo_info.name_) != instance.fbo_pool_.end()){
         deleteFBO(fbo_info.name_);
     }
 
@@ -37,12 +39,13 @@ std::shared_ptr<FBOModule> FBOPool::createFBO(FBOInfo & fbo_info){
     fbo_info.size_.height_ *= FBO_OFFSET;
     
     std::shared_ptr<FBOModule> fbo =  FBOModule::getInstancePtr(fbo_info);
-    fbo_pool_[fbo_info.name_] = fbo;
-    return fbo_pool_[fbo_info.name_];
+    instance.fbo_pool_[fbo_info.name_] = fbo;
+    return instance.fbo_pool_[fbo_info.name_];
 }
 
 void FBOPool::deleteFBO(const std::string & name) {
-    fbo_pool_[name]->deleteFBO();
+    FBOPool & instance = FBOPool::getInstance();
+    instance.fbo_pool_[name]->deleteFBO();
 }
 
 

@@ -15,8 +15,8 @@ class TextureCube: public Texture2D{
 public:
     TextureCube();
     ~TextureCube();
-    virtual void setUpTexture() override;
-    virtual void setTextureParams(const uint32_t & mod_id) override;    // set texture parameters
+    virtual void setUpTexture(std::shared_ptr<TextureModule> tex_mod) override;
+    virtual void setTextureParams(std::shared_ptr<TextureModule> tex_mod) override;    // set texture parameters
 };
 
 }

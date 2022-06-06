@@ -11,19 +11,19 @@
 namespace AliceAPI {
 
 
-class Texture2D: public TextureBlock{
+class Texture2D: public TextureAllocator{
 public:
     Texture2D();
     virtual ~Texture2D();
 
-    virtual void createTexture() override; 
-    virtual void setUpTexture() override;
-    virtual void deleteTexture(const uint32_t & mod_id) override;
-    virtual void bindTexture(const uint32_t & mod_id) override;
-    virtual void unbindTexture(const uint32_t & mod_id) override;
+    virtual void createTextures(uint32_t * & tex_ids, const uint32_t & num_tex) override;
+    virtual void setUpTexture(std::shared_ptr<TextureModule> tex_mod) override;
+    virtual void deleteTexture(uint32_t * tex_ids, const uint32_t & num_tex) override;
+    virtual void bindTexture(std::shared_ptr<TextureModule> tex_mod) override;
+    virtual void unbindTexture(std::shared_ptr<TextureModule> tex_mod) override;
 
-    virtual void setTextureParams(const uint32_t & mod_id);    // set texture parameters
-    virtual void setTextureFilter(const uint32_t & mod_id);
+    virtual void setTextureParams(std::shared_ptr<TextureModule> tex_mod);    // set texture parameters
+    virtual void setTextureFilter(std::shared_ptr<TextureModule> tex_mod);
   
 };
 

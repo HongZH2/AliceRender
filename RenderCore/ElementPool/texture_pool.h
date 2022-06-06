@@ -20,15 +20,15 @@ public:
     TexturePool& operator=(const TexturePool&)=delete;
     ~TexturePool();
 
-    std::shared_ptr<TextureModule> getTextureModule(const std::string & name); // get Texture module
+    static std::shared_ptr<TextureModule> getTextureModule(const std::string & name); // get Texture module
 
-    void loadTexture(std::shared_ptr<TextureInfo> & tex_info); // load external texture for single texture
-    void loadInternalTexture(std::shared_ptr<TextureInfo> & tex_info); // load single internal texture
-    void loadBatchedTexture(std::vector<std::shared_ptr<TextureInfo>> & textures);  // load batched textures
-    void deleteTexure(const std::string & name);  // TODO: !!! 
+    static std::shared_ptr<TextureModule> loadTexture(std::shared_ptr<TextureModule> & tex_mod); // load external texture for single texture
+    static std::shared_ptr<TextureModule> loadInternalTexture(std::shared_ptr<TextureModule> & tex_mod); // load single internal texture
+    static void loadBatchedTexture(std::vector<std::shared_ptr<TextureModule>> & textures);  // load batched textures
+    static void deleteTexure(const std::string & name);  // TODO: !!! 
 
-    const std::unordered_map<std::string, std::shared_ptr<TextureModule>> & getInternalTextures();
-    const std::unordered_map<std::string, std::shared_ptr<TextureModule>> & getExternalTextures();
+    static const std::unordered_map<std::string, std::shared_ptr<TextureModule>> & getInternalTextures();
+    static const std::unordered_map<std::string, std::shared_ptr<TextureModule>> & getExternalTextures();
 private:
     TexturePool();
 

@@ -7,6 +7,7 @@
 
 #include <string>
 #include <map>
+#include <unordered_map>
 #include "GL/glew.h"
 
 namespace AliceAPI {
@@ -22,10 +23,12 @@ namespace AliceAPI {
     mapFunc (4, GL_SHORT)               \
     mapFunc (5, GL_UNSIGNED_SHORT)      \
     mapFunc (6, GL_FLOAT)               \
-    mapFunc (7, GL_FLOAT_VEC3)          \
-    mapFunc (8, GL_FLOAT_MAT4)          \
-    mapFunc (9, GL_SAMPLER_2D)          \
-    mapFunc (10, GL_SAMPLER_CUBE)         \
+    mapFunc (7, GL_FLOAT_VEC2)               \
+    mapFunc (8, GL_FLOAT_VEC3)          \
+    mapFunc (9, GL_FLOAT_MAT3)          \
+    mapFunc (10, GL_FLOAT_MAT4)          \
+    mapFunc (11, GL_SAMPLER_2D)          \
+    mapFunc (12, GL_SAMPLER_CUBE)         \
     mapFunc (50, GL_ELEMENT_ARRAY_BUFFER)  \
     mapFunc (51, GL_ARRAY_BUFFER)          \
     mapFunc (100, GL_STATIC_DRAW)          \
@@ -87,17 +90,39 @@ namespace AliceAPI {
 
 
 #define AE_DEFINITION_MAP(i, t) {i, t},
-static std::map<int32_t, uint32_t> GL_DEFS{ AE_DEFINITION(AE_DEFINITION_MAP)};
+static std::unordered_map<int32_t, uint32_t> GL_DEFS{ AE_DEFINITION(AE_DEFINITION_MAP)};
 #undef AE_DEFINITION_MAP
+
+
+#define AE_CAST(mapFunc2)			\
+	mapFunc2 (GL_UNSIGNED_BYTE, 0)		\
+    mapFunc2 (GL_BYTE, 1)                \
+    mapFunc2 (GL_INT, 2)                 \
+    mapFunc2 (GL_UNSIGNED_INT, 3)        \
+    mapFunc2 (GL_SHORT, 4)               \
+    mapFunc2 (GL_UNSIGNED_SHORT, 5)      \
+    mapFunc2 (GL_FLOAT, 6)               \
+    mapFunc2 (GL_FLOAT_VEC2, 7)          \
+    mapFunc2 (GL_FLOAT_VEC3, 8)          \
+    mapFunc2 (GL_FLOAT_MAT3, 9)          \
+    mapFunc2 (GL_FLOAT_MAT4, 10)          \
+    mapFunc2 (GL_SAMPLER_2D, 11)          \
+    mapFunc2 (GL_SAMPLER_CUBE, 12)         
+          
+
+#define AE_CAST_MAP(i, t) {i, t},
+static std::unordered_map<int32_t, uint32_t> GL_CAST{ AE_CAST(AE_CAST_MAP)};
+#undef AE_CAST_MAP
+
 
 enum ERROR_CODE{
     SHADER_UPDATE_TEXTURE_ERROR = 0
 };
 
 
-#define SizeOf sizeof(float)
 
 }
+
 
 
 #endif //ALICE_ENGINE_GRAPHIC_PREDECLARED_H

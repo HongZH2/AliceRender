@@ -46,16 +46,16 @@ public:
     virtual uint32_t getTangentLocation() override;
     virtual uint32_t getBitangentLocation() override;
 
-    virtual void setUniform1fv(const std::string & key, std::vector<float> vals);
-    virtual void setUniform2f(const std::string & key, float val1, float val2);
-    virtual void setUniform3f(const std::string & key, float val1, float val2, float val3) ;
-    virtual void setUniform4f(const std::string & key, float val1, float val2, float val3, float val4);
-
+    virtual void setUniform1fv(const std::string & key, std::vector<float> & vals);
+    // virtual void setUniform2f(const std::string & key, float val1, float val2);
+    // virtual void setUniform3f(const std::string & key, float val1, float val2, float val3) ;
+    // virtual void setUniform4f(const std::string & key, float val1, float val2, float val3, float val4);
     virtual void setUniform1f(const std::string & key, const float & val) override;
-    virtual void setUniformMat4f(const std::string &key, const GMat4 & mat4_val) override;
     virtual void setUniform1i(const std::string & key, const int32_t & val) override;
+    virtual void setUniformVec2(const std::string &key, const GVec2 & vec) override;
     virtual void setUniformVec3(const std::string &key, const GVec3 & vec) override;
-
+    virtual void setUniformMat3f(const std::string &key, const GMat3 & mat3_val) override;
+    virtual void setUniformMat4f(const std::string &key, const GMat4 & mat4_val) override;
     // TODO: num_tex
     virtual void setUniformTexture(const std::string & key, std::shared_ptr<TextureModule> tex) override;
 protected:
@@ -63,6 +63,7 @@ protected:
     GLuint program_id_;
     Shader * vert_shader_;
     Shader * frag_shader_;
+    Shader * geom_shader_;
     void saveTextureInfo(const std::string & key);
 };
 

@@ -15,13 +15,10 @@ struct FBOSize{
     uint32_t height_ = 0;
 };
 
-class FBOInfo{
-public:
+struct FBOInfo{
     FBOSize size_;
     std::string name_;
     TextureType tex_t_;
-    FBOInfo(){}
-    ~FBOInfo(){}
 };
 
 class FBOModule {

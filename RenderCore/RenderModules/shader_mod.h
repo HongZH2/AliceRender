@@ -27,7 +27,7 @@ struct AttachedTexInfo{
 
 struct VariableInfo{
     uint32_t loc_;
-    uint32_t type_; // FLOAT, VEC3, MAT4 ... 
+    AE_DATA_TYPE type_; // FLOAT, VEC3, MAT4 ... 
 };
 
 
@@ -56,9 +56,10 @@ public:
 
     virtual void setUniform1f(const std::string & key, const float & val) = 0;
     virtual void setUniform1i(const std::string & key, const int32_t & val) = 0;
+    virtual void setUniformVec2(const std::string &key, const GVec2 & vec) = 0;
     virtual void setUniformVec3(const std::string & key, const GVec3 & vec ) = 0;
+    virtual void setUniformMat3f(const std::string &key, const GMat3 & mat3_val) = 0;
     virtual void setUniformMat4f(const std::string & key, const GMat4 & mat4_val) = 0;
-
     virtual void setUniformTexture(const std::string & key, std::shared_ptr<TextureModule> tex) = 0;
     
 protected:    
