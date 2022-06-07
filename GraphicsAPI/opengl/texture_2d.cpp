@@ -39,7 +39,7 @@ void Texture2D::unbindTexture(std::shared_ptr<TextureModule> tex_mod) {
 }
 
 void Texture2D::setTextureParams(std::shared_ptr<TextureModule> tex_mod) {
-    glGenerateMipmap(GL_DEFS[tex_mod->usage_]);
+    //glGenerateMipmap(GL_DEFS[tex_mod->usage_]);
     glTexParameteri(GL_DEFS[tex_mod->usage_], GL_TEXTURE_WRAP_S, GL_DEFS[tex_mod->param_]);
     glTexParameteri(GL_DEFS[tex_mod->usage_], GL_TEXTURE_WRAP_T, GL_DEFS[tex_mod->param_]);
 }

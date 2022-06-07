@@ -11,7 +11,7 @@
 
 namespace AliceAPI {
 
-using ParamVariant = std::variant<float, double, uint32_t, int32_t, GVec3, GVec4, GVec2, GMat2, GMat3, GMat4, std::string>;
+using ParamVariant = std::variant<float, double, uint32_t, int32_t, GVec3, GVec4, GVec2, GMat2, GMat3, GMat4, GMat4*, std::string>;
 
 class RenderParam {
 public:
@@ -30,6 +30,13 @@ public:
             return & std::get<T>(params.at(name));
         }
         return nullptr;
+    }
+
+    template<typename Func>
+    void traverseParams(Func func){
+        for(auto & [key, val]: params){
+            func(key, val);
+        }
     }
 
 protected:
