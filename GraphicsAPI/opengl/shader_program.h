@@ -46,6 +46,8 @@ public:
     virtual uint32_t getTangentLocation() override;
     virtual uint32_t getBitangentLocation() override;
 
+    virtual void setAttributeVec3(const std::string & key, const GVec3 & vec) override;
+
     virtual void setUniform1fv(const std::string & key, std::vector<float> & vals);
     // virtual void setUniform2f(const std::string & key, float val1, float val2);
     // virtual void setUniform3f(const std::string & key, float val1, float val2, float val3) ;

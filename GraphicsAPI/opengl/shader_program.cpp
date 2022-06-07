@@ -115,13 +115,17 @@ void ShaderProgram::parseAttribs(){
     for(i = 0; i < count; i++){
         glGetActiveAttrib(program_id_, (GLuint)i, buf_size, &length, &size, &type, name);  // store the loc of attributes
         struct VariableInfo info;
-        info.loc_ = i;
+        info.loc_ = getAttribLocation(name);
         info.type_ = (AE_DATA_TYPE) GL_CAST[type];
-        attrib_info_[name] = info;
+        attrib_info_[name] = std::move(info);
     }
 }
 
 void ShaderProgram::linkProgram() {
+    glBindAttribLocation(program_id_, 0, "Pos");
+    glBindAttribLocation(program_id_, 1, "Offset");
+    glBindAttribLocation(program_id_, 2, "Norm");
+    glBindAttribLocation(program_id_, 3, "Color"); // TODO
     glLinkProgram(program_id_);
 }
 
@@ -194,6 +198,14 @@ void ShaderProgram::setUniform1fv(const std::string &key, std::vector<float> & v
     GLint loc = getUniformLocation(key);
     if((int) loc != -1){
         glUniform1fv(loc, vals.size(), &vals[0]);
+    }
+}
+
+void ShaderProgram::setAttributeVec3(const std::string &key, const GVec3 &vec){
+    GLint loc = getAttribLocation(key);
+    //GLint loc = glGetAttribLocation(program_id_, key.c_str());
+    if((int) loc != -1){
+        glVertexAttrib3fv(loc, &vec[0]);
     }
 }
 
