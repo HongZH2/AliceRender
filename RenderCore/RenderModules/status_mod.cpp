@@ -36,22 +36,22 @@ StatusContainer::~StatusContainer(){
 }
 
 
-void StatusContainer::applyStatus(){
-    if(status_setting_ == none_setting){
+void StatusContainer::applyStatus(const int32_t & status_setting){
+    if(status_setting == none_setting){
         return;
     }
     // TODO
-    if(status_setting_ & reflesh_color){
+    if(status_setting & reflesh_color){
         status_ops_->clearColorBuffer();
     }
-    if(status_setting_ & reflesh_depth){
+    if(status_setting & reflesh_depth){
         status_ops_->clearDepthBuffer();
     }
-    if(status_setting_ & reflesh_stencil){
+    if(status_setting & reflesh_stencil){
         status_ops_->clearStencilBuffer();
     }
-    status_ops_->setDepthTest(status_setting_ & depth_tesh);
-    status_ops_->setFaceCull(status_setting_ & cull_face);
+    status_ops_->setDepthTest(status_setting & depth_tesh);
+    status_ops_->setFaceCull(status_setting & cull_face);
 }
 
 void StatusContainer::setBufferColor(const GVec4 & color){
@@ -65,67 +65,65 @@ void StatusContainer::setViewPort(const GVec4i & rect){
 }
 
 StatusSaver::StatusSaver(){
+    // status
+    int32_t depth_test = status_ops_->checkDepthTest() << 6;
+    int32_t cull_face = status_ops_->checkFaceCull() << 7;
+    prev_setting_ = depth_test | cull_face;
 
+    // color and viewport
+    prev_view_ = status_ops_->checkViewport();
+    prev_color_ = color_;
 }
 
 StatusSaver::StatusSaver(const int32_t & setting):
 StatusContainer(setting){
-    
+     // status
+    int32_t depth_test = status_ops_->checkDepthTest() << 6;
+    int32_t cull_face = status_ops_->checkFaceCull() << 7;
+    prev_setting_ = depth_test | cull_face;
+    status_setting_ = setting;
+    // color and viewport
+    prev_view_ = status_ops_->checkViewport();
+    prev_color_ = color_;
 }
 
 StatusSaver::~StatusSaver(){
 }
 
 void StatusSaver::saveAndApply(int32_t setting){
-    // status
-    int32_t depth_test = status_ops_->checkDepthTest() << 6;
-    int32_t cull_face = status_ops_->checkFaceCull() << 7;
-    prev_setting_ = depth_test | cull_face;
-    status_setting_ = setting;
-
     // operations
     if(status_setting_ & set_colorbuffer)
         status_ops_->setBufferColor(color_);
     if(status_setting_ & set_viewport)
         status_ops_->viewport(view_);
-    applyStatus();
+    applyStatus(status_setting_);
 }
 
 void StatusSaver::saveAndApply(){
-    // status
-    int32_t depth_test = status_ops_->checkDepthTest() << 6;
-    int32_t cull_face = status_ops_->checkFaceCull() << 7;
-    prev_setting_ = depth_test | cull_face;
-
-    // operations // TODO
+    // operations 
     if(status_setting_ & set_colorbuffer)
         status_ops_->setBufferColor(color_);
     if(status_setting_ & set_viewport)
         status_ops_->viewport(view_);
-    applyStatus();
+    applyStatus(status_setting_);
 }
 
 void StatusSaver::resetStatus(){
-    // color_ = prev_color_;
-    // view_ = prev_view_;
-    // if(status_setting_ & set_colorbuffer)
-    //     status_ops_->setBufferColor(color_);
+    if(status_setting_ & set_colorbuffer)
+        status_ops_->setBufferColor(prev_color_);
     // if(status_setting_ & set_viewport)
-    //     status_ops_->viewport(view_);
-    status_setting_ = prev_setting_;     
-    applyStatus(); 
+    //     status_ops_->viewport(view_); // no need to set back viewport
+    applyStatus(prev_setting_); 
 }
 
 void StatusSaver::setViewPort(const GVec4i & rect){
-    prev_view_ = status_ops_->checkViewport();
     view_ = rect;
-    view_[2] *= FBO_OFFSET;
-    view_[3] *= FBO_OFFSET;
+    // view_[2] *= FBO_OFFSET;
+    // view_[3] *= FBO_OFFSET;
     status_setting_ |= set_viewport;
 }
 
 void StatusSaver::setBufferColor(const GVec4 & color){
-    prev_color_ = color_;
     color_ = color;
     status_setting_ |= set_colorbuffer;
 }

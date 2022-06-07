@@ -53,10 +53,10 @@ void FrameBuffer::attachTexture(std::shared_ptr<TextureModule> tex) {
             tex->bindTexture();
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEFS[tex->attach_type_], GL_DEFS[tex->usage_], tex->tex_id_, 0);
 
-            if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
-                printf("%s\n", "FBO ERROR!!!");
-            }
-
+            // if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
+            //     printf("%s\n", "FBO ERROR!!!");
+            // }
+            // glViewport(0, 0, 1300, 900);
             tex->unbindTexture();
             unbindFBO();
             break;

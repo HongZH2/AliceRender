@@ -56,7 +56,7 @@ public:
   StatusContainer(const int32_t & setting);
   ~StatusContainer();  
 
-  void applyStatus();  
+  void applyStatus(const int32_t & status_setting);  
   virtual void setBufferColor(const GVec4 & color);  // set color buffer immediatelly
   virtual void setViewPort(const GVec4i & rect); // set viewport immediatelly
 protected:

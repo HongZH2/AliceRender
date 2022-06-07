@@ -33,10 +33,6 @@ std::shared_ptr<FBOModule> FBOPool::createFBO(FBOInfo & fbo_info){
     if(instance.fbo_pool_.find(fbo_info.name_) != instance.fbo_pool_.end()){
         deleteFBO(fbo_info.name_);
     }
-
-    // fix the size of fbo for macos
-    fbo_info.size_.width_ *= FBO_OFFSET;
-    fbo_info.size_.height_ *= FBO_OFFSET;
     
     std::shared_ptr<FBOModule> fbo =  FBOModule::getInstancePtr(fbo_info);
     instance.fbo_pool_[fbo_info.name_] = fbo;
