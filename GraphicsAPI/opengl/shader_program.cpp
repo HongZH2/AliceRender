@@ -122,10 +122,7 @@ void ShaderProgram::parseAttribs(){
 }
 
 void ShaderProgram::linkProgram() {
-    glBindAttribLocation(program_id_, 0, "Pos");
-    glBindAttribLocation(program_id_, 1, "Offset");
-    glBindAttribLocation(program_id_, 2, "Norm");
-    glBindAttribLocation(program_id_, 3, "Color"); // TODO
+    glBindAttribLocation(program_id_, 0, remain_key.at(VERTEX_POSITION).c_str());
     glLinkProgram(program_id_);
 }
 
