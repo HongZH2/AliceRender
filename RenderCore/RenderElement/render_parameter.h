@@ -16,32 +16,36 @@ using ParamVariant = std::variant<float, double, uint32_t, int32_t, GVec3, GVec4
 class RenderParam {
 public:
     RenderParam();
+    RenderParam(std::shared_ptr<RenderParam> param);
     ~RenderParam();
     void addParam(const TextureType & types, const std::string & name); // the name of color, normal, Bump, Roughness, Metalic
     
     template<typename T>
     void addParam(const std::string & key, const T & vals){
-        params[key] = vals;
+        params_[key] = vals;
     }
     
     template<typename T>
     T * getParamValue(const std::string & name){
-        if(params.find(name)!= params.end()){
-            return & std::get<T>(params.at(name));
+        if(params_.find(name)!= params_.end()){
+            return & std::get<T>(params_.at(name));
         }
         return nullptr;
     }
 
     template<typename Func>
     void traverseParams(Func func){
-        for(auto & [key, val]: params){
+        for(auto & [key, val]: params_){
             func(key, val);
         }
     }
 
+    inline std::unordered_map<TextureType, std::string> & getTextureParams(){return texture_params_;}
+    inline std::unordered_map<std::string, ParamVariant> & getParams(){return params_;}
+
 protected:
     std::unordered_map<TextureType, std::string> texture_params_;
-    std::unordered_map<std::string, ParamVariant> params;
+    std::unordered_map<std::string, ParamVariant> params_;
 };
 
 }

@@ -12,6 +12,11 @@ RenderParam::RenderParam() {
 
 }
 
+RenderParam::RenderParam(std::shared_ptr<RenderParam> param){
+    texture_params_ = param->getTextureParams();
+    params_ = param->getParams();
+}
+
 RenderParam::~RenderParam() {
 
 }
