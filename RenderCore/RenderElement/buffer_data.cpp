@@ -31,6 +31,24 @@ void DataModule::setIndiceInfo(std::shared_ptr<DataInfo<uint32_t>> indice_info){
     indice_info_ = indice_info;
 }
 
+void DataModule::updateAttributeBuffer(const std::string & key, std::vector<float> & data){
+    if(infoF_.find(key) != infoF_.end()){
+        auto block = infoF_.at(key)->getBlockPtr();
+        auto chunk = infoF_.at(key)->getChunkPtr();
+        chunk->updateBuffer(data);
+        block->updateChunk(chunk);
+    }
+}
+
+void DataModule::updateAttributeBuffer(const std::string & key, std::vector<uint32_t> & data){
+    if(infoUI_.find(key) != infoUI_.end()){
+        auto block = infoUI_.at(key)->getBlockPtr();
+        auto chunk = infoUI_.at(key)->getChunkPtr();
+        chunk->updateBuffer(data);
+        block->updateChunk(chunk);
+    }
+}
+
 void DataModule::bindDataModule(const std::unordered_map<std::string, VariableInfo> & attribute_list){
     for(auto & [key, info]: infoF_){
         if(attribute_list.find(key) != attribute_list.end()){

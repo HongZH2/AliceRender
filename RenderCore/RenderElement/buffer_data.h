@@ -334,8 +334,8 @@ public:
     void addInfo(std::shared_ptr<DataInfo<uint32_t>> infoUI);
     void setIndiceInfo(std::shared_ptr<DataInfo<uint32_t>> indice_info);
 
-    template<typename T1, typename T2>
-    void updateAttributeBuffer(const T1 & key, std::vector<T2> & buffer);
+    void updateAttributeBuffer(const std::string & key, std::vector<float> & data);
+    void updateAttributeBuffer(const std::string & key, std::vector<uint32_t> & data);
     void bindDataModule(const std::unordered_map<std::string, VariableInfo> & attribute_list);
     void unbindDataModule();
     
@@ -344,22 +344,6 @@ private:
     std::unordered_map<std::string, std::shared_ptr<DataInfo<uint32_t>>> infoUI_;
     std::shared_ptr<DataInfo<uint32_t>> indice_info_;
 };
-
-template<typename T1, typename T2>
-void DataModule::updateAttributeBuffer(const T1 &key, std::vector<T2> & data){
-    if(infoF_.find(key) != infoF_.end()){
-        auto block = infoF_.at(key)->getBlockPtr();
-        auto chunk = infoF_.at(key)->getChunkPtr();
-        chunk->updateBuffer(data);
-        block->updateChunk(chunk);
-    }
-    else if(infoUI_.find(key) != infoUI_.end()){
-        auto block = infoUI_.at(key)->getBlockPtr();
-        auto chunk = infoUI_.at(key)->getChunkPtr();
-        chunk->updateBuffer(data);
-        block->updateChunk(chunk);
-    }
-}
 
 
 }
