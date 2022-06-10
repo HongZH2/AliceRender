@@ -30,7 +30,7 @@ class DataInfo;
 template <class T>
 class DataChunk{
 public:
-    explicit DataChunk(std::vector<T> & data, uint32_t copy = 1);
+    explicit DataChunk(std::vector<T> & data);
     ~DataChunk();
 
     inline void setChunkOffset(const uint32_t & offset){chunk_offset_ = offset;}
@@ -39,6 +39,8 @@ public:
     inline const uint32_t & getChunkOffset(){return chunk_offset_;}
     inline const int32_t & getChunkID(){return chunk_id_;}
     inline const uint32_t & getBufferSize(){return buf_size_;}
+
+    void updateBuffer(std::vector<T> & data);
 private:
     T * buffer_ = nullptr;
     uint32_t buf_size_ = 0;
@@ -50,19 +52,19 @@ private:
 *  the construct function will make multiple copies for the input data
 */
 template <class T>
-DataChunk<T>::DataChunk(std::vector<T> & data, uint32_t copy){
-    uint32_t size = data.size();
-    buf_size_ = size * copy;
-    buffer_ = (T*) malloc(size * copy * sizeof(T));
-    for(size_t i = 0; i < copy; ++i){
-        memcpy(buffer_ + i * size, &data[0], size * sizeof(T));
-    }
+DataChunk<T>::DataChunk(std::vector<T> & data){
+    buf_size_ = data.size();
+    buffer_ = &data[0];
 }
 
 template <class T>
 DataChunk<T>::~DataChunk<T>(){
-    if(buffer_)
-        free(buffer_);
+}
+
+template <class T>
+void DataChunk<T>::updateBuffer(std::vector<T> & data){
+    buf_size_ = data.size();
+    buffer_ = &data[0];
 }
 
 /*
@@ -332,6 +334,8 @@ public:
     void addInfo(std::shared_ptr<DataInfo<uint32_t>> infoUI);
     void setIndiceInfo(std::shared_ptr<DataInfo<uint32_t>> indice_info);
 
+    template<typename T1, typename T2>
+    void updateAttributeBuffer(const T1 & key, std::vector<T2> & buffer);
     void bindDataModule(const std::unordered_map<std::string, VariableInfo> & attribute_list);
     void unbindDataModule();
     
@@ -340,6 +344,23 @@ private:
     std::unordered_map<std::string, std::shared_ptr<DataInfo<uint32_t>>> infoUI_;
     std::shared_ptr<DataInfo<uint32_t>> indice_info_;
 };
+
+template<typename T1, typename T2>
+void DataModule::updateAttributeBuffer(const T1 &key, std::vector<T2> & data){
+    if(infoF_.find(key) != infoF_.end()){
+        auto block = infoF_.at(key)->getBlockPtr();
+        auto chunk = infoF_.at(key)->getChunkPtr();
+        chunk->updateBuffer(data);
+        block->updateChunk(chunk);
+    }
+    else if(infoUI_.find(key) != infoUI_.end()){
+        auto block = infoUI_.at(key)->getBlockPtr();
+        auto chunk = infoUI_.at(key)->getChunkPtr();
+        chunk->updateBuffer(data);
+        block->updateChunk(chunk);
+    }
+}
+
 
 }
 
