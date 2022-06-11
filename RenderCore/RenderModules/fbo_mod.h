@@ -6,6 +6,7 @@
 #define ALICE_ENGINE_FBO_MOD_H
 
 #include "texture_mod.h"
+#include "status_mod.h"
 #include "module_predeclared.h"
 
 namespace AliceAPI {
@@ -35,7 +36,11 @@ public:
     virtual void drawBuffer(int32_t color_attachment_id) = 0;  // -1 means disable color attachments, color_attrachment
     virtual void readBuffer(int32_t color_attachment_id) = 0;
 
-    const FBOSize & getFBOSize();    
+    const FBOSize & getFBOSize();   
+    
+    inline void setStatus(std::shared_ptr<StatusSaver> status){status_ = status;}
+    inline std::shared_ptr<StatusSaver> getStatus(){return status_;}
+
 protected:    
     FBOModule();
     FBOSize size_;
@@ -44,6 +49,7 @@ protected:
     std::string name_;
     uint32_t num_of_color_attachment_ = 0;
     std::unordered_map<TextureType, std::string> attached_tex_;
+    std::shared_ptr<StatusSaver> status_;
 };
 
 }
