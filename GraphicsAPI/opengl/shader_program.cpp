@@ -206,6 +206,16 @@ void ShaderProgram::setAttributeVec3(const std::string &key, const GVec3 &vec){
     }
 }
 
+void ShaderProgram::setAttributeMat4(const std::string &key, const GMat4 &mat){
+    GLint loc = getAttribLocation(key);
+    if((int) loc != -1){
+        glVertexAttrib4fv(loc, &mat[0][0]);
+        glVertexAttrib4fv(loc + 1, &mat[1][0]);
+        glVertexAttrib4fv(loc + 2, &mat[2][0]);
+        glVertexAttrib4fv(loc + 3, &mat[3][0]);
+    }
+}
+
 // void ShaderProgram::setUniform2f(const std::string &key, float val1, float val2) {
 //     GLint loc = getUniformLocation(key);
 //     if((int) loc != -1){

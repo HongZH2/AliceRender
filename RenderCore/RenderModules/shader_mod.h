@@ -54,6 +54,7 @@ public:
     virtual uint32_t getTangentLocation() = 0;
     virtual uint32_t getBitangentLocation() = 0;
 
+    virtual void setAttributeMat4(const std::string & key, const GMat4 & vec) = 0;
     virtual void setAttributeVec3(const std::string & key, const GVec3 & vec) = 0;
     virtual void setUniform1f(const std::string & key, const float & val) = 0;
     virtual void setUniform1i(const std::string & key, const int32_t & val) = 0;
