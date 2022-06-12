@@ -26,6 +26,7 @@ public:
   virtual void clearStencilBuffer() = 0;
   virtual void clearAllBuffer() = 0;
   virtual void setBufferColor(const GVec4 & color) = 0;
+  virtual void setLineWidth(const float & width) = 0;
 
   virtual void viewport(const GVec4i & rect) = 0;
   virtual GVec4i checkViewport() = 0;
@@ -45,6 +46,7 @@ protected:
   depth_tesh = 1 << 6,
   cull_face = 1 << 7,
   blend = 1 << 8,   // TODO: 
+  set_line_width = 1 << 9,
   all_default = reflesh_color | reflesh_depth | reflesh_stencil | depth_tesh | cull_face | blend
 };  
 
@@ -59,8 +61,10 @@ public:
   void applyStatus(const int32_t & status_setting);  
   virtual void setBufferColor(const GVec4 & color);  // set color buffer immediatelly
   virtual void setViewPort(const GVec4i & rect); // set viewport immediatelly
+  virtual void setLineWidth(const float & width);  // set line width
 protected:
   int32_t status_setting_ = 0;
+  float line_width_ = 1.0f;
   GVec4i view_;
   GVec4 color_ = GVec4(0.0f);
   std::shared_ptr<StatusModule> status_ops_ = StatusModule::getInstancePtr();;
@@ -74,12 +78,14 @@ public:
   void resetStatus(); // reset
   void setBufferColor(const GVec4 & color) override;  // delay status
   void setViewPort(const GVec4i & rect) override; // delay status
+  void setLineWidth(const float & width) override;
 
   StatusSaver();
   StatusSaver(const int32_t & setting);
   ~StatusSaver();
 protected:
   int32_t prev_setting_ = 0;
+  float prev_line_width = 1.0f;
   GVec4i prev_view_;
   GVec4 prev_color_;
 };

@@ -73,6 +73,11 @@ void StatusCall::setBufferColor(const GVec4 & color){
     glClearColor(color[0], color[1], color[2], color[3]);
 }
 
+void StatusCall::setLineWidth(const float &width){
+    glEnable(GL_LINE_SMOOTH);
+    glLineWidth(width);
+}
+
 
 
 }

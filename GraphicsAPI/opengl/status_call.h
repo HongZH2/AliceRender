@@ -29,6 +29,7 @@ public:
     void clearStencilBuffer() override;
     void clearAllBuffer() override;
     void setBufferColor(const GVec4 & color) override;
+    void setLineWidth(const float & width) override;
     void viewport(const GVec4i & rect) override;
     GVec4i checkViewport() override;
 };

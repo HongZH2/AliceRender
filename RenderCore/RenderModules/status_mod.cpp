@@ -64,6 +64,11 @@ void StatusContainer::setViewPort(const GVec4i & rect){
     status_ops_->viewport(view_);
 }
 
+void StatusContainer::setLineWidth(const float &width){
+    line_width_ = width;
+    status_ops_->setLineWidth(width);
+}
+
 StatusSaver::StatusSaver(){
     // status
     int32_t depth_test = status_ops_->checkDepthTest() << 6;
@@ -91,12 +96,8 @@ StatusSaver::~StatusSaver(){
 }
 
 void StatusSaver::saveAndApply(int32_t setting){
-    // operations
-    if(status_setting_ & set_colorbuffer)
-        status_ops_->setBufferColor(color_);
-    if(status_setting_ & set_viewport)
-        status_ops_->viewport(view_);
-    applyStatus(status_setting_);
+    status_setting_ = setting;
+    saveAndApply();
 }
 
 void StatusSaver::saveAndApply(){
@@ -105,6 +106,8 @@ void StatusSaver::saveAndApply(){
         status_ops_->setBufferColor(color_);
     if(status_setting_ & set_viewport)
         status_ops_->viewport(view_);
+    if(status_setting_ & set_line_width)
+        status_ops_->setLineWidth(line_width_);
     applyStatus(status_setting_);
 }
 
@@ -121,6 +124,11 @@ void StatusSaver::setViewPort(const GVec4i & rect){
     // view_[2] *= FBO_OFFSET;
     // view_[3] *= FBO_OFFSET;
     status_setting_ |= set_viewport;
+}
+
+void StatusSaver::setLineWidth(const float &width){
+    line_width_ = width;
+    status_setting_  |= set_line_width;
 }
 
 void StatusSaver::setBufferColor(const GVec4 & color){
