@@ -50,8 +50,15 @@ void StatusContainer::applyStatus(const int32_t & status_setting){
     if(status_setting & reflesh_stencil){
         status_ops_->clearStencilBuffer();
     }
-    status_ops_->setDepthTest(status_setting & depth_tesh);
-    status_ops_->setFaceCull(status_setting & cull_face);
+    status_ops_->enableStatus(AE_DEPTH_TEST, status_setting & depth_test);
+    status_ops_->enableStatus(AE_CULL_FACE, status_setting & cull_face);
+    status_ops_->enableStatus(AE_BLEND, status_setting & blend);
+    if(status_setting & depth_test){
+        status_ops_->setDepthTestFunc(depth_func_);
+    }
+    if(status_setting & blend){
+        status_ops_->setBlendFunc(blend_func_s_, blend_func_d_);
+    }
 }
 
 void StatusContainer::setBufferColor(const GVec4 & color){
@@ -70,26 +77,12 @@ void StatusContainer::setLineWidth(const float &width){
 }
 
 StatusSaver::StatusSaver(){
-    // status
-    int32_t depth_test = status_ops_->checkDepthTest() << 6;
-    int32_t cull_face = status_ops_->checkFaceCull() << 7;
-    prev_setting_ = depth_test | cull_face;
 
-    // color and viewport
-    prev_view_ = status_ops_->checkViewport();
-    prev_color_ = color_;
 }
 
 StatusSaver::StatusSaver(const int32_t & setting):
 StatusContainer(setting){
-     // status
-    int32_t depth_test = status_ops_->checkDepthTest() << 6;
-    int32_t cull_face = status_ops_->checkFaceCull() << 7;
-    prev_setting_ = depth_test | cull_face;
-    status_setting_ = setting;
-    // color and viewport
-    prev_view_ = status_ops_->checkViewport();
-    prev_color_ = color_;
+
 }
 
 StatusSaver::~StatusSaver(){
@@ -101,6 +94,19 @@ void StatusSaver::saveAndApply(int32_t setting){
 }
 
 void StatusSaver::saveAndApply(){
+    if(!is_initilized_){
+        // status
+        int32_t depth_test = status_ops_->checkStatus(AE_DEPTH_TEST) << 6;
+        int32_t cull_face = status_ops_->checkStatus(AE_CULL_FACE) << 7;
+        int32_t blend = status_ops_->checkStatus(AE_BLEND) << 8;
+        prev_setting_ = depth_test | cull_face | blend;
+
+        // color and viewport
+        prev_view_ = status_ops_->checkViewport();
+        prev_color_ = color_;
+        is_initilized_ = true;
+    }
+
     // operations 
     if(status_setting_ & set_colorbuffer)
         status_ops_->setBufferColor(color_);
@@ -114,15 +120,11 @@ void StatusSaver::saveAndApply(){
 void StatusSaver::resetStatus(){
     if(status_setting_ & set_colorbuffer)
         status_ops_->setBufferColor(prev_color_);
-    // if(status_setting_ & set_viewport)
-    //     status_ops_->viewport(view_); // no need to set back viewport
     applyStatus(prev_setting_); 
 }
 
 void StatusSaver::setViewPort(const GVec4i & rect){
     view_ = rect;
-    // view_[2] *= FBO_OFFSET;
-    // view_[3] *= FBO_OFFSET;
     status_setting_ |= set_viewport;
 }
 
@@ -134,6 +136,15 @@ void StatusSaver::setLineWidth(const float &width){
 void StatusSaver::setBufferColor(const GVec4 & color){
     color_ = color;
     status_setting_ |= set_colorbuffer;
+}
+
+void StatusSaver::setBlendFunc(const AE_BLEND_FUNC &sfunc, const AE_BLEND_FUNC &dfunc){
+    blend_func_s_ = sfunc;
+    blend_func_d_ = dfunc;
+}
+
+void StatusSaver::setDepthFunc(const AE_DEPTH_TEST_FUNC &dfunc){
+    depth_func_ = dfunc;
 }
 
 

@@ -15,33 +15,28 @@ StatusCall::~StatusCall(){
 
 }
 
-void StatusCall::setFaceCull(const int32_t & var){
+
+void StatusCall::enableStatus(const AE_STATUS_TYPE &stype, const int32_t &var){
     if(var){
-        glEnable(GL_CULL_FACE);
+        glEnable(GL_DEFS[stype]);
     }
     else{
-        glDisable(GL_CULL_FACE);
+        glDisable(GL_DEFS[stype]);
     }
 }
-int32_t StatusCall::checkFaceCull(){
+
+int32_t StatusCall::checkStatus(const AE_STATUS_TYPE &stype){
     int32_t var;
-    glGetIntegerv(GL_CULL_FACE, &var);
+    glGetIntegerv(GL_DEFS[stype], &var);
     return var;
 }
 
-void StatusCall::setDepthTest(const int32_t & var){
-    if(var){
-        glEnable(GL_DEPTH_TEST); 
-        glDepthFunc(GL_LESS); 
-    }
-    else{
-        glDisable(GL_DEPTH_TEST);
-    }
+void StatusCall::setBlendFunc(const AE_BLEND_FUNC & sfunc, const AE_BLEND_FUNC & dfunc){
+    glBlendFunc(GL_DEFS[sfunc], GL_DEFS[dfunc]);
 }
-int32_t StatusCall::checkDepthTest(){
-    int32_t var;
-    glGetIntegerv(GL_DEPTH_TEST, &var);
-    return var;
+
+void StatusCall::setDepthTestFunc(const AE_DEPTH_TEST_FUNC &func){
+    glDepthFunc(GL_DEFS[func]);
 }
 
 void StatusCall::clearColorBuffer(){
@@ -75,6 +70,7 @@ void StatusCall::setBufferColor(const GVec4 & color){
 
 void StatusCall::setLineWidth(const float &width){
     glEnable(GL_LINE_SMOOTH);
+    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     glLineWidth(width);
 }
 

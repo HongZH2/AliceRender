@@ -147,6 +147,46 @@ enum AE_ATTACHMENT_TYPE {
     AE_STENCIL_ATTACHMENT
 };
 
+// status 
+enum AE_BLEND_FUNC{
+    DISABLE_BLEND = 700,
+    AE_ZERO,
+    AE_ON,
+    AE_SRC_COLOR,
+    AE_ONE_MINUS_SRC_COLOR,
+    AE_DST_COLOR,
+    AE_ONE_MINUS_DST_COLOR,
+    AE_SRC_ALPHA,
+    AE_ONE_MINUS_SRC_ALPHA,
+    AE_DST_ALPHA,
+    AE_ONE_MINUS_DST_ALPHA,
+    AE_CONSTANT_COLOR,
+    AE_ONE_MINUS_CONSTANT_COLOR,
+    AE_CONSTANT_ALPHA,
+    AE_ONE_MINUS_CONSTANT_ALPHA,
+    AE_SRC_ALPHA_SATURATE
+};
+
+enum AE_DEPTH_TEST_FUNC{
+    AE_NEVER = 716, 
+    AE_LESS,
+    AE_EQUAL,
+    AE_LEQUAL,
+    AE_GREATER,
+    AE_NOTEQUAL,
+    AE_GEQUAL,
+    AE_ALWAYS
+};
+
+// status to enable/disable
+enum AE_STATUS_TYPE{
+    AE_BLEND = 800,
+    AE_DEPTH_TEST,
+    AE_ALPHA_TEST,
+    AE_STENCIL_TEST,
+    AE_CULL_FACE
+};
+
 
 /******************************************************************
 * Engine defines some defaults uniform keys

@@ -18,12 +18,12 @@ public:
     StatusCall();
     ~StatusCall();
 
-    void setFaceCull(const int32_t & var) override;
-    int32_t checkFaceCull() override;
+    void enableStatus(const AE_STATUS_TYPE & stype, const int32_t & var) override;
+    int32_t checkStatus(const AE_STATUS_TYPE & stype) override;
 
-    void setDepthTest(const int32_t & var) override;
-    int32_t checkDepthTest() override;
-
+    void setBlendFunc(const AE_BLEND_FUNC & sfunc, const AE_BLEND_FUNC & dfunc) override;    // set blend function
+    void setDepthTestFunc(const AE_DEPTH_TEST_FUNC & func) override;    // set depth function
+    
     void clearColorBuffer() override;
     void clearDepthBuffer() override;
     void clearStencilBuffer() override;

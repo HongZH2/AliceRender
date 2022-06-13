@@ -86,8 +86,37 @@ namespace AliceAPI {
     mapFunc (664, GL_COLOR_ATTACHMENT14)          \
     mapFunc (665, GL_COLOR_ATTACHMENT15)          \
     mapFunc (666, GL_DEPTH_ATTACHMENT)            \
-    mapFunc (667, GL_STENCIL_ATTACHMENT)            
+    mapFunc (667, GL_STENCIL_ATTACHMENT)          \
+    mapFunc (701, GL_ZERO)  \
+    mapFunc (702, GL_ONE)  \
+    mapFunc (703, GL_SRC_COLOR)  \
+    mapFunc (704, GL_ONE_MINUS_SRC_COLOR)  \
+    mapFunc (705, GL_DST_COLOR)  \
+    mapFunc (706, GL_ONE_MINUS_DST_COLOR)  \
+    mapFunc (707, GL_SRC_ALPHA)  \
+    mapFunc (708, GL_ONE_MINUS_SRC_ALPHA)  \
+    mapFunc (709, GL_DST_ALPHA)  \
+    mapFunc (710, GL_ONE_MINUS_DST_ALPHA)  \
+    mapFunc (711, GL_CONSTANT_COLOR)  \
+    mapFunc (712, GL_ONE_MINUS_CONSTANT_COLOR)  \
+    mapFunc (713, GL_CONSTANT_ALPHA)  \
+    mapFunc (714, GL_ONE_MINUS_CONSTANT_ALPHA)  \
+    mapFunc (715, GL_SRC_ALPHA_SATURATE)  \
+    mapFunc (800, GL_BLEND)  \
+    mapFunc (801, GL_DEPTH_TEST)  \
+    mapFunc (802, GL_ALPHA_TEST)  \
+    mapFunc (803, GL_STENCIL_TEST)  \
+    mapFunc (804, GL_CULL_FACE) \
+    mapFunc (716, GL_NEVER) \
+    mapFunc (717, GL_LESS) \
+    mapFunc (718, GL_EQUAL) \
+    mapFunc (719, GL_LEQUAL) \
+    mapFunc (720, GL_GREATER) \
+    mapFunc (721, GL_NOTEQUAL) \
+    mapFunc (722, GL_GEQUAL) \
+    mapFunc (723, GL_ALWAYS) 
 
+   
 
 #define AE_DEFINITION_MAP(i, t) {i, t},
 static std::unordered_map<int32_t, uint32_t> GL_DEFS{ AE_DEFINITION(AE_DEFINITION_MAP)};
