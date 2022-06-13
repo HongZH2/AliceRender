@@ -40,66 +40,58 @@ protected:
   StatusModule();
 };
 
-// status container for applying setting 
- enum StatusSetting {
-  none_setting = 0,
-  set_colorbuffer = 1 << 1,
-  set_viewport = 1 << 2,
-  reflesh_color = 1 << 3,
-  reflesh_depth = 1 << 4,
-  reflesh_stencil = 1 << 5,
-  reflesh_all_buffer = reflesh_depth | reflesh_color | reflesh_stencil,
-  depth_test = 1 << 6,
-  cull_face = 1 << 7,
-  blend = 1 << 8,   // TODO: 
-  set_line_width = 1 << 9,
-  all_default = reflesh_color | reflesh_depth | reflesh_stencil | depth_test | cull_face | blend
+// status flag for applying setting 
+enum StatusFlag {
+  NoneSetting = 0,
+  SetBufferColor = 1 << 1,
+  SetViewport = 1 << 2,  
+  SetLineWidth = 1 << 3,
+  RefleshColor = 1 << 4,
+  RefleshDepth = 1 << 5,
+  RefleshStencil = 1 << 6,
+  RefleshAll = RefleshColor | RefleshDepth | RefleshStencil,
+  EnableDepthTest = 1 << 7,
+  DisableDepthTest = 1 << 8,
+  EnableFaceCull = 1 << 9,
+  DisableFaceCull = 1 << 10,
+  EnableBlend = 1 << 11,
+  DisableBlend = 1 << 12
 };  
 
-// TODO: read/write color buffer
-
-class StatusContainer{
+/*
+* Delayed status setting 
+*/
+class StatusSaver{
 public:
-  StatusContainer();
-  StatusContainer(const int32_t & setting);
-  ~StatusContainer();  
-
-  void applyStatus(const int32_t & status_setting);  
-  virtual void setBufferColor(const GVec4 & color);  // set color buffer immediatelly
-  virtual void setViewPort(const GVec4i & rect); // set viewport immediatelly
-  virtual void setLineWidth(const float & width);  // set line width
-protected:
-  int32_t status_setting_ = 0;
-  float line_width_ = 1.0f;
-  AE_BLEND_FUNC blend_func_s_;
-  AE_BLEND_FUNC blend_func_d_;
-  AE_DEPTH_TEST_FUNC depth_func_;
-  GVec4i view_;
-  GVec4 color_ = GVec4(0.0f);
-  std::shared_ptr<StatusModule> status_ops_ = StatusModule::getInstancePtr();;
-};
-
-
-class StatusSaver: public StatusContainer{
-public:
-  void saveAndApply(int32_t setting);  // TODO: remove
+  void saveAndApply(uint64_t setting);  // TODO: remove
   void saveAndApply(); // save status
   void resetStatus(); // reset
-  void setBufferColor(const GVec4 & color) override;  // delay status
-  void setViewPort(const GVec4i & rect) override; // delay status
-  void setLineWidth(const float & width) override;  
+  void setBufferColor(const GVec4 & color);  // delay status
+  void setViewPort(const GVec4i & rect); // delay status
+  void setLineWidth(const float & width);  
   void setDepthFunc(const AE_DEPTH_TEST_FUNC & dfunc);
   void setBlendFunc(const AE_BLEND_FUNC & sfunc, const AE_BLEND_FUNC & dfunc);
 
   StatusSaver();
-  StatusSaver(const int32_t & setting);
+  StatusSaver(const uint64_t & setting);
   ~StatusSaver();
 protected:
-  bool is_initilized_ = false; 
-  int32_t prev_setting_ = 0;
-  float prev_line_width = 1.0f;
-  GVec4i prev_view_;
-  GVec4 prev_color_ = GVec4(0.0f);
+  void applyStatus(const uint64_t & setting);
+  struct StatusContainer{
+    float line_width_ = 1.0f;
+    GVec4i view_;
+    GVec4 buffer_color_ = GVec4(0.0f);
+
+    AE_DEPTH_TEST_FUNC depth_func_;
+    AE_BLEND_FUNC src_func_;
+    AE_BLEND_FUNC dst_func_;
+
+    uint64_t setting_ = 0;  
+  } prev_, cur_;
+  
+  bool is_initilized_ = false;
+
+  std::shared_ptr<StatusModule> status_ops_; 
 };
 
 
