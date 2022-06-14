@@ -54,9 +54,13 @@ enum TextureType {
     DisplacementTexture = 1 << 5,
     DepthTexture = 1 << 10,
     StencilTexture = 1 << 11,
-    ColorDepthTexture = ColorTexture | DepthTexture,
-    DepthStencilTexture = DepthTexture | StencilTexture, 
-    AllTexture = ColorTexture | DepthTexture | StencilTexture
+    AlbedoTexture = 1 << 12,
+    SpecularTexture = 1 << 13 
+    // ColNormAlbTexture = ColorTexture | NormalTexture | AlbedoTexture,
+    // ColNormAlbSpecTexture = ColorTexture | NormalTexture | AlbedoTexture | SpecularTexture,
+    // ColDepTexture = ColorTexture | DepthTexture,
+    // DepStenTexture = DepthTexture | StencilTexture, 
+    // ColDepStenTexture = ColorTexture | DepthTexture | StencilTexture
 }; 
 
 static std::map<TextureType, std::string> tex_prefix = {

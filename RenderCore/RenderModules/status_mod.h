@@ -63,7 +63,7 @@ enum StatusFlag {
 */
 class StatusSaver{
 public:
-  void saveAndApply(uint64_t setting);  // TODO: remove
+  void saveAndApply(StatusTypeFlag setting);  // TODO: remove
   void saveAndApply(); // save status
   void resetStatus(); // reset
   void setBufferColor(const GVec4 & color);  // delay status
@@ -73,10 +73,10 @@ public:
   void setBlendFunc(const AE_BLEND_FUNC & sfunc, const AE_BLEND_FUNC & dfunc);
 
   StatusSaver();
-  StatusSaver(const uint64_t & setting);
+  StatusSaver(const StatusTypeFlag & setting);
   ~StatusSaver();
 protected:
-  void applyStatus(const uint64_t & setting);
+  void applyStatus(const StatusTypeFlag & setting);
   struct StatusContainer{
     float line_width_ = 1.0f;
     GVec4i view_;
@@ -86,7 +86,7 @@ protected:
     AE_BLEND_FUNC src_func_;
     AE_BLEND_FUNC dst_func_;
 
-    uint64_t setting_ = 0;  
+    StatusTypeFlag setting_ = 0;  
   } prev_, cur_;
   
   bool is_initilized_ = false;

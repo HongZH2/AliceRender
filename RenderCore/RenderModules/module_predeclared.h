@@ -24,6 +24,10 @@ namespace AliceAPI {
 
 #define MAX_NUM_TEXTURE 50
 
+
+using TextureTypeFlag = uint32_t;
+using StatusTypeFlag = uint64_t;
+
 /*
 * define Engine API TYPE and USEAGE
 * TODO: TO BE EXTENDED
