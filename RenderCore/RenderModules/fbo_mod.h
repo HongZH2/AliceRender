@@ -33,8 +33,9 @@ public:
     virtual void bindFBO() = 0;
     virtual void unbindFBO() = 0;
     virtual void attachTexture(std::shared_ptr<TextureModule> tex) = 0;
-    virtual void drawBuffer(int32_t color_attachment_id) = 0;  // -1 means disable color attachments, color_attrachment
-    virtual void readBuffer(int32_t color_attachment_id) = 0;
+    virtual void drawBuffer(const int32_t & color_attachment_id) = 0;  // -1 means disable color attachments, color_attrachment
+    virtual void drawBuffers(const std::vector<uint32_t> & color_attachment_ids) = 0;
+    virtual void readBuffer(const int32_t & color_attachment_id) = 0;
 
     const FBOSize & getFBOSize();   
     

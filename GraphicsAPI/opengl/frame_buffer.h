@@ -24,8 +24,9 @@ public:
     virtual void deleteFBO() override;
     virtual void bindFBO() override;
     virtual void unbindFBO() override;
-    virtual void drawBuffer(int32_t color_attachment_id) override;
-    virtual void readBuffer(int32_t color_attachment_id) override;
+    virtual void drawBuffer(const int32_t & color_attachment_id) override;
+    virtual void drawBuffers(const std::vector<uint32_t> & color_attachment_ids) override;
+    virtual void readBuffer(const int32_t & color_attachment_id) override;
     // attachment
     virtual void attachTexture(std::shared_ptr<TextureModule> tex) override;
 };

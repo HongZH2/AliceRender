@@ -56,7 +56,7 @@ void FrameBuffer::attachTexture(std::shared_ptr<TextureModule> tex) {
             // if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
             //     printf("%s\n", "FBO ERROR!!!");
             // }
-            // glViewport(0, 0, 1300, 900);
+
             tex->unbindTexture();
             unbindFBO();
             break;
@@ -67,26 +67,33 @@ void FrameBuffer::attachTexture(std::shared_ptr<TextureModule> tex) {
 
 }
 
-void FrameBuffer::drawBuffer(int32_t color_attachment_id){
-    bindFBO();
+void FrameBuffer::drawBuffer(const int32_t & color_attachment_id){
     if(color_attachment_id == -1){
         glDrawBuffer(GL_NONE);
     }
     else{
-        glDrawBuffer(GL_COLOR_ATTACHMENT0 + color_attachment_id%GL_MAX_COLOR_ATTACHMENTS);
+        glDrawBuffer(GL_COLOR_ATTACHMENT0 + color_attachment_id % GL_MAX_COLOR_ATTACHMENTS);
     }
-    unbindFBO();
 }
 
-void FrameBuffer::readBuffer(int32_t color_attachment_id){
-    bindFBO();
+void FrameBuffer::drawBuffers(const std::vector<uint32_t> & color_attachment_ids){
+    if(!color_attachment_ids.empty()){
+        size_t size = color_attachment_ids.size();
+        GLuint attachments[size];
+        for(auto & id: color_attachment_ids){
+            attachments[id] = GL_COLOR_ATTACHMENT0 + id % GL_MAX_COLOR_ATTACHMENTS;
+        }
+        glDrawBuffers(size, attachments);
+    }
+}
+
+void FrameBuffer::readBuffer(const int32_t & color_attachment_id){
     if(color_attachment_id == -1){
         glReadBuffer(GL_NONE);
     }
     else{
-        glReadBuffer(GL_COLOR_ATTACHMENT0 + color_attachment_id%GL_MAX_COLOR_ATTACHMENTS);
+        glReadBuffer(GL_COLOR_ATTACHMENT0 + color_attachment_id % GL_MAX_COLOR_ATTACHMENTS);
     }
-    bindFBO();
 }
 
 
