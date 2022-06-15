@@ -39,6 +39,10 @@ void StatusCall::setDepthTestFunc(const AE_DEPTH_TEST_FUNC &func){
     glDepthFunc(GL_DEFS[func]);
 }
 
+void StatusCall::setPolygonMode(const AE_POLYGON_MODE_TYPE & pmode){
+    glPolygonMode(GL_FRONT_AND_BACK, GL_DEFS[pmode]);
+}
+
 void StatusCall::clearColorBuffer(){
     glClear(GL_COLOR_BUFFER_BIT);
 }
@@ -69,8 +73,8 @@ void StatusCall::setBufferColor(const GVec4 & color){
 }
 
 void StatusCall::setLineWidth(const float &width){
-    glEnable(GL_LINE_SMOOTH);
-    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    // glEnable(GL_LINE_SMOOTH);
+    // glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     glLineWidth(width);
 }
 

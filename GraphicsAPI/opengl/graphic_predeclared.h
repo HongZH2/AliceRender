@@ -107,6 +107,7 @@ namespace AliceAPI {
     mapFunc (802, GL_ALPHA_TEST)  \
     mapFunc (803, GL_STENCIL_TEST)  \
     mapFunc (804, GL_CULL_FACE) \
+    mapFunc (805, GL_POLYGON_MODE) \
     mapFunc (716, GL_NEVER) \
     mapFunc (717, GL_LESS) \
     mapFunc (718, GL_EQUAL) \
@@ -114,8 +115,10 @@ namespace AliceAPI {
     mapFunc (720, GL_GREATER) \
     mapFunc (721, GL_NOTEQUAL) \
     mapFunc (722, GL_GEQUAL) \
-    mapFunc (723, GL_ALWAYS) 
-
+    mapFunc (723, GL_ALWAYS) \
+    mapFunc (724, GL_POINT) \
+    mapFunc (725, GL_LINE) \
+    mapFunc (726, GL_FILL) 
    
 
 #define AE_DEFINITION_MAP(i, t) {i, t},

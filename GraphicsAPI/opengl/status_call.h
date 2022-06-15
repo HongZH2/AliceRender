@@ -23,6 +23,7 @@ public:
 
     void setBlendFunc(const AE_BLEND_FUNC & sfunc, const AE_BLEND_FUNC & dfunc) override;    // set blend function
     void setDepthTestFunc(const AE_DEPTH_TEST_FUNC & func) override;    // set depth function
+    void setPolygonMode(const AE_POLYGON_MODE_TYPE & pmode) override;
     
     void clearColorBuffer() override;
     void clearDepthBuffer() override;

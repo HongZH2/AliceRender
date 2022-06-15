@@ -182,13 +182,20 @@ enum AE_DEPTH_TEST_FUNC{
     AE_ALWAYS
 };
 
+enum AE_POLYGON_MODE_TYPE{
+    AE_POINT = 724,
+    AE_LINE,
+    AE_FILL
+};
+
 // status to enable/disable
 enum AE_STATUS_TYPE{
     AE_BLEND = 800,
     AE_DEPTH_TEST,
     AE_ALPHA_TEST,
     AE_STENCIL_TEST,
-    AE_CULL_FACE
+    AE_CULL_FACE,
+    AE_POLYGON_MODE
 };
 
 

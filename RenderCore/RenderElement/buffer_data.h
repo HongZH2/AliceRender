@@ -12,7 +12,7 @@
 namespace AliceAPI {
 
 // default buffer size for // TODO
-#define DEFAULT_BUFFER_SIZE 256
+#define DEFAULT_BUFFER_SIZE 10
 
 template <class T>
 class DataBlock;

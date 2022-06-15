@@ -65,6 +65,8 @@ void StatusSaver::applyStatus(const StatusTypeFlag & setting){
         status_ops_->enableStatus(AE_CULL_FACE, 1);
     if(setting & (StatusTypeFlag)DisableFaceCull)
         status_ops_->enableStatus(AE_CULL_FACE, 0);
+    if(setting & (StatusTypeFlag)PolygonMode)
+        status_ops_->setPolygonMode(cur_.polygon_mode_);
 }
 
 void StatusSaver::saveAndApply(){
@@ -73,7 +75,8 @@ void StatusSaver::saveAndApply(){
         status_ops_->checkStatus(AE_DEPTH_TEST) ? prev_.setting_ &= (StatusTypeFlag)EnableDepthTest : prev_.setting_ &= (StatusTypeFlag)DisableDepthTest;
         status_ops_->checkStatus(AE_CULL_FACE) ? prev_.setting_ &= (StatusTypeFlag)EnableFaceCull : prev_.setting_ &= (StatusTypeFlag)DisableFaceCull;
         status_ops_->checkStatus(AE_BLEND) ? prev_.setting_ &= (StatusTypeFlag)EnableBlend : prev_.setting_ &= (StatusTypeFlag)DisableBlend;
-
+        status_ops_->checkStatus(AE_POLYGON_MODE) ? prev_.setting_ &= (StatusTypeFlag)EnableBlend : prev_.setting_ &= (StatusTypeFlag)DisableBlend;
+       
         // color and viewport
         prev_.view_ = status_ops_->checkViewport();
         is_initilized_ = true;
@@ -111,6 +114,11 @@ void StatusSaver::setBlendFunc(const AE_BLEND_FUNC &sfunc, const AE_BLEND_FUNC &
 
 void StatusSaver::setDepthFunc(const AE_DEPTH_TEST_FUNC &dfunc){
     cur_.depth_func_ = dfunc;
+}
+
+void StatusSaver::setPolygonModee(const AE_POLYGON_MODE_TYPE &pmode){
+    cur_.polygon_mode_ = pmode;
+    cur_.setting_ |= (StatusTypeFlag)PolygonMode;
 }
 
 

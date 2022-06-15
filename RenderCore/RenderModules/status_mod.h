@@ -23,6 +23,8 @@ public:
   virtual void setDepthTestFunc(const AE_DEPTH_TEST_FUNC & func) = 0;
   // set blend Functon 
   virtual void setBlendFunc(const AE_BLEND_FUNC & sfunc, const AE_BLEND_FUNC & dfunc) = 0;
+  // set Polygon Mode
+  virtual void setPolygonMode(const AE_POLYGON_MODE_TYPE & pmode) = 0;
 
   // buffer clearing
   virtual void clearColorBuffer() = 0;
@@ -55,7 +57,8 @@ enum StatusFlag {
   EnableFaceCull = 1 << 9,
   DisableFaceCull = 1 << 10,
   EnableBlend = 1 << 11,
-  DisableBlend = 1 << 12
+  DisableBlend = 1 << 12,
+  PolygonMode = 1 << 13
 };  
 
 /*
@@ -71,6 +74,7 @@ public:
   void setLineWidth(const float & width);  
   void setDepthFunc(const AE_DEPTH_TEST_FUNC & dfunc);
   void setBlendFunc(const AE_BLEND_FUNC & sfunc, const AE_BLEND_FUNC & dfunc);
+  void setPolygonModee(const AE_POLYGON_MODE_TYPE & pmode);
 
   StatusSaver();
   StatusSaver(const StatusTypeFlag & setting);
@@ -85,6 +89,7 @@ protected:
     AE_DEPTH_TEST_FUNC depth_func_;
     AE_BLEND_FUNC src_func_;
     AE_BLEND_FUNC dst_func_;
+    AE_POLYGON_MODE_TYPE polygon_mode_;
 
     StatusTypeFlag setting_ = 0;  
   } prev_, cur_;
