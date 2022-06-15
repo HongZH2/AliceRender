@@ -122,7 +122,9 @@ void ShaderProgram::parseAttribs(){
 }
 
 void ShaderProgram::linkProgram() {
-    glBindAttribLocation(program_id_, 0, remain_key.at(VERTEX_POSITION).c_str());
+    #ifdef OPENGL_VERSION2
+        glBindAttribLocation(program_id_, 0, remain_key.at(VERTEX_POSITION).c_str());
+    #endif // OPENGL_VERSION2
     glLinkProgram(program_id_);
 }
 
@@ -200,7 +202,6 @@ void ShaderProgram::setUniform1fv(const std::string &key, std::vector<float> & v
 
 void ShaderProgram::setAttributeVec3(const std::string &key, const GVec3 &vec){
     GLint loc = getAttribLocation(key);
-    //GLint loc = glGetAttribLocation(program_id_, key.c_str());
     if((int) loc != -1){
         glVertexAttrib3fv(loc, &vec[0]);
     }

@@ -2,8 +2,8 @@
 // Created by HongZh on 2022/05/07, 12:29:41
 //
 
-#ifndef ALICE_ENGINE_DATA_BUFFER_H
-#define ALICE_ENGINE_DATA_BUFFER_H
+#ifndef ALICE_ENGINE_BUFFER_DATA_H
+#define ALICE_ENGINE_BUFFER_DATA_H
 
 #include "RenderModules/buffer_mod.h"
 #include "RenderModules/shader_mod.h"
@@ -89,6 +89,7 @@ public:
     inline const uint32_t & getStride(){return stride_;}
     inline const uint32_t & getChunkSpan(){return chunk_span_;}
     inline const uint32_t & getLocation(){return loc_;}
+    inline const uint32_t & getAttribID(){return attr_id_;}
     inline void setLocation(const uint32_t & loc){loc_ = loc;}
     
     std::shared_ptr<DataChunk<T>> getChunkPtr();
@@ -99,6 +100,7 @@ private:
     uint32_t stride_ = 0;   // stride, 0 stands for the tightly pack
     uint32_t chunk_span_ = 1;  // chunk span stands for number of chunks that data info describs from the start chunk. 
     uint32_t loc_ = 0; // location in the shaders
+    uint32_t attr_id_ = 0;  // info id 
     std::string name_;  // key for shader
     std::shared_ptr<DataChunk<T>> start_chunk_; // restore the data block ptr.
     std::weak_ptr<DataBlock<T>> block_ptr_; 
@@ -111,14 +113,12 @@ DataInfo<T>::DataInfo(std::shared_ptr<DataChunk<T>> start_chunk,
              uint32_t span,
              uint32_t offset, 
              uint32_t stride,
-             uint32_t chunk_span){
-    start_chunk_ = start_chunk;
-    block_ptr_ = block_ptr;
-    name_ = key;
-    span_ = span;
-    offset_ = offset;
-    stride_ = stride;
-    chunk_span_ = chunk_span;
+             uint32_t chunk_span): start_chunk_(start_chunk), block_ptr_(block_ptr), name_(key), span_(span), offset_(offset), stride_(stride), chunk_span_(chunk_span){
+   
+    #ifdef OPENGL_VERSION3
+        if(block_ptr)
+            block_ptr->createBlockInfo(1, &attr_id_);
+    #endif // OPENGL_VERSION3
 }
 
 template <class T>
@@ -156,6 +156,12 @@ public:
     explicit DataBlock(const uint32_t & id);
     virtual ~DataBlock() = default;
 
+    #ifdef OPENGL_VERSION3
+        void createBlockInfo(const uint32_t & n, uint32_t * ids);   // create Block info
+        void bindBlockInfo(const uint32_t & attr_id);
+        void unbindBlockInfo();
+    #endif // OPENGL_VERSION3
+
     void createBlock(const AE_BUFFER_USEAGE & usage, 
                         const AE_DATA_TYPE & data_t, 
                         const AE_BUFFER_TYPE & draw_t,
@@ -191,6 +197,24 @@ protected:
     std::shared_ptr<BufferModule> buffer_module_;  // buffer module to do actual operations
 };
 
+#ifdef OPENGL_VERSION3
+    template <class T>
+    void DataBlock<T>::createBlockInfo(const uint32_t & n, uint32_t * ids){// create Block info
+        if(!ids) 
+            ids = (uint32_t*) malloc(n * sizeof(uint32_t)); // TODO free buffer
+        buffer_module_->createVertexArray(n, ids);
+    }   
+
+    template <class T>
+    void DataBlock<T>::bindBlockInfo(const uint32_t & attr_id){// create Block info
+        buffer_module_->bindVertexArray(attr_id);
+    }   
+
+    template <class T>
+    void DataBlock<T>::unbindBlockInfo(){// create Block info
+        buffer_module_->unbindVertexArray();
+    }   
+#endif // OPENGL_VERSION3
 
 template <class T>
 DataBlock<T>::DataBlock(const uint32_t & id): buffer_module_(BufferModule::getInstancePtr()), block_id_(id){
@@ -349,4 +373,4 @@ private:
 }
 
 
-#endif //ALICE_ENGINE_DATA_BUFFER_H
+#endif //ALICE_ENGINE_BUFFER_DATA_H

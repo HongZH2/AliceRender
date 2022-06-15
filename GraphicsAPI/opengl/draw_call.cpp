@@ -25,11 +25,19 @@ void DrawCall::drawArrays() {
 }
 
 void DrawCall::drawArraysInstance(){
-    glDrawArraysInstancedARB(GL_DEFS[usage_], offset_, num_vertices_, num_instances_);
+    #ifdef OPENGL_VERSION3
+        glDrawArraysInstanced(GL_DEFS[usage_], offset_, num_vertices_, num_instances_);
+    #elifdef OPENGL_VERSION2
+        glDrawArraysInstancedARB(GL_DEFS[usage_], offset_, num_vertices_, num_instances_);
+    #endif // OPENGL_VERSION3
 }
 
 void DrawCall::drawElementInstance(){
-    glDrawElementsInstancedARB(GL_DEFS[usage_], num_vertices_, GL_DEFS[data_t_], (void*)(offset_), num_instances_);
+    #ifdef OPENGL_VERSION3
+        glDrawElementsInstanced(GL_DEFS[usage_], num_vertices_, GL_DEFS[data_t_], (void*)(offset_), num_instances_);
+    #elifdef OPENGL_VERSION2
+        glDrawElementsInstancedARB(GL_DEFS[usage_], num_vertices_, GL_DEFS[data_t_], (void*)(offset_), num_instances_);
+    #endif // OPENGL_VERSION3
 }
 
 }

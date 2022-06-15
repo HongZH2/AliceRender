@@ -2,8 +2,8 @@
 // Created by zhanghong50 on 2022/1/19.
 //
 
-#ifndef ALICE_ENGINE_DATA_MOD_H
-#define ALICE_ENGINE_DATA_MOD_H
+#ifndef ALICE_ENGINE_BUFFER_MOD_H
+#define ALICE_ENGINE_BUFFER_MOD_H
 
 #include "module_predeclared.h"
 
@@ -14,6 +14,7 @@ class BufferModule{
 public:
     static std::shared_ptr<BufferModule> getInstancePtr();
     ~BufferModule();
+
     virtual void createBuffer(const AE_BUFFER_USEAGE & useage, 
                                 const AE_DATA_TYPE & data_t, 
                                 const AE_BUFFER_TYPE & buf_t, 
@@ -31,6 +32,13 @@ public:
     virtual void disableVAO(const uint32_t & loc) = 0; 
     virtual void setUpLayout(const uint64_t & offset, const uint32_t & span, const uint32_t & stride, const uint32_t & loc) = 0; // set VAO
 
+    // for opengl 3
+    #ifdef OPENGL_VERSION3
+        virtual void createVertexArray(const uint32_t & n, uint32_t * ids) = 0;
+        virtual void bindVertexArray(const uint32_t & attr_id) = 0;
+        virtual void unbindVertexArray() = 0;
+    #endif // OPENGL_VERSION3
+
     inline const AE_BUFFER_USEAGE & getBufferUsage(){return usage_;}
     inline const uint32_t & getBufferID(){return buf_id_;}
     inline const uint32_t & getBufferSize(){return buf_size_;}
@@ -41,6 +49,7 @@ protected:
     uint32_t buf_id_ = 0;
     uint32_t buf_size_ = 0;  // Note: sizeof(type) * len !!!! here
     bool is_allocated_ = false;
+
     BufferModule();
 };
 
@@ -49,4 +58,4 @@ protected:
 
 
 
-#endif //ALICE_ENGINE_DATA_MOD_H
+#endif //ALICE_ENGINE_BUFFER_MOD_H

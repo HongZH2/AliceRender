@@ -56,6 +56,10 @@ void DataModule::bindDataModule(const std::unordered_map<std::string, VariableIn
             auto block = info->getBlockPtr();
             auto chunk = info->getChunkPtr();
             if(block && chunk){
+                #ifdef OPENGL_VERSION3
+                    block->bindBlockInfo(info->getAttribID());
+                #endif // OPENGL_VERSION3
+
                 block->bindBlock();
                 uint64_t offset = info->getOffset() + chunk->getChunkOffset();
                 uint32_t span = info->getSpan();
@@ -72,6 +76,10 @@ void DataModule::bindDataModule(const std::unordered_map<std::string, VariableIn
             auto block = info->getBlockPtr();
             auto chunk = info->getChunkPtr();
             if(block && chunk){
+                #ifdef OPENGL_VERSION3
+                    block->bindBlockInfo(info->getAttribID());
+                #endif // OPENGL_VERSION3
+
                 block->bindBlock();
                 uint32_t offset = info->getOffset() + chunk->getChunkOffset();
                 uint32_t span = info->getSpan();
@@ -92,17 +100,33 @@ void DataModule::bindDataModule(const std::unordered_map<std::string, VariableIn
 void DataModule::unbindDataModule(){
     for(auto & [key, info]: infoF_){
         uint32_t loc = info->getLocation();
-        info->getBlockPtr()->unbindBlock();
-        info->getBlockPtr()->disableVertxAttrib(loc);
+        auto block = info->getBlockPtr();
+        if(block){
+            block->unbindBlock();
+            block->disableVertxAttrib(loc);
+            #ifdef OPENGL_VERSION3
+                block->unbindBlockInfo();
+            #endif // OPENGL_VERSION3
+        }
     }
     for(auto & [key, info]: infoUI_){
         uint32_t loc = info->getLocation();
-        info->getBlockPtr()->unbindBlock();
-        info->getBlockPtr()->disableVertxAttrib(loc);
+        auto block = info->getBlockPtr();
+        if(block){
+            block->unbindBlock();
+            block->disableVertxAttrib(loc);
+            #ifdef OPENGL_VERSION3
+                block->unbindBlockInfo();
+            #endif // OPENGL_VERSION3
+        }
     }
     if(indice_info_){
-        indice_info_->getBlockPtr()->unbindBlock();
+        auto block = indice_info_->getBlockPtr();
+        if(block)
+            block->unbindBlock();
     }
 }
+
+
 
 }
