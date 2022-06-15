@@ -41,9 +41,11 @@ public:
     uint32_t tex_id_ = 0; // GPU id
     uint32_t mod_id_ = 0;
 
+    uint32_t level_ = 0;
     AE_TEXTURE_PARAM param_ = AE_CLAMP_TO_BORDER;
     AE_TEXTURE_FILTER filter_ = AE_LINEAR;
     AE_TEXTURE_TYPE interal_type_ = AE_RGBA;
+    AE_TEXTURE_TYPE format_ = AE_RGBA;
     AE_DATA_TYPE data_t_ = AE_UBYTE;
     
     AE_TEXTURE_USEAGE usage_ = AE_TEXTURE_2D;

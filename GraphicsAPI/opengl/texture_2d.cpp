@@ -16,7 +16,7 @@ Texture2D::~Texture2D() {
 
 void Texture2D::setUpTexture(std::shared_ptr<TextureModule> tex_mod){
     glBindTexture(GL_DEFS[tex_mod->usage_], tex_mod->tex_id_);
-    glTexImage2D(GL_DEFS[tex_mod->usage_], 0, GL_DEFS[tex_mod->interal_type_], tex_mod->width_, tex_mod->height_, 0, GL_DEFS[tex_mod->interal_type_], GL_DEFS[tex_mod->data_t_], tex_mod->buffer_);
+    glTexImage2D(GL_DEFS[tex_mod->usage_], tex_mod->level_, GL_DEFS[tex_mod->interal_type_], tex_mod->width_, tex_mod->height_, 0, GL_DEFS[tex_mod->format_], GL_DEFS[tex_mod->data_t_], tex_mod->buffer_);
     setTextureParams(tex_mod);
     setTextureFilter(tex_mod);
     glBindTexture(GL_DEFS[tex_mod->usage_], 0);
