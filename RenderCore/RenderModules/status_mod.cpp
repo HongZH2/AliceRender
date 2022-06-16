@@ -44,6 +44,8 @@ void StatusSaver::applyStatus(const StatusTypeFlag & setting){
     // operations 
     if(setting & (StatusTypeFlag)SetBufferColor)
         status_ops_->setBufferColor(cur_.buffer_color_);
+    if(setting & (StatusTypeFlag)RefleshBuffer)
+        status_ops_->clearBuffer(cur_.buffer_mask_);
     if(setting  & (StatusTypeFlag)SetViewport)
         status_ops_->viewport(cur_.view_);
     if(setting  & (StatusTypeFlag)SetLineWidth)
@@ -105,6 +107,11 @@ void StatusSaver::setLineWidth(const float &width){
 void StatusSaver::setBufferColor(const GVec4 & color){
     cur_.buffer_color_ = color;
     cur_.setting_ |= (StatusTypeFlag)SetBufferColor;
+}
+
+void StatusSaver::setBufferMask(const AE_COLOR_BUFFER_MASK & mask){
+    cur_.buffer_mask_ = mask;
+    cur_.setting_ |= (StatusTypeFlag)RefleshBuffer;
 }
 
 void StatusSaver::setBlendFunc(const AE_BLEND_FUNC &sfunc, const AE_BLEND_FUNC &dfunc){

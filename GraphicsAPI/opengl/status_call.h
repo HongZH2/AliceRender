@@ -25,10 +25,7 @@ public:
     void setDepthTestFunc(const AE_DEPTH_TEST_FUNC & func) override;    // set depth function
     void setPolygonMode(const AE_POLYGON_MODE_TYPE & pmode) override;
     
-    void clearColorBuffer() override;
-    void clearDepthBuffer() override;
-    void clearStencilBuffer() override;
-    void clearAllBuffer() override;
+    void clearBuffer(const AE_COLOR_BUFFER_MASK & mask) override;
     void setBufferColor(const GVec4 & color) override;
     void setLineWidth(const float & width) override;
     void viewport(const GVec4i & rect) override;

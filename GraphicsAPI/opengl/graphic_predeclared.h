@@ -118,8 +118,14 @@ namespace AliceAPI {
     mapFunc (723, GL_ALWAYS) \
     mapFunc (724, GL_POINT) \
     mapFunc (725, GL_LINE) \
-    mapFunc (726, GL_FILL) 
-   
+    mapFunc (726, GL_FILL) \
+    mapFunc (727, GL_COLOR_BUFFER_BIT) \
+    mapFunc (728, GL_DEPTH_BUFFER_BIT) \
+    mapFunc (729, GL_STENCIL_BUFFER_BIT) \
+    mapFunc (730, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) \
+    mapFunc (731, GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT) \
+    mapFunc (732, GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT) \
+    mapFunc (733, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT) 
 
 #define AE_DEFINITION_MAP(i, t) {i, t},
 static std::unordered_map<int32_t, uint32_t> GL_DEFS{ AE_DEFINITION(AE_DEFINITION_MAP)};

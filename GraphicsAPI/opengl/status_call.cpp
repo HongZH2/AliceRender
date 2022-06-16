@@ -43,19 +43,8 @@ void StatusCall::setPolygonMode(const AE_POLYGON_MODE_TYPE & pmode){
     glPolygonMode(GL_FRONT_AND_BACK, GL_DEFS[pmode]);
 }
 
-void StatusCall::clearColorBuffer(){
-    glClear(GL_COLOR_BUFFER_BIT);
-}
-
-void StatusCall::clearDepthBuffer(){
-    glClear(GL_DEPTH_BUFFER_BIT);
-}
-
-void StatusCall::clearStencilBuffer(){
-    glClear(GL_STENCIL_BUFFER_BIT);
-}
-void StatusCall::clearAllBuffer(){
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
+void StatusCall::clearBuffer(const AE_COLOR_BUFFER_MASK & mask){
+    glClear(GL_DEFS[mask]);
 }
 
 void StatusCall::viewport(const GVec4i & rect){

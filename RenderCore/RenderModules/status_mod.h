@@ -27,10 +27,7 @@ public:
   virtual void setPolygonMode(const AE_POLYGON_MODE_TYPE & pmode) = 0;
 
   // buffer clearing
-  virtual void clearColorBuffer() = 0;
-  virtual void clearDepthBuffer() = 0;
-  virtual void clearStencilBuffer() = 0;
-  virtual void clearAllBuffer() = 0;
+  virtual void clearBuffer(const AE_COLOR_BUFFER_MASK & mask) = 0;
   virtual void setBufferColor(const GVec4 & color) = 0;
   virtual void setLineWidth(const float & width) = 0;
 
@@ -48,10 +45,7 @@ enum StatusFlag {
   SetBufferColor = 1 << 1,
   SetViewport = 1 << 2,  
   SetLineWidth = 1 << 3,
-  RefleshColor = 1 << 4,
-  RefleshDepth = 1 << 5,
-  RefleshStencil = 1 << 6,
-  RefleshAll = RefleshColor | RefleshDepth | RefleshStencil,
+  RefleshBuffer = 1 << 4,
   EnableDepthTest = 1 << 7,
   DisableDepthTest = 1 << 8,
   EnableFaceCull = 1 << 9,
@@ -70,6 +64,7 @@ public:
   void saveAndApply(); // save status
   void resetStatus(); // reset
   void setBufferColor(const GVec4 & color);  // delay status
+  void setBufferMask(const AE_COLOR_BUFFER_MASK & mask);
   void setViewPort(const GVec4i & rect); // delay status
   void setLineWidth(const float & width);  
   void setDepthFunc(const AE_DEPTH_TEST_FUNC & dfunc);
@@ -90,6 +85,7 @@ protected:
     AE_BLEND_FUNC src_func_;
     AE_BLEND_FUNC dst_func_;
     AE_POLYGON_MODE_TYPE polygon_mode_;
+    AE_COLOR_BUFFER_MASK buffer_mask_ = AE_COLOR_BUFFER_BIT;
 
     StatusTypeFlag setting_ = 0;  
   } prev_, cur_;
