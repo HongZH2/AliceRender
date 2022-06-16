@@ -24,11 +24,14 @@ public:
 
     static std::shared_ptr<TextureModule> loadTexture(std::shared_ptr<TextureModule> & tex_mod); // load external texture for single texture
     static std::shared_ptr<TextureModule> loadInternalTexture(std::shared_ptr<TextureModule> & tex_mod); // load single internal texture
-    static void loadBatchedTexture(std::vector<std::shared_ptr<TextureModule>> & textures);  // load batched textures
+
+    static void loadBatchedTexture(std::vector<std::shared_ptr<TextureModule>> & textures, const TextureType & type = ColorTexture);  // load batched textures
+    static void loadAssetTextures(std::vector<std::shared_ptr<TextureModule>> & textures);
     static void deleteTexure(const std::string & name);  // TODO: !!! 
 
     static const std::unordered_map<std::string, std::shared_ptr<TextureModule>> & getInternalTextures();
     static const std::unordered_map<std::string, std::shared_ptr<TextureModule>> & getExternalTextures();
+    static const std::unordered_map<std::string, std::shared_ptr<TextureModule>> & getAssetTextures();
 private:
     TexturePool();
 
@@ -37,6 +40,7 @@ private:
     std::unordered_map<std::string, std::shared_ptr<TextureModule>> texture_;  // all the textures
     std::unordered_map<std::string, std::shared_ptr<TextureModule>> external_tex_; // external textures 
     std::unordered_map<std::string, std::shared_ptr<TextureModule>> internal_tex_; // internal texture for render effects 
+    std::unordered_map<std::string, std::shared_ptr<TextureModule>> asset_tex_; // internal texture for render effects 
 };
 
 }
