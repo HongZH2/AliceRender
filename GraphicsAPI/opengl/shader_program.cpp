@@ -12,13 +12,14 @@ ShaderProgram::ShaderProgram() : unit_c_(0){
 
     vert_shader_ = new Shader(AE_VERTEX_SHADER);
     frag_shader_ = new Shader(AE_FRAGMENT_SHADER);
-
     createProgram();
 }
 
 ShaderProgram::~ShaderProgram() {
     delete vert_shader_;
     delete frag_shader_;
+    if(geom_shader_)
+        delete geom_shader_;
 }
 
 void ShaderProgram::linkVertShader(const char *data, uint32_t length) {
@@ -34,7 +35,15 @@ void ShaderProgram::linkFragShader(const char *data, uint32_t length) {
     frag_shader_->linkShaderSource(data, length);
     frag_shader_->compileShader();
     frag_shader_->getShaderStatus();
+}
 
+void ShaderProgram::linkGeomShader(const char *data, uint32_t length){
+    if(!geom_shader_) 
+        geom_shader_ = new Shader(AE_GEOMETRY_SHADER);
+    geom_shader_->createShader();
+    geom_shader_->linkShaderSource(data, length);
+    geom_shader_->compileShader();
+    geom_shader_->getShaderStatus();
 }
 
 void ShaderProgram::setUpProgram(const std::string & name) {
@@ -46,6 +55,8 @@ void ShaderProgram::setUpProgram(const std::string & name) {
     parseAttribs();
     vert_shader_->deleteShader();
     frag_shader_->deleteShader();
+    if(geom_shader_)
+        geom_shader_->deleteShader();
 }
 
 
@@ -56,6 +67,8 @@ void ShaderProgram::createProgram() {
 
 void ShaderProgram::attachProgram(){
     glAttachShader(program_id_, vert_shader_->shader_id_);
+    if(geom_shader_)
+        glAttachShader(program_id_, geom_shader_->shader_id_);
     glAttachShader(program_id_, frag_shader_->shader_id_);
 }
 

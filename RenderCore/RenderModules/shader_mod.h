@@ -44,6 +44,7 @@ public:
     virtual void unbindProgram() = 0;
     virtual void linkVertShader(const char *data, uint32_t length) = 0;
     virtual void linkFragShader(const char *data, uint32_t length) = 0;
+    virtual void linkGeomShader(const char *data, uint32_t length) = 0;
     virtual void setUpProgram(const std::string & name) = 0;
 
     virtual uint32_t getAttribLocation(const std::string & key) = 0;

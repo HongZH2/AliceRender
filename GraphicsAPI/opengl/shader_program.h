@@ -20,6 +20,7 @@ public:
     // set vertex shader and fragment Shader
     virtual void linkVertShader(const char *data, uint32_t length) override;
     virtual void linkFragShader(const char *data, uint32_t length) override;
+    virtual void linkGeomShader(const char *data, uint32_t length) override;
 
     // set up the shader program
     virtual void setUpProgram(const std::string & name) override;
@@ -64,9 +65,9 @@ public:
 protected:
     GLuint unit_c_;
     GLuint program_id_;
-    Shader * vert_shader_;
-    Shader * frag_shader_;
-    Shader * geom_shader_;
+    Shader * vert_shader_ = nullptr;
+    Shader * frag_shader_ = nullptr;
+    Shader * geom_shader_ = nullptr;
     void saveTextureInfo(const std::string & key);
 };
 

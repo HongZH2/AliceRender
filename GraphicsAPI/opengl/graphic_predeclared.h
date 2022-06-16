@@ -102,12 +102,6 @@ namespace AliceAPI {
     mapFunc (713, GL_CONSTANT_ALPHA)  \
     mapFunc (714, GL_ONE_MINUS_CONSTANT_ALPHA)  \
     mapFunc (715, GL_SRC_ALPHA_SATURATE)  \
-    mapFunc (800, GL_BLEND)  \
-    mapFunc (801, GL_DEPTH_TEST)  \
-    mapFunc (802, GL_ALPHA_TEST)  \
-    mapFunc (803, GL_STENCIL_TEST)  \
-    mapFunc (804, GL_CULL_FACE) \
-    mapFunc (805, GL_POLYGON_MODE) \
     mapFunc (716, GL_NEVER) \
     mapFunc (717, GL_LESS) \
     mapFunc (718, GL_EQUAL) \
@@ -125,7 +119,14 @@ namespace AliceAPI {
     mapFunc (730, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) \
     mapFunc (731, GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT) \
     mapFunc (732, GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT) \
-    mapFunc (733, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT) 
+    mapFunc (733, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)  \
+    mapFunc (800, GL_BLEND)  \
+    mapFunc (801, GL_DEPTH_TEST)  \
+    mapFunc (802, GL_ALPHA_TEST)  \
+    mapFunc (803, GL_STENCIL_TEST)  \
+    mapFunc (804, GL_CULL_FACE) \
+    mapFunc (805, GL_POLYGON_MODE) \
+    mapFunc (806, GL_PROGRAM_POINT_SIZE)
 
 #define AE_DEFINITION_MAP(i, t) {i, t},
 static std::unordered_map<int32_t, uint32_t> GL_DEFS{ AE_DEFINITION(AE_DEFINITION_MAP)};

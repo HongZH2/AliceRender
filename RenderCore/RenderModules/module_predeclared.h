@@ -14,7 +14,6 @@
 
 namespace AliceAPI {
 
-
 // FBO
 #ifdef __APPLE__
     #define FBO_OFFSET 2.0
@@ -26,7 +25,7 @@ namespace AliceAPI {
 
 
 using TextureTypeFlag = uint32_t;
-using StatusTypeFlag = uint64_t;
+using StatusTypeFlag = uint32_t;
 
 /*
 * define Engine API TYPE and USEAGE
@@ -205,7 +204,8 @@ enum AE_STATUS_TYPE{
     AE_ALPHA_TEST,
     AE_STENCIL_TEST,
     AE_CULL_FACE,
-    AE_POLYGON_MODE
+    AE_POLYGON_MODE,
+    AE_PROGRAM_POINT_SIZE
 };
 
 

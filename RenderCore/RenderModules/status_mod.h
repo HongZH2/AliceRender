@@ -39,43 +39,39 @@ protected:
   StatusModule();
 };
 
-// status flag for applying setting 
-enum StatusFlag {
-  NoneSetting = 0,
-  SetBufferColor = 1 << 1,
-  SetViewport = 1 << 2,  
-  SetLineWidth = 1 << 3,
-  RefleshBuffer = 1 << 4,
-  EnableDepthTest = 1 << 7,
-  DisableDepthTest = 1 << 8,
-  EnableFaceCull = 1 << 9,
-  DisableFaceCull = 1 << 10,
-  EnableBlend = 1 << 11,
-  DisableBlend = 1 << 12,
-  PolygonMode = 1 << 13
-};  
 
 /*
 * Delayed status setting 
 */
 class StatusSaver{
 public:
-  void saveAndApply(StatusTypeFlag setting);  // TODO: remove
   void saveAndApply(); // save status
   void resetStatus(); // reset
+ 
+  template<typename T, typename ... R>
+  void pushEnableList(T && flag, R && ... rest){  // push status that you 'd like to enable 
+    enable_list_.push_back(flag);
+    if constexpr (sizeof...(rest) != 0) pushEnableList(rest ...);
+  }
+
+  template<typename T, typename ... R>
+  void pushDisableList(T && flag, R && ... rest){ // push status that you 'd like to disable 
+    enable_list_.push_back(flag);
+    if constexpr (sizeof...(rest) != 0) pushDisableList(rest ...);
+  }
+
   void setBufferColor(const GVec4 & color);  // delay status
-  void setBufferMask(const AE_COLOR_BUFFER_MASK & mask);
-  void setViewPort(const GVec4i & rect); // delay status
+  void clearBufferBit(const AE_COLOR_BUFFER_MASK & mask);
+  void setViewPort(const GVec4i & rect); 
   void setLineWidth(const float & width);  
   void setDepthFunc(const AE_DEPTH_TEST_FUNC & dfunc);
   void setBlendFunc(const AE_BLEND_FUNC & sfunc, const AE_BLEND_FUNC & dfunc);
-  void setPolygonModee(const AE_POLYGON_MODE_TYPE & pmode);
+  void setPolygonMode(const AE_POLYGON_MODE_TYPE & pmode);
 
   StatusSaver();
-  StatusSaver(const StatusTypeFlag & setting);
   ~StatusSaver();
 protected:
-  void applyStatus(const StatusTypeFlag & setting);
+
   struct StatusContainer{
     float line_width_ = 1.0f;
     GVec4i view_;
@@ -85,12 +81,12 @@ protected:
     AE_BLEND_FUNC src_func_;
     AE_BLEND_FUNC dst_func_;
     AE_POLYGON_MODE_TYPE polygon_mode_;
-    AE_COLOR_BUFFER_MASK buffer_mask_ = AE_COLOR_BUFFER_BIT;
-
-    StatusTypeFlag setting_ = 0;  
+    AE_COLOR_BUFFER_MASK buffer_mask_ = AE_COLOR_BUFFER_BIT;  
   } prev_, cur_;
-  
-  bool is_initilized_ = false;
+
+  std::vector<AE_STATUS_TYPE> enable_list_;
+  std::vector<AE_STATUS_TYPE> disable_list_;
+  std::vector<std::function<void(StatusContainer &)>> operations_;
 
   std::shared_ptr<StatusModule> status_ops_; 
 };

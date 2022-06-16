@@ -27,105 +27,90 @@ StatusSaver::StatusSaver():status_ops_(StatusModule::getInstancePtr()){
 
 }
 
-StatusSaver::StatusSaver(const StatusTypeFlag & setting):status_ops_(StatusModule::getInstancePtr()){
-    cur_.setting_ = setting;
-}
-
 StatusSaver::~StatusSaver(){
 }
 
-void StatusSaver::saveAndApply(StatusTypeFlag setting){
-    cur_.setting_ = setting;
-    saveAndApply();
-}
-
-
-void StatusSaver::applyStatus(const StatusTypeFlag & setting){
-    // operations 
-    if(setting & (StatusTypeFlag)SetBufferColor)
-        status_ops_->setBufferColor(cur_.buffer_color_);
-    if(setting & (StatusTypeFlag)RefleshBuffer)
-        status_ops_->clearBuffer(cur_.buffer_mask_);
-    if(setting  & (StatusTypeFlag)SetViewport)
-        status_ops_->viewport(cur_.view_);
-    if(setting  & (StatusTypeFlag)SetLineWidth)
-        status_ops_->setLineWidth(cur_.line_width_);
-
-    if(setting & (StatusTypeFlag)EnableDepthTest){
-        status_ops_->enableStatus(AE_DEPTH_TEST, 1);
-        status_ops_->setDepthTestFunc(cur_.depth_func_);
-    }
-    if(setting & (StatusTypeFlag)DisableDepthTest)
-        status_ops_->enableStatus(AE_DEPTH_TEST, 0);
-    if(setting & (StatusTypeFlag)EnableBlend){
-        status_ops_->enableStatus(AE_BLEND, 1);
-        status_ops_->setBlendFunc(cur_.src_func_, cur_.dst_func_);
-    }
-    if(setting & (StatusTypeFlag)DisableBlend)
-        status_ops_->enableStatus(AE_BLEND, 0);
-    if(setting & (StatusTypeFlag)EnableFaceCull)
-        status_ops_->enableStatus(AE_CULL_FACE, 1);
-    if(setting & (StatusTypeFlag)DisableFaceCull)
-        status_ops_->enableStatus(AE_CULL_FACE, 0);
-    if(setting & (StatusTypeFlag)PolygonMode)
-        status_ops_->setPolygonMode(cur_.polygon_mode_);
-}
-
 void StatusSaver::saveAndApply(){
-    if(!is_initilized_){
-        // status
-        status_ops_->checkStatus(AE_DEPTH_TEST) ? prev_.setting_ &= (StatusTypeFlag)EnableDepthTest : prev_.setting_ &= (StatusTypeFlag)DisableDepthTest;
-        status_ops_->checkStatus(AE_CULL_FACE) ? prev_.setting_ &= (StatusTypeFlag)EnableFaceCull : prev_.setting_ &= (StatusTypeFlag)DisableFaceCull;
-        status_ops_->checkStatus(AE_BLEND) ? prev_.setting_ &= (StatusTypeFlag)EnableBlend : prev_.setting_ &= (StatusTypeFlag)DisableBlend;
-        status_ops_->checkStatus(AE_POLYGON_MODE) ? prev_.setting_ &= (StatusTypeFlag)EnableBlend : prev_.setting_ &= (StatusTypeFlag)DisableBlend;
-       
-        // color and viewport
-        prev_.view_ = status_ops_->checkViewport();
-        is_initilized_ = true;
+    // states
+    // enable all the states in the enable_list
+    for(auto & flag: enable_list_){
+        status_ops_->enableStatus(flag, 1);
     }
-    applyStatus(cur_.setting_);
-}
+    // disable all the states in the disable_list
+    for(auto & flag: disable_list_){
+        status_ops_->enableStatus(flag, 0);
+    }
 
-    
+    // operations
+    for(auto ops: operations_){
+        ops(cur_);
+    }
+}
 
 void StatusSaver::resetStatus(){
-    if(cur_.setting_ & (StatusTypeFlag)SetBufferColor)
-        status_ops_->setBufferColor(prev_.buffer_color_);
-    applyStatus(prev_.setting_); 
+    // enable all the states in the disable_list
+    for(auto & flag: disable_list_){
+        status_ops_->enableStatus(flag, 1);
+    }
+    // disable all the states in the enable_list
+    for(auto & flag: enable_list_){
+        status_ops_->enableStatus(flag, 0);
+    }
+
+    // operations
+    // for(auto ops: operations_){
+    //     ops(prev_);
+    // }
 }
 
 void StatusSaver::setViewPort(const GVec4i & rect){
     cur_.view_ = rect;
-    cur_.setting_ |= (StatusTypeFlag)SetViewport;
+    operations_.emplace_back([&](StatusContainer & stat){
+        status_ops_->viewport(stat.view_);
+    });
 }
 
 void StatusSaver::setLineWidth(const float &width){
     cur_.line_width_ = width;
-    cur_.setting_  |= (StatusTypeFlag)SetLineWidth;
+    operations_.emplace_back([&](StatusContainer & stat){
+        status_ops_->setLineWidth(stat.line_width_);
+    });
 }
 
 void StatusSaver::setBufferColor(const GVec4 & color){
     cur_.buffer_color_ = color;
-    cur_.setting_ |= (StatusTypeFlag)SetBufferColor;
+    operations_.emplace_back([&](StatusContainer & stat){
+        status_ops_->setBufferColor(stat.buffer_color_);
+    });
 }
 
-void StatusSaver::setBufferMask(const AE_COLOR_BUFFER_MASK & mask){
+void StatusSaver::clearBufferBit(const AE_COLOR_BUFFER_MASK & mask){
     cur_.buffer_mask_ = mask;
-    cur_.setting_ |= (StatusTypeFlag)RefleshBuffer;
+    operations_.emplace_back([&](StatusContainer & stat){
+        status_ops_->clearBuffer(stat.buffer_mask_);
+    });
 }
 
 void StatusSaver::setBlendFunc(const AE_BLEND_FUNC &sfunc, const AE_BLEND_FUNC &dfunc){
     cur_.src_func_ = sfunc;
     cur_.dst_func_ = dfunc;
+    operations_.emplace_back([&](StatusContainer & stat){
+        status_ops_->setBlendFunc(stat.src_func_, stat.dst_func_);
+    });
 }
 
 void StatusSaver::setDepthFunc(const AE_DEPTH_TEST_FUNC &dfunc){
     cur_.depth_func_ = dfunc;
+    operations_.emplace_back([&](StatusContainer & stat){
+        status_ops_->setDepthTestFunc(stat.depth_func_);
+    });
 }
 
-void StatusSaver::setPolygonModee(const AE_POLYGON_MODE_TYPE &pmode){
+void StatusSaver::setPolygonMode(const AE_POLYGON_MODE_TYPE &pmode){
     cur_.polygon_mode_ = pmode;
-    cur_.setting_ |= (StatusTypeFlag)PolygonMode;
+    operations_.emplace_back([&](StatusContainer & stat){
+        status_ops_->setPolygonMode(stat.polygon_mode_);
+    });
 }
 
 
