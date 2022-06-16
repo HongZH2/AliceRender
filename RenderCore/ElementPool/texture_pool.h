@@ -31,7 +31,7 @@ public:
 
     static const std::unordered_map<std::string, std::shared_ptr<TextureModule>> & getInternalTextures();
     static const std::unordered_map<std::string, std::shared_ptr<TextureModule>> & getExternalTextures();
-    static const std::unordered_map<std::string, std::shared_ptr<TextureModule>> & getAssetTextures();
+    static const std::vector<std::shared_ptr<TextureModule>> & getAssetTextures();
 private:
     TexturePool();
 
@@ -40,7 +40,7 @@ private:
     std::unordered_map<std::string, std::shared_ptr<TextureModule>> texture_;  // all the textures
     std::unordered_map<std::string, std::shared_ptr<TextureModule>> external_tex_; // external textures 
     std::unordered_map<std::string, std::shared_ptr<TextureModule>> internal_tex_; // internal texture for render effects 
-    std::unordered_map<std::string, std::shared_ptr<TextureModule>> asset_tex_; // internal texture for render effects 
+    std::vector<std::shared_ptr<TextureModule>> asset_tex_; // internal texture for render effects 
 };
 
 }

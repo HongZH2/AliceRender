@@ -99,7 +99,7 @@ void TexturePool::loadAssetTextures(std::vector<std::shared_ptr<TextureModule>> 
         block->addTextureModule(tex);   
         tex->block_ = block;
         instance.texture_[tex->name_] = tex;
-        instance.asset_tex_[tex->name_] = tex;
+        instance.asset_tex_.emplace_back(tex);
     }
     block->setUpTexture();
 
@@ -123,7 +123,7 @@ const std::unordered_map<std::string, std::shared_ptr<TextureModule>> & TextureP
     return instance.external_tex_;
 }
 
-const std::unordered_map<std::string, std::shared_ptr<TextureModule>> & TexturePool::getAssetTextures(){
+const std::vector<std::shared_ptr<TextureModule>> & TexturePool::getAssetTextures(){
     TexturePool & instance = TexturePool::getInstance();
     return instance.asset_tex_;
 }
