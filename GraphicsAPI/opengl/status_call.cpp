@@ -43,7 +43,7 @@ void StatusCall::setStencilTestFunc(const AE_TEST_FUNC &func, const int32_t &ref
     glStencilFunc(GL_DEFS[func], ref, mask);
 }
 
-void setStencilOps(const AE_TEST_OPS & sfail, const AE_TEST_OPS & dpfail, const AE_TEST_OPS & dppass){
+void StatusCall::setStencilOps(const AE_TEST_OPS & sfail, const AE_TEST_OPS & dpfail, const AE_TEST_OPS & dppass){
     glStencilOp(sfail, dpfail, dppass);    
 }
 

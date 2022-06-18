@@ -108,14 +108,14 @@ void StatusSaver::setDepthFunc(const AE_TEST_FUNC &dfunc){
 
 void StatusSaver::setStencilFunc(const AE_TEST_FUNC &func, const int32_t &ref, const uint32_t &mask){
     cur_.stencil_func_ = func;
-    operations_.emplace_back([&](){
-        status_ops_->setStencilTestFunc(cur_.stencil_func_, ref, mask);
+    operations_.emplace_back([&](StatusContainer & stat){
+        status_ops_->setStencilTestFunc(stat.stencil_func_, ref, mask);
     });
 }
 
 void StatusSaver::setStencilOps(const AE_TEST_OPS &sfail, const AE_TEST_OPS &dpfail, const AE_TEST_OPS &dppass){
     // TODO: check status
-    operations_.emplace_back([&](){
+    operations_.emplace_back([&](StatusContainer & stat){
         status_ops_->setStencilOps(sfail, dpfail, dppass);
     });
 }
@@ -129,8 +129,8 @@ void StatusSaver::setPolygonMode(const AE_POLYGON_MODE_TYPE &pmode){
 
 void StatusSaver::setStencilMask(const uint8_t &stencil_mask){
     cur_.stencil_mask_ = stencil_mask;
-    operations_.emplace_back([&](){
-        status_ops_->setStencilMask(cur_.stencil_mask_);
+    operations_.emplace_back([&](StatusContainer & stat){
+        status_ops_->setStencilMask(stat.stencil_mask_);
     });
 }
 
