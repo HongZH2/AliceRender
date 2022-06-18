@@ -170,7 +170,7 @@ enum AE_BLEND_FUNC{
     AE_SRC_ALPHA_SATURATE
 };
 
-enum AE_DEPTH_TEST_FUNC{
+enum AE_TEST_FUNC{
     AE_NEVER = 716, 
     AE_LESS,
     AE_EQUAL,
@@ -195,6 +195,17 @@ enum AE_COLOR_BUFFER_MASK{
     AE_COLOR_STENCIL_BUFFER_BIT,
     AE_DEPTH_STENCIL_BUFFER_BIT,
     AE_ALL_BUFFER_BIT
+};
+
+enum AE_TEST_OPS{
+    AE_OPS_KEEP = 734,
+    AE_OPS_ZERO,	
+    AE_OPS_REPLACE,	
+    AE_OPS_INCR,	
+    AE_OPS_INCR_WRAP,	
+    AE_OPS_DECR,	
+    AE_OPS_DECR_WRAP,	
+    AE_OPS_INVERT	
 };
 
 // status to enable/disable

@@ -120,6 +120,14 @@ namespace AliceAPI {
     mapFunc (731, GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT) \
     mapFunc (732, GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT) \
     mapFunc (733, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)  \
+    mapFunc (734, GL_KEEP)  \
+    mapFunc (735, GL_ZERO)  \
+    mapFunc (736, GL_REPLACE)  \
+    mapFunc (737, GL_INCR)  \
+    mapFunc (738, GL_INCR_WRAP)  \
+    mapFunc (739, GL_DECR)  \
+    mapFunc (740, GL_DECR_WRAP)  \
+    mapFunc (741, GL_INVERT)  \
     mapFunc (800, GL_BLEND)  \
     mapFunc (801, GL_DEPTH_TEST)  \
     mapFunc (802, GL_ALPHA_TEST)  \

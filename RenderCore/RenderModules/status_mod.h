@@ -20,7 +20,10 @@ public:
   virtual int32_t checkStatus(const AE_STATUS_TYPE & stype) = 0;
 
   // set DepthTest Function
-  virtual void setDepthTestFunc(const AE_DEPTH_TEST_FUNC & func) = 0;
+  virtual void setDepthTestFunc(const AE_TEST_FUNC & func) = 0;
+  // set StencilTEst Function
+  virtual void setStencilTestFunc(const AE_TEST_FUNC & func, const int32_t & ref, const uint32_t & mask) = 0;
+  virtual void setStencilOps(const AE_TEST_OPS & sfail, const AE_TEST_OPS & dpfail, const AE_TEST_OPS & dppass) = 0;
   // set blend Functon 
   virtual void setBlendFunc(const AE_BLEND_FUNC & sfunc, const AE_BLEND_FUNC & dfunc) = 0;
   // set Polygon Mode
@@ -29,6 +32,9 @@ public:
   // buffer clearing
   virtual void clearBuffer(const AE_COLOR_BUFFER_MASK & mask) = 0;
   virtual void setBufferColor(const GVec4 & color) = 0;
+  // stencil mask 
+  virtual void setStencilMask(const uint8_t & mask) = 0;
+
   virtual void setLineWidth(const float & width) = 0;
 
   // viewport
@@ -64,9 +70,12 @@ public:
   void clearBufferBit(const AE_COLOR_BUFFER_MASK & mask);
   void setViewPort(const GVec4i & rect); 
   void setLineWidth(const float & width);  
-  void setDepthFunc(const AE_DEPTH_TEST_FUNC & dfunc);
+  void setDepthFunc(const AE_TEST_FUNC & dfunc);
+  void setStencilFunc(const AE_TEST_FUNC & func, const int32_t & ref, const uint32_t & mask);
+  void setStencilOps(const AE_TEST_OPS & sfail, const AE_TEST_OPS & dpfail, const AE_TEST_OPS & dppass);
   void setBlendFunc(const AE_BLEND_FUNC & sfunc, const AE_BLEND_FUNC & dfunc);
   void setPolygonMode(const AE_POLYGON_MODE_TYPE & pmode);
+  void setStencilMask(const uint8_t & stencil_mask);
 
   StatusSaver();
   ~StatusSaver();
@@ -74,10 +83,12 @@ protected:
 
   struct StatusContainer{
     float line_width_ = 1.0f;
+    uint8_t stencil_mask_;
     GVec4i view_;
     GVec4 buffer_color_ = GVec4(0.0f);
 
-    AE_DEPTH_TEST_FUNC depth_func_;
+    AE_TEST_FUNC depth_func_;
+    AE_TEST_FUNC stencil_func_;
     AE_BLEND_FUNC src_func_;
     AE_BLEND_FUNC dst_func_;
     AE_POLYGON_MODE_TYPE polygon_mode_;

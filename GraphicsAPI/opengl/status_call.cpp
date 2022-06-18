@@ -35,8 +35,16 @@ void StatusCall::setBlendFunc(const AE_BLEND_FUNC & sfunc, const AE_BLEND_FUNC &
     glBlendFunc(GL_DEFS[sfunc], GL_DEFS[dfunc]);
 }
 
-void StatusCall::setDepthTestFunc(const AE_DEPTH_TEST_FUNC &func){
+void StatusCall::setDepthTestFunc(const AE_TEST_FUNC &func){
     glDepthFunc(GL_DEFS[func]);
+}
+
+void StatusCall::setStencilTestFunc(const AE_TEST_FUNC &func, const int32_t &ref, const uint32_t &mask){
+    glStencilFunc(GL_DEFS[func], ref, mask);
+}
+
+void setStencilOps(const AE_TEST_OPS & sfail, const AE_TEST_OPS & dpfail, const AE_TEST_OPS & dppass){
+    glStencilOp(sfail, dpfail, dppass);    
 }
 
 void StatusCall::setPolygonMode(const AE_POLYGON_MODE_TYPE & pmode){
@@ -59,6 +67,10 @@ GVec4i StatusCall::checkViewport(){
 
 void StatusCall::setBufferColor(const GVec4 & color){
     glClearColor(color[0], color[1], color[2], color[3]);
+}
+
+void StatusCall::setStencilMask(const uint8_t &mask){
+    glStencilMask(mask);
 }
 
 void StatusCall::setLineWidth(const float &width){
