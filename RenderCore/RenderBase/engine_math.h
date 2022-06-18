@@ -36,19 +36,19 @@ typedef glm::mat2x2 GMat2;
 
 
 template <typename T> 
-inline GQuat GQuatCast( T const& rot_mat){
+inline decltype(auto) GQuatCast( T const& rot_mat){
    return glm::quat_cast(rot_mat);
 }
 
-inline GMat4 GMat4Cast( GQuat const& rot_quat){
+inline decltype(auto) GMat4Cast( GQuat const& rot_quat){
    return glm::mat4_cast(rot_quat);
 }
 
-inline GMat4 GMat3Cast( GQuat const& rot_quat){
+inline decltype(auto) GMat3Cast( GQuat const& rot_quat){
    return glm::mat3_cast(rot_quat);
 }
 
-inline GVec3 GQuat2Euler(GQuat const& rot_quat){
+inline decltype(auto) GQuat2Euler(GQuat const& rot_quat){
     return glm::eulerAngles(rot_quat);
 }
 
@@ -58,75 +58,81 @@ inline bool GDecomposeMat(GMat4 & mat, GVec3 & scale, GQuat & quat, GVec3 & tran
 }
 
 template <typename T>
-inline T GDot (T const& vec1, T const& vec2){
+inline decltype(auto) GDot (T const& vec1, T const& vec2){
     return glm::dot(vec1, vec2);
 }
 
 template <typename T>
-inline T GNormalize (T const& vec){
+inline decltype(auto) GDistance2 (T const& vec1, T const& vec2){
+    return glm::distance2(vec1, vec2);
+}
+
+
+template <typename T>
+inline decltype(auto) GNormalize (T const& vec){
     return glm::normalize(vec);
 }
 
 template <typename T>
-inline T GCross (T const& vec1, T const& vec2){
+inline decltype(auto) GCross (T const& vec1, T const& vec2){
     return glm::cross(vec1, vec2);
 }
 
 template <typename T>
-inline T GRadians (T const& val){
+inline decltype(auto) GRadians (T const& val){
     return glm::radians(val);
 }
 
 template <typename T>
-inline T GDegrees (T const& val){
+inline decltype(auto) GDegrees (T const& val){
     return glm::degrees(val);
 }
 
 //TODO
 // translation
 template <typename T>
-inline T GTranslate (T const& mat, GVec3 const& vec){
+inline decltype(auto) GTranslate (T const& mat, GVec3 const& vec){
     return glm::translate(mat, vec);
 }
 
 // scaling
 template <typename T>
-inline T GScale (T const& mat, GVec3 const& vec){
+inline decltype(auto) GScale (T const& mat, GVec3 const& vec){
     return glm::scale(mat, vec);
 }
 
 // translation
 template <typename T>
-inline T GRotate (T const& mat, float angle, GVec3 const& vec){
+inline decltype(auto) GRotate (T const& mat, float angle, GVec3 const& vec){
     return glm::rotate(mat, GRadians(angle), vec);
 }
 
 // lookAt transformation
-inline GMat4 GLookAt(GVec3 const & pos, GVec3 const& center, GVec3 const& up){
+inline decltype(auto) GLookAt(GVec3 const & pos, GVec3 const& center, GVec3 const& up){
     return glm::lookAt(pos, center, up);
 }
 
 // perspective transformation
 template <typename T>
-inline GMat4 GPerspective(T const& fovy, T const& ratio, T const& near, T const& far){
+inline decltype(auto) GPerspective(T const& fovy, T const& ratio, T const& near, T const& far){
     return glm::perspective(fovy, ratio, near, far);
 }
 
 // orth
 template <typename T>
-inline GMat4 GOrtho(T const& left, T const& right,  T const& top, T const& bottom, T const& near, T const& far){
+inline decltype(auto) GOrtho(T const& left, T const& right,  T const& top, T const& bottom, T const& near, T const& far){
     return glm::ortho(left, right, top, bottom, near, far);
 }
 
 // inverse
 template <typename T>
-inline T GInverse(T const & mat){
+inline decltype(auto) GInverse(T const & mat){
     return glm::inverse(mat);
 }
 
 // transpose
 template <typename T>
-inline T Gtranspose(T const & mat){
+inline decltype(auto) GTranspose(T const & mat){
     return glm::transpose(mat);
 }
 
