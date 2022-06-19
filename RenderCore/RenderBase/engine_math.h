@@ -34,7 +34,6 @@ typedef glm::mat2x2 GMat2;
 // functions
 
 
-
 template <typename T> 
 inline decltype(auto) GQuatCast( T const& rot_mat){
    return glm::quat_cast(rot_mat);
@@ -63,10 +62,14 @@ inline decltype(auto) GDot (T const& vec1, T const& vec2){
 }
 
 template <typename T>
-inline decltype(auto) GDistance2 (T const& vec1, T const& vec2){
-    return glm::distance2(vec1, vec2);
+inline decltype(auto) GDistance(T const& vec1, T const& vec2){
+    return glm::distance(vec1, vec2);
 }
 
+template <typename T>
+inline decltype(auto) Glength(T const& vec1){
+    return glm::length(vec1);
+}
 
 template <typename T>
 inline decltype(auto) GNormalize (T const& vec){
