@@ -39,8 +39,8 @@ public:
 
     const FBOSize & getFBOSize();   
     
-    inline void setStatus(std::shared_ptr<StatusSaver> status){status_ = status;}
-    inline std::shared_ptr<StatusSaver> getStatus(){return status_;}
+    // inline void setStatus(std::shared_ptr<StatusSaver> status){status_ = status;}
+    // inline std::shared_ptr<StatusSaver> getStatus(){return status_;}
 
 protected:    
     FBOModule();
@@ -50,7 +50,7 @@ protected:
     std::string name_;
     uint32_t num_of_color_attachment_ = 0;
     std::unordered_map<TextureType, std::string> attached_tex_;
-    std::shared_ptr<StatusSaver> status_;
+    // std::shared_ptr<StatusSaver> status_;
 };
 
 }
