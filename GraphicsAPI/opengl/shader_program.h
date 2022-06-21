@@ -32,6 +32,7 @@ public:
     virtual void getProgramStatus();
     virtual void parseUniforms();
     virtual void parseAttribs();
+    virtual void parseUniformBlocks();
     virtual void bindProgram() override;
     virtual void unbindProgram() override;
     virtual void deleteProgram();
@@ -39,15 +40,11 @@ public:
 
     // get uniform location
     // TODO
-    virtual uint32_t getAttribLocation(const std::string & key) override;
-    virtual uint32_t getUniformLocation(const std::string &key) override;
-    virtual uint32_t getUniformBlockLocation(const std::string & key) override;
-    // virtual uint32_t getPosLocation() override;
-    // virtual uint32_t getUVLocation() override;
-    // virtual uint32_t getNormLocation() override;
-    // virtual uint32_t getTangentLocation() override;
-    // virtual uint32_t getBitangentLocation() override;
-    virtual void setUniformBlockBinding(uint32_t & loc, uint32_t & target) override; 
+    virtual int32_t getAttribLocation(const std::string & key) override;
+    virtual int32_t getUniformLocation(const std::string &key) override;
+    virtual int32_t getUniformBlockIndex(const std::string & key) override;
+
+    virtual void setUniformBlockBinding(uint32_t & index, uint32_t & binding) override; 
     virtual void setAttributeVec3(const std::string & key, const GVec3 & vec) override;
     virtual void setAttributeMat4(const std::string & key, const GMat4 & mat) override;
 

@@ -246,16 +246,24 @@ enum UniformKey {
     TEX_LOD
 };
 
-static std::map<uint32_t , std::string> remain_key ={
+enum UniformBlockKey{
+    CAMERA_UNIFORMS = 0x3000,
+    LIGHT_UNIFORMS, 
+    MATERIAL_UNIFORMS
+};
+
+static std::unordered_map<uint32_t , std::string> remain_key ={
     {VERTEX_POSITION, "Pos"},
     {TEXTURE_COORDINATE, "UV"},
     {VERTEX_NORMAL, "Norm"},
     {VERTEX_TANGENT, "Tangent"},
     {VERTEX_BITANGENT, "Bitangent"},
     {OBJECT_COLOR, "ObjectColor"},
+    {LIGHT_UNIFORMS, "LightUniforms"},
     {LIGHT_POSITION, "LightPos"},
     {LIGHT_COLOR, "LightColor"},
     {LIGHT_DIR, "LightDir"},
+    {CAMERA_UNIFORMS, "CameraUniforms"},
     {CAMERA_POSITION, "CameraPos"},
     {CAMERA_VIEW_MAT, "ViewMat"},
     {CAMERA_PROSPECTIVE_MAT, "ProjMat"},
@@ -264,6 +272,12 @@ static std::map<uint32_t , std::string> remain_key ={
     {TEX_LOD, "Lod"},
 };
 
+// uniform block binding map // TODO: extended 
+static std::unordered_map<uint32_t, uint32_t> uniform_block_bindings = {
+    {CAMERA_UNIFORMS, 0},
+    {LIGHT_UNIFORMS, 1},
+    {MATERIAL_UNIFORMS, 2}
+};
 
 
 }

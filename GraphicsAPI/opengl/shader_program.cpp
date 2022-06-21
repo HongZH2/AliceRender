@@ -53,6 +53,7 @@ void ShaderProgram::setUpProgram(const std::string & name) {
     getProgramStatus();
     parseUniforms();
     parseAttribs();
+    parseUniformBlocks();
     vert_shader_->deleteShader();
     frag_shader_->deleteShader();
     if(geom_shader_)
@@ -109,6 +110,7 @@ void ShaderProgram::parseUniforms(){
             default:{ //TODO
                 struct VariableInfo info;
                 info.loc_ = getUniformLocation(name);
+                info.index_ = i;
                 info.type_ = (AE_DATA_TYPE) GL_CAST[type];
                 uniform_info_[name] = std::move(info);
                 break;
@@ -117,6 +119,7 @@ void ShaderProgram::parseUniforms(){
     }
 }
 
+// parse all the attributes
 void ShaderProgram::parseAttribs(){
     GLint i, count;
     GLint size;
@@ -132,6 +135,34 @@ void ShaderProgram::parseAttribs(){
         info.type_ = (AE_DATA_TYPE) GL_CAST[type];
         attrib_info_[name] = std::move(info);
     }
+}
+
+// parse Uniform Blocks
+void ShaderProgram::parseUniformBlocks(){
+    GLint i, count;
+    GLuint index;
+    glGetProgramiv(program_id_, GL_ACTIVE_UNIFORM_BLOCKS, &count);
+    for(i = 0; i < count; i++){
+        GLsizei length;
+        const GLsizei buf_size = 64;
+        GLchar name[buf_size];
+        glGetActiveUniformBlockiv(program_id_, (GLuint)i, GL_UNIFORM_BLOCK_NAME_LENGTH, &length);
+        glGetActiveUniformBlockName(program_id_, (GLuint)5i, length, NULL, name);
+        struct UniformBlockInfo block_info;
+        block_info.index_ = getUniformBlockIndex(name);
+
+        // bind the uniform block
+        for(auto & [type, binding]: uniform_block_bindings){
+            std::string key = remain_key[type];
+            if(key.find(std::string(name)) != std::string::npos){
+                setUniformBlockBinding(block_info.index_, binding);
+                block_info.binding_ = binding;
+                break;
+            }
+        }
+        uniform_block_info_[name] = std::move(block_info);
+    }
+
 }
 
 void ShaderProgram::linkProgram() {
@@ -165,50 +196,31 @@ void ShaderProgram::getProgramStatus() {
     }
 }
 
-uint32_t ShaderProgram::getAttribLocation(const std::string &key) {
+int32_t ShaderProgram::getAttribLocation(const std::string &key) {
     if(attrib_info_.find(key) != attrib_info_.end()){
         return attrib_info_.at(key).loc_;
     }
     return glGetAttribLocation(program_id_, key.c_str());
 }
 
-uint32_t ShaderProgram::getUniformLocation(const std::string &key) {
+int32_t ShaderProgram::getUniformLocation(const std::string &key) {
     if(uniform_info_.find(key) != uniform_info_.end()){
         return uniform_info_.at(key).loc_;
     }
     return glGetUniformLocation(program_id_, key.c_str());
 }
 
-uint32_t ShaderProgram::getUniformBlockLocation(const std::string & key){
-     if(uniform_info_.find(key) != uniform_info_.end()){
-        return uniform_info_.at(key).loc_;
+int32_t ShaderProgram::getUniformBlockIndex(const std::string & key){
+    if(uniform_block_info_.find(key) != uniform_block_info_.end()){
+        return uniform_block_info_.at(key).index_;   // index 
     } // TODO
     return glGetUniformBlockIndex(program_id_, key.c_str());
 }
 
-void ShaderProgram::setUniformBlockBinding(uint32_t & loc, uint32_t & target){   
-    glUniformBlockBinding(program_id_, loc, target);
+void ShaderProgram::setUniformBlockBinding(uint32_t & index, uint32_t & binding){   
+    glUniformBlockBinding(program_id_, index , binding);
 }
 
-// uint32_t ShaderProgram::getPosLocation() {
-//     return getAttribLocation(remain_key.at(VERTEX_POSITION));
-// }
-
-// uint32_t ShaderProgram::getUVLocation() {
-//     return getAttribLocation(remain_key.at(TEXTURE_COORDINATE));
-// }
-
-// uint32_t ShaderProgram::getNormLocation() {
-//     return getAttribLocation(remain_key.at(VERTEX_NORMAL));
-// }
-
-// uint32_t ShaderProgram::getTangentLocation(){
-//     return getAttribLocation(remain_key.at(VERTEX_TANGENT));
-// }
-
-// uint32_t ShaderProgram::getBitangentLocation(){
-//     return getAttribLocation(remain_key.at(VERTEX_BITANGENT));
-// }
 
 void ShaderProgram::setUniform1f(const std::string &key, const float &val) {
     GLint loc = getUniformLocation(key);
