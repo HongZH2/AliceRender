@@ -26,6 +26,7 @@ public:
     virtual void deleteBuffer() override;
 
     virtual void bindBuffer() override;
+    virtual void bindBufferRange(const uint32_t & index, const uint32_t & offset, const uint32_t & size) override;
     virtual void unbindBuffer() override;
   
     virtual void enableVAO(const uint32_t & loc) override;    // vertex attribute

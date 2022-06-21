@@ -31,6 +31,7 @@ namespace AliceAPI {
     mapFunc (12, GL_SAMPLER_CUBE)         \
     mapFunc (50, GL_ELEMENT_ARRAY_BUFFER)  \
     mapFunc (51, GL_ARRAY_BUFFER)          \
+    mapFunc (52, GL_UNIFORM_BUFFER)        \
     mapFunc (100, GL_STATIC_DRAW)          \
     mapFunc (101, GL_DYNAMIC_DRAW)          \
     mapFunc (150, GL_TRIANGLES)          \

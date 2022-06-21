@@ -75,6 +75,9 @@ void DataBuffer::bindBuffer()  {
     glBindBuffer(GL_DEFS[usage_], buf_id_);
 }
 
+void DataBuffer::bindBufferRange(const uint32_t &index, const uint32_t &offset, const uint32_t &size){
+    glBindBufferRange(GL_DEFS[usage_], index, buf_id_, offset, size);
+}
 
 void DataBuffer::unbindBuffer() {
     glBindBuffer(GL_DEFS[usage_], 0);

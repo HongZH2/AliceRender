@@ -54,7 +54,8 @@ enum AE_DATA_TYPE {
 // buffer type 
 enum AE_BUFFER_USEAGE {
     AE_ELEMENT_ARRAY_BUFFER = 50,
-    AE_ARRAY_BUFFER
+    AE_ARRAY_BUFFER,
+    AE_UNIFORM_BUFFER
 };
 
 // Data Draw

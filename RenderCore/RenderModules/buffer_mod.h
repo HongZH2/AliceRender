@@ -26,6 +26,7 @@ public:
     virtual void deleteBuffer() = 0;
     
     virtual void bindBuffer() = 0;
+    virtual void bindBufferRange(const uint32_t & index, const uint32_t & offset, const uint32_t & size) = 0;
     virtual void unbindBuffer() = 0;
    
     virtual void enableVAO(const uint32_t & loc) = 0;

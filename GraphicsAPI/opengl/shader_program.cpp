@@ -60,8 +60,6 @@ void ShaderProgram::setUpProgram(const std::string & name) {
         geom_shader_->deleteShader();
 }
 
-
-
 void ShaderProgram::createProgram() {
     program_id_ = glCreateProgram();
 }
@@ -73,8 +71,6 @@ void ShaderProgram::attachProgram(){
     glAttachShader(program_id_, frag_shader_->shader_id_);
 }
 
-
-// TODO 
 // deal will all kinds of textures
 void ShaderProgram::saveTextureInfo(const std::string & key){
     for(auto const & [type, prefix]: tex_prefix){
@@ -86,7 +82,7 @@ void ShaderProgram::saveTextureInfo(const std::string & key){
                 glUniform1i(info.loc_, unit_c_++);  // assign a texture unit 
                 tex_info_[key] = std::move(info);
                 break;
-        } // TODO to extend
+        }
     }
 }
 
@@ -162,7 +158,6 @@ void ShaderProgram::parseUniformBlocks(){
         }
         uniform_block_info_[name] = std::move(block_info);
     }
-
 }
 
 void ShaderProgram::linkProgram() {
@@ -186,12 +181,11 @@ void ShaderProgram::unbindProgram() {
 
 void ShaderProgram::getProgramStatus() {
     GLint len_log, slen;
-    // TODO
     glGetProgramiv(program_id_, GL_INFO_LOG_LENGTH, &len_log);
     if(len_log > 1){
         auto compiler_log = (GLcharARB*)malloc(len_log);
         glGetProgramInfoLog(program_id_, len_log, &slen, compiler_log);
-        printf("-- Shader Program Error : \n%s\n", compiler_log);
+        printf(" -- Shader Program Error : \n%s\n", compiler_log);
         free(compiler_log);
     }
 }

@@ -8,6 +8,7 @@
 #include "RenderModules/buffer_mod.h"
 #include "RenderModules/shader_mod.h"
 #include "RenderModules/draw_mod.h"
+#include "RenderBase/render_helper.h"
 
 namespace AliceAPI {
 
@@ -30,19 +31,20 @@ class DataInfo;
 template <class T>
 class DataChunk{
 public:
-    explicit DataChunk(std::vector<T> & data);
+    DataChunk(T & data);
+    DataChunk(std::vector<T> & data);
     ~DataChunk();
 
     inline void setChunkOffset(const uint32_t & offset){chunk_offset_ = offset;}
     inline void setChunkID(const int32_t & id){chunk_id_ = id;}
-    inline T * & getBuffer(){return buffer_;}
+    inline void * & getBuffer(){return buffer_;}
     inline const uint32_t & getChunkOffset(){return chunk_offset_;}
     inline const int32_t & getChunkID(){return chunk_id_;}
     inline const uint32_t & getBufferSize(){return buf_size_;}
 
     void updateBuffer(std::vector<T> & data);
 private:
-    T * buffer_ = nullptr;
+    void * buffer_ = nullptr;
     uint32_t buf_size_ = 0;
     uint32_t chunk_offset_ = 0;
     int32_t chunk_id_ = -1;   // sub data block id    
@@ -51,6 +53,17 @@ private:
 /*
 *  the construct function will make multiple copies for the input data
 */
+template <class T>
+DataChunk<T>::DataChunk(T & data){
+    buf_size_ = 1;
+    if constexpr (isOneOfType<T, GMat2, GMat3, GMat4, GVec2, GVec3, GVec4, GVec2i, GVec3i, GVec4i>()){
+        buffer_ = GValuePtr(data);
+    }
+    else{
+        buffer_ = &data;
+    }
+}
+
 template <class T>
 DataChunk<T>::DataChunk(std::vector<T> & data){
     buf_size_ = data.size();
@@ -153,7 +166,7 @@ protected:
 template <class T>
 class DataBlock : public BlockBase{
 public:
-    explicit DataBlock(const uint32_t & id);
+    explicit DataBlock();
     virtual ~DataBlock() = default;
 
     #ifdef OPENGL_VERSION3
@@ -173,6 +186,7 @@ public:
     void deleteBlock(); // clear and delete the block.
 
     void bindBlock();
+    void bindBlockRange(const uint32_t & index, const uint32_t & offset, const uint32_t & size);
     void unbindBlock();
     void enableVertexAttrib(const uint32_t & loc);
     void disableVertxAttrib(const uint32_t & loc);
@@ -187,7 +201,6 @@ public:
 protected:    
     void resizeBlock(const uint32_t &capacity); // resize the Block, the capacity will be modified
 
-    int32_t block_id_ = -1;  // the unique block id in the pool 
     uint32_t block_capacity_ = 0;   // the size of block
     uint32_t block_size_ = 0;
     uint32_t num_of_chunks_ = 0; 
@@ -217,7 +230,8 @@ protected:
 #endif // OPENGL_VERSION3
 
 template <class T>
-DataBlock<T>::DataBlock(const uint32_t & id): buffer_module_(BufferModule::getInstancePtr()), block_id_(id){
+DataBlock<T>::DataBlock(): buffer_module_(BufferModule::getInstancePtr()){
+    
 }
 
 template <class T>
@@ -285,7 +299,7 @@ void DataBlock<T>::resizeBlock(const uint32_t & capacity){
 
 template <class T>
 void DataBlock<T>::updateChunk(std::shared_ptr<DataChunk<T>> chunk){
-    if(!is_initialized_ || buf_t_ != AE_DYNAMIC_DRAW || block_capacity_ == 0){  // 不是动态的buffer，不能更新
+    if(!is_initialized_  || block_capacity_ == 0){  // 不是动态的buffer，不能更新
         return;
     }
     buffer_module_->setUpBuffer(chunk->getChunkOffset() * sizeof(T), chunk->getBufferSize() * sizeof(T), chunk->getBuffer());
@@ -309,6 +323,14 @@ void DataBlock<T>::bindBlock(){
         return;
     }
     buffer_module_->bindBuffer();
+}
+
+template <class T>
+void DataBlock<T>::bindBlockRange(const uint32_t &index, const uint32_t &offset, const uint32_t &size){
+    if(!is_initialized_){
+        return;
+    }
+    buffer_module_->bindBufferRange(index, offset * sizeof(T), size * sizeof(T));
 }
 
 template <class T>

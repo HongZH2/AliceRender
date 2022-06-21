@@ -10,6 +10,7 @@
 #include "glm/gtc/quaternion.hpp"
 #include "glm/gtx/matrix_decompose.hpp"
 #include "glm/gtx/quaternion.hpp"
+#include <glm/gtc/type_ptr.hpp>
 #include <math.h>
 
 namespace AliceAPI {
@@ -33,13 +34,17 @@ typedef glm::mat2x2 GMat2;
 
 // functions
 
+template <typename T> 
+inline decltype(auto) GValuePtr(T & data){
+   return glm::value_ptr(data);
+}
 
 template <typename T> 
-inline decltype(auto) GQuatCast( T const& rot_mat){
+inline decltype(auto) GQuatCast(T const& rot_mat){
    return glm::quat_cast(rot_mat);
 }
 
-inline decltype(auto) GMat4Cast( GQuat const& rot_quat){
+inline decltype(auto) GMat4Cast(GQuat const& rot_quat){
    return glm::mat4_cast(rot_quat);
 }
 
