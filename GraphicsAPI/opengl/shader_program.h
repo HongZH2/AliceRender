@@ -41,12 +41,13 @@ public:
     // TODO
     virtual uint32_t getAttribLocation(const std::string & key) override;
     virtual uint32_t getUniformLocation(const std::string &key) override;
-    virtual uint32_t getPosLocation() override;
-    virtual uint32_t getUVLocation() override;
-    virtual uint32_t getNormLocation() override;
-    virtual uint32_t getTangentLocation() override;
-    virtual uint32_t getBitangentLocation() override;
-
+    virtual uint32_t getUniformBlockLocation(const std::string & key) override;
+    // virtual uint32_t getPosLocation() override;
+    // virtual uint32_t getUVLocation() override;
+    // virtual uint32_t getNormLocation() override;
+    // virtual uint32_t getTangentLocation() override;
+    // virtual uint32_t getBitangentLocation() override;
+    virtual void setUniformBlockBinding(uint32_t & loc, uint32_t & target) override; 
     virtual void setAttributeVec3(const std::string & key, const GVec3 & vec) override;
     virtual void setAttributeMat4(const std::string & key, const GMat4 & mat) override;
 

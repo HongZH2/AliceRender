@@ -179,25 +179,36 @@ uint32_t ShaderProgram::getUniformLocation(const std::string &key) {
     return glGetUniformLocation(program_id_, key.c_str());
 }
 
-uint32_t ShaderProgram::getPosLocation() {
-    return getAttribLocation(remain_key.at(VERTEX_POSITION));
+uint32_t ShaderProgram::getUniformBlockLocation(const std::string & key){
+     if(uniform_info_.find(key) != uniform_info_.end()){
+        return uniform_info_.at(key).loc_;
+    } // TODO
+    return glGetUniformBlockIndex(program_id_, key.c_str());
 }
 
-uint32_t ShaderProgram::getUVLocation() {
-    return getAttribLocation(remain_key.at(TEXTURE_COORDINATE));
+void ShaderProgram::setUniformBlockBinding(uint32_t & loc, uint32_t & target){   
+    glUniformBlockBinding(program_id_, loc, target);
 }
 
-uint32_t ShaderProgram::getNormLocation() {
-    return getAttribLocation(remain_key.at(VERTEX_NORMAL));
-}
+// uint32_t ShaderProgram::getPosLocation() {
+//     return getAttribLocation(remain_key.at(VERTEX_POSITION));
+// }
 
-uint32_t ShaderProgram::getTangentLocation(){
-    return getAttribLocation(remain_key.at(VERTEX_TANGENT));
-}
+// uint32_t ShaderProgram::getUVLocation() {
+//     return getAttribLocation(remain_key.at(TEXTURE_COORDINATE));
+// }
 
-uint32_t ShaderProgram::getBitangentLocation(){
-    return getAttribLocation(remain_key.at(VERTEX_BITANGENT));
-}
+// uint32_t ShaderProgram::getNormLocation() {
+//     return getAttribLocation(remain_key.at(VERTEX_NORMAL));
+// }
+
+// uint32_t ShaderProgram::getTangentLocation(){
+//     return getAttribLocation(remain_key.at(VERTEX_TANGENT));
+// }
+
+// uint32_t ShaderProgram::getBitangentLocation(){
+//     return getAttribLocation(remain_key.at(VERTEX_BITANGENT));
+// }
 
 void ShaderProgram::setUniform1f(const std::string &key, const float &val) {
     GLint loc = getUniformLocation(key);

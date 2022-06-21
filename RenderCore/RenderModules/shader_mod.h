@@ -49,12 +49,13 @@ public:
 
     virtual uint32_t getAttribLocation(const std::string & key) = 0;
     virtual uint32_t getUniformLocation(const std::string & key) = 0;
-    virtual uint32_t getPosLocation() = 0;
-    virtual uint32_t getUVLocation() = 0;
-    virtual uint32_t getNormLocation() = 0;
-    virtual uint32_t getTangentLocation() = 0;
-    virtual uint32_t getBitangentLocation() = 0;
-
+    virtual uint32_t getUniformBlockLocation(const std::string & key) = 0;
+    // virtual uint32_t getPosLocation() = 0;
+    // virtual uint32_t getUVLocation() = 0;
+    // virtual uint32_t getNormLocation() = 0;
+    // virtual uint32_t getTangentLocation() = 0;
+    // virtual uint32_t getBitangentLocation() = 0;
+    virtual void setUniformBlockBinding(uint32_t & loc, uint32_t & target) = 0;
     virtual void setAttributeMat4(const std::string & key, const GMat4 & vec) = 0;
     virtual void setAttributeVec3(const std::string & key, const GVec3 & vec) = 0;
     virtual void setUniform1f(const std::string & key, const float & val) = 0;
