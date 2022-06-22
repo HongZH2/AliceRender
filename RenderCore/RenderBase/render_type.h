@@ -11,6 +11,13 @@
 
 namespace AliceAPI {
 
+enum QueueType{
+    Solid_Q = 0,
+    Transparent_Q,
+    Background_Q,
+    PostProcess_Q
+};
+
 enum MESH_TYPE{
     UNDEFINED_MESH = 0,
     PREDECLARED_PRITIMIVE = 1 << 0,
