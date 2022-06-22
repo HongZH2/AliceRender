@@ -7,12 +7,15 @@
 
 #include "RenderBase/engine_math.h"
 #include "RenderBase/render_type.h"
+#include "buffer_data.h"
 #include <variant>
 
 namespace AliceAPI {
 
 using ParamVariant = std::variant<float, double, uint32_t, int32_t, GVec3, GVec4, GVec2, GMat2, GMat3, GMat4, std::string>;
 
+
+// render params for uniforms in the default uniform block
 class RenderParam {
 public:
     RenderParam();
@@ -46,6 +49,35 @@ public:
 protected:
     std::unordered_map<TextureType, std::string> texture_params_;
     std::unordered_map<std::string, ParamVariant> params_;
+};
+
+
+/* 
+* Global Params for Uniform Block
+*/
+
+class RenderGlobalParam{
+public:
+    RenderGlobalParam();
+    ~RenderGlobalParam();
+
+    template<typename T>
+    void addGlobalParam(const std::string & key, std::shared_ptr<DataInfo<T>> info){
+        if(global_info_.find(key) == global_info_.end()){
+            global_info_[key] = info;
+        }
+    }
+
+    template<typename T>
+    std::shared_ptr<DataInfo<T>> getGlobalParam(const std::string & key){
+        if(global_info_.find(key) != global_info_.end()){
+            return std::static_pointer_cast<DataInfo<T>>(global_info_[key]);
+        }
+        return nullptr;
+    }
+
+protected:
+    std::unordered_map<std::string, std::shared_ptr<InfoBase>> global_info_;
 };
 
 }

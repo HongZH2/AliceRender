@@ -25,5 +25,13 @@ void RenderParam::addParam(const TextureType & key, const std::string & tex_name
     texture_params_[key] = tex_name;
 }
 
+RenderGlobalParam::RenderGlobalParam(){
+
+}
+
+RenderGlobalParam::~RenderGlobalParam(){
+    
+}
+
 }
 

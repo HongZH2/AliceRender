@@ -42,6 +42,7 @@ public:
     inline const int32_t & getChunkID(){return chunk_id_;}
     inline const uint32_t & getBufferSize(){return buf_size_;}
 
+    void updateBuffer(T & data);
     void updateBuffer(std::vector<T> & data);
 private:
     void * buffer_ = nullptr;
@@ -75,17 +76,47 @@ DataChunk<T>::~DataChunk<T>(){
 }
 
 template <class T>
+void DataChunk<T>::updateBuffer(T & data){
+    buf_size_ = 1;
+    if constexpr (isOneOfType<T, GMat2, GMat3, GMat4, GVec2, GVec3, GVec4, GVec2i, GVec3i, GVec4i>()){
+        buffer_ = GValuePtr(data);
+    }
+    else{
+        buffer_ = &data;
+    }
+}
+
+template <class T>
 void DataChunk<T>::updateBuffer(std::vector<T> & data){
     buf_size_ = data.size();
     buffer_ = &data[0];
 }
+
+class InfoBase {
+public:
+    InfoBase(const std::string & key = "",             
+             uint32_t span = 3,
+             uint32_t offset = 0, 
+             uint32_t stride = 0,
+             uint32_t chunk_span = 1);
+    virtual ~InfoBase();
+
+protected:
+    uint32_t span_ = 3;  // span of data. For instance, [(x, y, z),...] the span will be 3. 1,2,3,4 will be acceptable.
+    uint32_t offset_ = 0;  // local offset of element in the first chunk
+    uint32_t stride_ = 0;   // stride, 0 stands for the tightly pack
+    uint32_t chunk_span_ = 1;  // chunk span stands for number of chunks that data info describs from the start chunk. 
+    uint32_t loc_ = 0; // location in the shaders
+    uint32_t attr_id_ = 0;  // info id 
+    std::string name_;  // key for shader
+};
 
 /*
 * Class DataInfo: specialy data information for applying data
 * 类DataInfo 存储单个data buffer的信息，比如，gpu buffer ID， offset，size 等
 */
 template <class T>
-class DataInfo {
+class DataInfo : public InfoBase{
 public:
     DataInfo(std::shared_ptr<DataChunk<T>> start_chunk, 
              std::shared_ptr<DataBlock<T>> block_ptr,
@@ -108,13 +139,6 @@ public:
     std::shared_ptr<DataChunk<T>> getChunkPtr();
     std::shared_ptr<DataBlock<T>> getBlockPtr();
 private:
-    uint32_t span_ = 3;  // span of data. For instance, [(x, y, z),...] the span will be 3. 1,2,3,4 will be acceptable.
-    uint32_t offset_ = 0;  // local offset of element in the first chunk
-    uint32_t stride_ = 0;   // stride, 0 stands for the tightly pack
-    uint32_t chunk_span_ = 1;  // chunk span stands for number of chunks that data info describs from the start chunk. 
-    uint32_t loc_ = 0; // location in the shaders
-    uint32_t attr_id_ = 0;  // info id 
-    std::string name_;  // key for shader
     std::shared_ptr<DataChunk<T>> start_chunk_; // restore the data block ptr.
     std::weak_ptr<DataBlock<T>> block_ptr_; 
 };
@@ -126,7 +150,7 @@ DataInfo<T>::DataInfo(std::shared_ptr<DataChunk<T>> start_chunk,
              uint32_t span,
              uint32_t offset, 
              uint32_t stride,
-             uint32_t chunk_span): start_chunk_(start_chunk), block_ptr_(block_ptr), name_(key), span_(span), offset_(offset), stride_(stride), chunk_span_(chunk_span){
+             uint32_t chunk_span): start_chunk_(start_chunk), block_ptr_(block_ptr), InfoBase(key, span, offset, stride, chunk_span){
    
     #ifdef OPENGL_VERSION3
         if(block_ptr)

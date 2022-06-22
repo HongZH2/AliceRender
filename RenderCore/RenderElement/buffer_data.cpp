@@ -7,6 +7,18 @@
 namespace AliceAPI{
 
 
+InfoBase::InfoBase(const std::string & key,             
+             uint32_t span,
+             uint32_t offset, 
+             uint32_t stride,
+             uint32_t chunk_span): name_(key), span_(span), offset_(offset), stride_(stride), chunk_span_(chunk_span){
+
+}
+
+InfoBase::~InfoBase(){
+
+}
+
 BlockBase::BlockBase(){
     
 }
