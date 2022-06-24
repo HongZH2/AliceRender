@@ -62,7 +62,7 @@ public:
 
   template<typename T, typename ... R>
   void pushDisableList(T && flag, R && ... rest){ // push status that you 'd like to disable 
-    enable_list_.push_back(flag);
+    disable_list_.push_back(flag);
     if constexpr (sizeof...(rest) != 0) pushDisableList(rest ...);
   }
 
@@ -81,18 +81,38 @@ public:
   ~StatusSaver();
 protected:
 
+  enum OpsType{
+    Ops_Buffer_Col = 1 << 1,
+    Ops_Buffer_Msk = 1 << 2,
+    Ops_ViewPort = 1 << 3,
+    Ops_Line_Width = 1 << 4,
+    Ops_Depth_Func = 1 << 5,
+    Ops_Stencil_Func = 1 << 6,
+    Ops_Stencil_Ops = 1 << 7,
+    Ops_Blend_Func = 1 << 8,
+    Ops_Polygon_model = 1 << 9,
+    Ops_Stencil_Msk = 1 << 10
+  };
+
   struct StatusContainer{
     float line_width_ = 1.0f;
     uint8_t stencil_mask_;
+    uint8_t stencil_func_mask_;
+    uint8_t stencil_ref_;
     GVec4i view_;
     GVec4 buffer_color_ = GVec4(0.0f);
 
     AE_TEST_FUNC depth_func_;
     AE_TEST_FUNC stencil_func_;
+    AE_TEST_OPS sfail_;
+    AE_TEST_OPS dpfail_;
+    AE_TEST_OPS dppass_;
     AE_BLEND_FUNC src_func_;
     AE_BLEND_FUNC dst_func_;
     AE_POLYGON_MODE_TYPE polygon_mode_;
-    AE_COLOR_BUFFER_MASK buffer_mask_ = AE_COLOR_BUFFER_BIT;  
+    AE_COLOR_BUFFER_MASK buffer_mask_ = AE_COLOR_BUFFER_BIT; 
+
+    uint64_t ops_mask_ = 0x00000000; // operation mask for checking if the ops has been set before. 
   } prev_, cur_;
 
   std::vector<AE_STATUS_TYPE> enable_list_;

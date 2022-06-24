@@ -65,73 +65,108 @@ void StatusSaver::resetStatus(){
 
 void StatusSaver::setViewPort(const GVec4i & rect){
     cur_.view_ = rect;
-    operations_.emplace_back([&](StatusContainer & stat){
-        status_ops_->viewport(stat.view_);
-    });
+    if(!(cur_.ops_mask_ & Ops_ViewPort)){
+        operations_.emplace_back([&](StatusContainer & stat){
+            status_ops_->viewport(stat.view_);
+        });
+        cur_.ops_mask_ |= Ops_ViewPort;
+    }
 }
 
 void StatusSaver::setLineWidth(const float &width){
     cur_.line_width_ = width;
-    operations_.emplace_back([&](StatusContainer & stat){
-        status_ops_->setLineWidth(stat.line_width_);
-    });
+    if(!(cur_.ops_mask_ & Ops_Line_Width)){
+        operations_.emplace_back([&](StatusContainer & stat){
+            status_ops_->setLineWidth(stat.line_width_);
+        });
+        cur_.ops_mask_ |= Ops_Line_Width;
+    }
 }
 
 void StatusSaver::setBufferColor(const GVec4 & color){
     cur_.buffer_color_ = color;
-    operations_.emplace_back([&](StatusContainer & stat){
-        status_ops_->setBufferColor(stat.buffer_color_);
-    });
+    if(!(cur_.ops_mask_ & Ops_Buffer_Col)){
+        operations_.emplace_back([&](StatusContainer & stat){
+            status_ops_->setBufferColor(stat.buffer_color_);
+        });
+        cur_.ops_mask_ |= Ops_Buffer_Col;
+    }
 }
 
 void StatusSaver::clearBufferBit(const AE_COLOR_BUFFER_MASK & mask){
     cur_.buffer_mask_ = mask;
-    operations_.emplace_back([&](StatusContainer & stat){
-        status_ops_->clearBuffer(stat.buffer_mask_);
-    });
+    if(!(cur_.ops_mask_ & Ops_Buffer_Msk)){
+        operations_.emplace_back([&](StatusContainer & stat){
+            status_ops_->clearBuffer(stat.buffer_mask_);
+        });
+        cur_.ops_mask_ |= Ops_Buffer_Msk;
+    }
 }
 
 void StatusSaver::setBlendFunc(const AE_BLEND_FUNC &sfunc, const AE_BLEND_FUNC &dfunc){
     cur_.src_func_ = sfunc;
     cur_.dst_func_ = dfunc;
-    operations_.emplace_back([&](StatusContainer & stat){
-        status_ops_->setBlendFunc(stat.src_func_, stat.dst_func_);
-    });
+    if(!(cur_.ops_mask_ & Ops_Blend_Func)){
+        operations_.emplace_back([&](StatusContainer & stat){
+            status_ops_->setBlendFunc(stat.src_func_, stat.dst_func_);
+        });
+        cur_.ops_mask_ |= Ops_Blend_Func;
+    }
 }
 
 void StatusSaver::setDepthFunc(const AE_TEST_FUNC &dfunc){
     cur_.depth_func_ = dfunc;
-    operations_.emplace_back([&](StatusContainer & stat){
-        status_ops_->setDepthTestFunc(stat.depth_func_);
-    });
+    if(!(cur_.ops_mask_ & Ops_Depth_Func)){
+        operations_.emplace_back([&](StatusContainer & stat){
+            status_ops_->setDepthTestFunc(stat.depth_func_);
+        });
+        cur_.ops_mask_ |= Ops_Depth_Func;
+    }
 }
 
 void StatusSaver::setStencilFunc(const AE_TEST_FUNC &func, const int32_t &ref, const uint32_t &mask){
     cur_.stencil_func_ = func;
-    operations_.emplace_back([&](StatusContainer & stat){
-        status_ops_->setStencilTestFunc(stat.stencil_func_, ref, mask);
-    });
+    cur_.stencil_ref_ = ref;
+    cur_.stencil_func_mask_ = mask;
+    if(!(cur_.ops_mask_ & Ops_Stencil_Func)) {
+        operations_.emplace_back([&](StatusContainer & stat){
+            status_ops_->setStencilTestFunc(stat.stencil_func_, stat.stencil_ref_, stat.stencil_func_mask_);
+        });
+        cur_.ops_mask_ |= Ops_Stencil_Func;
+    }
 }
 
 void StatusSaver::setStencilOps(const AE_TEST_OPS &sfail, const AE_TEST_OPS &dpfail, const AE_TEST_OPS &dppass){
     // TODO: check status
-    operations_.emplace_back([&](StatusContainer & stat){
-        status_ops_->setStencilOps(sfail, dpfail, dppass);
-    });
+    cur_.sfail_ = sfail;
+    cur_.dpfail_ = dpfail;
+    cur_.dppass_ = dppass;
+    if(!(cur_.ops_mask_ & Ops_Stencil_Ops)) {
+        operations_.emplace_back([&](StatusContainer & stat){
+            status_ops_->setStencilOps(stat.sfail_, stat.dpfail_, stat.dppass_);
+        });
+        cur_.ops_mask_ |= Ops_Stencil_Ops;
+    }
 }
 
 void StatusSaver::setPolygonMode(const AE_POLYGON_MODE_TYPE &pmode){
     cur_.polygon_mode_ = pmode;
-    operations_.emplace_back([&](StatusContainer & stat){
-        status_ops_->setPolygonMode(stat.polygon_mode_);
-    });
+    if(!(cur_.ops_mask_ & Ops_Polygon_model)){
+        operations_.emplace_back([&](StatusContainer & stat){
+            status_ops_->setPolygonMode(stat.polygon_mode_);
+        });
+        cur_.ops_mask_ |= Ops_Polygon_model;
+    }
 }
 
 void StatusSaver::setStencilMask(const uint8_t &stencil_mask){
     cur_.stencil_mask_ = stencil_mask;
-    operations_.emplace_back([&](StatusContainer & stat){
-        status_ops_->setStencilMask(stat.stencil_mask_);
-    });
+    if(!(cur_.ops_mask_ & Ops_Stencil_Msk)){
+        operations_.emplace_back([&](StatusContainer & stat){
+            status_ops_->setStencilMask(stat.stencil_mask_);
+        });
+        cur_.ops_mask_ |= Ops_Stencil_Msk;
+    }
 }
 
 

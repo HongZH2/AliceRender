@@ -72,7 +72,7 @@ inline decltype(auto) GDistance(T const& vec1, T const& vec2){
 }
 
 template <typename T>
-inline decltype(auto) Glength(T const& vec1){
+inline decltype(auto) GLength(T const& vec1){
     return glm::length(vec1);
 }
 

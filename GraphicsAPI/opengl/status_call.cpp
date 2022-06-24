@@ -44,7 +44,7 @@ void StatusCall::setStencilTestFunc(const AE_TEST_FUNC &func, const int32_t &ref
 }
 
 void StatusCall::setStencilOps(const AE_TEST_OPS & sfail, const AE_TEST_OPS & dpfail, const AE_TEST_OPS & dppass){
-    glStencilOp(sfail, dpfail, dppass);    
+    glStencilOp(GL_DEFS[sfail], GL_DEFS[dpfail], GL_DEFS[dppass]);    
 }
 
 void StatusCall::setPolygonMode(const AE_POLYGON_MODE_TYPE & pmode){
