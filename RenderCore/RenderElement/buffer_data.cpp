@@ -23,6 +23,12 @@ BlockBase::BlockBase(){
     
 }
 
+BlockBase::~BlockBase(){
+    #ifdef DEBUG
+        printf("Delete Data Block!!\n");   // debug
+    #endif // DEBUG
+}
+
 DataModule::DataModule(){
 
 }

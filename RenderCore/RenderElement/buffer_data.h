@@ -13,7 +13,7 @@
 namespace AliceAPI {
 
 // default buffer size for // TODO
-#define DEFAULT_BUFFER_SIZE 10
+#define DEFAULT_BUFFER_SIZE 1
 
 template <class T>
 class DataBlock;
@@ -175,7 +175,7 @@ std::shared_ptr<DataBlock<T>> DataInfo<T>::getBlockPtr(){
 class BlockBase{
 public:
     BlockBase();
-    ~BlockBase() = default;
+    virtual ~BlockBase();
 
 protected:    
     AE_BUFFER_USEAGE usage_ = AE_ARRAY_BUFFER;   // useage
@@ -191,7 +191,7 @@ template <class T>
 class DataBlock : public BlockBase{
 public:
     explicit DataBlock();
-    virtual ~DataBlock() = default;
+    virtual ~DataBlock();
 
     #ifdef OPENGL_VERSION3
         void createBlockInfo(const uint32_t & n, uint32_t * ids);   // create Block info
@@ -255,6 +255,11 @@ protected:
 
 template <class T>
 DataBlock<T>::DataBlock(): buffer_module_(BufferModule::getInstancePtr()){
+    
+}
+
+template <class T>
+DataBlock<T>::~DataBlock(){
     
 }
 
