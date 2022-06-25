@@ -7,13 +7,22 @@
 namespace AliceAPI {
 
 
-Shader::Shader(AE_SHADER_TYPE type) {
-    shader_id_ = -1;
+Shader::Shader(const AE_SHADER_TYPE & type) {
+    shader_id_ = 0;
     type_ = type;
 }
 
 Shader::~Shader() {
+    if(shader_id_){
+        deleteShader();
+    }
+}
 
+void Shader::setUpShaderSource(const char *data, int32_t length){
+    createShader();
+    linkShaderSource(data, length);
+    compileShader();
+    getShaderStatus();
 }
 
 void Shader::createShader() {
@@ -45,6 +54,7 @@ void Shader::getShaderStatus() {
 
 void Shader::deleteShader() {
     glDeleteShader(shader_id_);
+    shader_id_ = 0;
 }
 
 }

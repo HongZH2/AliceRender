@@ -17,10 +17,12 @@ public:
     ShaderPool& operator=(const ShaderPool&)=delete;
     ~ShaderPool();
 
+    static void loadShaderSource(const std::string & shader_src, const AE_SHADER_TYPE & type);
     static std::shared_ptr<ShaderModule> loadShader(const struct ShaderInfo & shader_info);
     static std::shared_ptr<ShaderModule> getShaderModule(const std::string & name);
 private:
     std::unordered_map<std::string, std::shared_ptr<ShaderModule>> shader_pool_;
+    std::vector<std::shared_ptr<ShaderSrc>> precompliered_sources_;
     ShaderPool();
 
 };

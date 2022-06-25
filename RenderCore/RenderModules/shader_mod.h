@@ -7,6 +7,7 @@
 
 #include "texture_mod.h"
 #include "module_predeclared.h"
+#include "RenderModules/shader_src.h"
 
 namespace AliceAPI {
 
@@ -52,9 +53,10 @@ public:
     
     virtual void bindProgram() = 0;
     virtual void unbindProgram() = 0;
-    virtual void linkVertShader(const char *data, uint32_t length) = 0;
-    virtual void linkFragShader(const char *data, uint32_t length) = 0;
-    virtual void linkGeomShader(const char *data, uint32_t length) = 0;
+    // virtual void linkVertShader(const char *data, uint32_t length) = 0;
+    // virtual void linkFragShader(const char *data, uint32_t length) = 0;
+    // virtual void linkGeomShader(const char *data, uint32_t length) = 0;
+    virtual void attachShaderSrc(std::shared_ptr<ShaderSrc>) = 0;
     virtual void setUpProgram(const std::string & name) = 0;
 
     virtual int32_t getAttribLocation(const std::string & key) = 0;
@@ -74,6 +76,13 @@ public:
     
 protected:    
     std::string name_;
+    uint32_t unit_c_;
+    uint32_t program_id_;
+    // std::shared_ptr<ShaderSrc> vert_shader_ = nullptr;
+    // std::shared_ptr<ShaderSrc> frag_shader_ = nullptr;
+    // std::shared_ptr<ShaderSrc> geom_shader_ = nullptr;
+    // std::shared_ptr<ShaderSrc> func_shader_ = nullptr;
+    std::vector<std::shared_ptr<ShaderSrc>> attached_shaders_;
     std::unordered_map<std::string, AttachedTexInfo> tex_info_;
     std::unordered_map<std::string, UniformBlockInfo> uniform_block_info_;   // uniform index
     std::unordered_map<std::string, VariableInfo> uniform_info_;

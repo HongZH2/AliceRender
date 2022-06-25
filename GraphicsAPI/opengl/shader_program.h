@@ -8,6 +8,7 @@
 #include "shader.h"
 #include "texture_2d.h"
 #include "texture_cube.h"
+#include "RenderModules/shader_mod.h"
 
 namespace AliceAPI {
 
@@ -17,24 +18,21 @@ public:
     ShaderProgram();
     ~ShaderProgram();
 
-    // set vertex shader and fragment Shader
-    virtual void linkVertShader(const char *data, uint32_t length) override;
-    virtual void linkFragShader(const char *data, uint32_t length) override;
-    virtual void linkGeomShader(const char *data, uint32_t length) override;
-
-    // set up the shader program
-    virtual void setUpProgram(const std::string & name) override;
+    // set shader source
+    virtual void attachShaderSrc(std::shared_ptr<ShaderSrc> source) override;
+    virtual void setUpProgram(const std::string & name) override;    // set up the shader program
 
     // program
+    virtual void bindProgram() override;
+    virtual void unbindProgram() override;
     virtual void createProgram();
-    virtual void attachProgram();
+    virtual void attachSources();
     virtual void linkProgram();
     virtual void getProgramStatus();
     virtual void parseUniforms();
     virtual void parseAttribs();
     virtual void parseUniformBlocks();
-    virtual void bindProgram() override;
-    virtual void unbindProgram() override;
+    virtual void detachSources();
     virtual void deleteProgram();
 
 
@@ -60,12 +58,8 @@ public:
     virtual void setUniformMat4f(const std::string &key, const GMat4 & mat4_val) override;
     // TODO: num_tex
     virtual void setUniformTexture(const std::string & key, std::shared_ptr<TextureModule> tex) override;
+
 protected:
-    GLuint unit_c_;
-    GLuint program_id_;
-    Shader * vert_shader_ = nullptr;
-    Shader * frag_shader_ = nullptr;
-    Shader * geom_shader_ = nullptr;
     void saveTextureInfo(const std::string & key);
 };
 

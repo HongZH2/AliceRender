@@ -7,68 +7,67 @@
 namespace AliceAPI {
 
 
-ShaderProgram::ShaderProgram() : unit_c_(0){
+ShaderProgram::ShaderProgram(){
     program_id_ = -1;
-
-    vert_shader_ = new Shader(AE_VERTEX_SHADER);
-    frag_shader_ = new Shader(AE_FRAGMENT_SHADER);
+    unit_c_ = 0;
     createProgram();
 }
 
 ShaderProgram::~ShaderProgram() {
-    delete vert_shader_;
-    delete frag_shader_;
-    if(geom_shader_)
-        delete geom_shader_;
+
 }
 
-void ShaderProgram::linkVertShader(const char *data, uint32_t length) {
-    // generate Shader
-    vert_shader_->createShader();
-    vert_shader_->linkShaderSource(data, length);
-    vert_shader_->compileShader();
-    vert_shader_->getShaderStatus();
-}
+// void ShaderProgram::linkVertShader(const char *data, uint32_t length) {
+//     // generate Shader
+//     vert_shader_->createShader();
+//     vert_shader_->linkShaderSource(data, length);
+//     vert_shader_->compileShader();
+//     vert_shader_->getShaderStatus();
+// }
 
-void ShaderProgram::linkFragShader(const char *data, uint32_t length) {
-    frag_shader_->createShader();
-    frag_shader_->linkShaderSource(data, length);
-    frag_shader_->compileShader();
-    frag_shader_->getShaderStatus();
-}
+// void ShaderProgram::linkFragShader(const char *data, uint32_t length) {
+//     frag_shader_->createShader();
+//     frag_shader_->linkShaderSource(data, length);
+//     frag_shader_->compileShader();
+//     frag_shader_->getShaderStatus();
+// }
 
-void ShaderProgram::linkGeomShader(const char *data, uint32_t length){
-    if(!geom_shader_) 
-        geom_shader_ = new Shader(AE_GEOMETRY_SHADER);
-    geom_shader_->createShader();
-    geom_shader_->linkShaderSource(data, length);
-    geom_shader_->compileShader();
-    geom_shader_->getShaderStatus();
+// void ShaderProgram::linkGeomShader(const char *data, uint32_t length){
+//     if(!geom_shader_) 
+//         geom_shader_ = new Shader(AE_GEOMETRY_SHADER);
+//     geom_shader_->createShader();
+//     geom_shader_->linkShaderSource(data, length);
+//     geom_shader_->compileShader();
+//     geom_shader_->getShaderStatus();
+// }
+
+void ShaderProgram::attachShaderSrc(std::shared_ptr<ShaderSrc> source){
+    attached_shaders_.emplace_back(source);
 }
 
 void ShaderProgram::setUpProgram(const std::string & name) {
     name_ = name;
-    attachProgram();
+    attachSources();
     linkProgram();
     getProgramStatus();
     parseUniforms();
     parseAttribs();
     parseUniformBlocks();
-    vert_shader_->deleteShader();
-    frag_shader_->deleteShader();
-    if(geom_shader_)
-        geom_shader_->deleteShader();
+    detachSources();
 }
 
 void ShaderProgram::createProgram() {
     program_id_ = glCreateProgram();
 }
 
-void ShaderProgram::attachProgram(){
-    glAttachShader(program_id_, vert_shader_->shader_id_);
-    if(geom_shader_)
-        glAttachShader(program_id_, geom_shader_->shader_id_);
-    glAttachShader(program_id_, frag_shader_->shader_id_);
+void ShaderProgram::attachSources(){
+    for(auto & shader_src: attached_shaders_){
+        glAttachShader(program_id_, shader_src->getShaderID());
+    }
+}
+
+void ShaderProgram::detachSources(){
+    attached_shaders_.clear();
 }
 
 // deal will all kinds of textures
