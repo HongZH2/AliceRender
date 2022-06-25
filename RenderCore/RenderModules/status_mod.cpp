@@ -83,6 +83,16 @@ void StatusSaver::setLineWidth(const float &width){
     }
 }
 
+void StatusSaver::setPointSize(const float &size){
+    cur_.point_size_ = size;
+    if(!(cur_.ops_mask_ & Ops_Point_Size)){
+        operations_.emplace_back([&](StatusContainer & stat){
+            status_ops_->setPointSize(stat.point_size_);
+        });
+        cur_.ops_mask_ |= Ops_Point_Size;
+    }
+}
+
 void StatusSaver::setBufferColor(const GVec4 & color){
     cur_.buffer_color_ = color;
     if(!(cur_.ops_mask_ & Ops_Buffer_Col)){

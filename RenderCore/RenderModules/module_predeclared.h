@@ -6,6 +6,7 @@
 #define ALICE_ENGINE_MODULE_PREDECLARED_H
 
 #include <vector>
+#include <set>
 #include <map>
 #include <unordered_map>
 #include <string>

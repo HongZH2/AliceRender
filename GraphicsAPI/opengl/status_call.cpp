@@ -26,9 +26,8 @@ void StatusCall::enableStatus(const AE_STATUS_TYPE &stype, const int32_t &var){
 }
 
 int32_t StatusCall::checkStatus(const AE_STATUS_TYPE &stype){
-    int32_t var;
-    glGetIntegerv(GL_DEFS[stype], &var);
-    return var;
+    // glGetIntegerv(GL_DEFS[stype], &var);
+    return glIsEnabled(GL_DEFS[stype]);
 }
 
 void StatusCall::setBlendFunc(const AE_BLEND_FUNC & sfunc, const AE_BLEND_FUNC & dfunc){
@@ -77,6 +76,10 @@ void StatusCall::setLineWidth(const float &width){
     // glEnable(GL_LINE_SMOOTH);
     // glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     glLineWidth(width);
+}
+
+void StatusCall::setPointSize(const float &size){
+    glPointSize(size);
 }
 
 

@@ -36,6 +36,7 @@ public:
   virtual void setStencilMask(const uint8_t & mask) = 0;
 
   virtual void setLineWidth(const float & width) = 0;
+  virtual void setPointSize(const float & size) = 0;
 
   // viewport
   virtual void viewport(const GVec4i & rect) = 0;
@@ -56,13 +57,19 @@ public:
  
   template<typename T, typename ... R>
   void pushEnableList(T && flag, R && ... rest){  // push status that you 'd like to enable 
-    enable_list_.push_back(flag);
+    if(disable_list_.find(flag) != disable_list_.end()){
+      disable_list_.erase(flag);
+    }
+    enable_list_.insert(flag);
     if constexpr (sizeof...(rest) != 0) pushEnableList(rest ...);
   }
 
   template<typename T, typename ... R>
   void pushDisableList(T && flag, R && ... rest){ // push status that you 'd like to disable 
-    disable_list_.push_back(flag);
+    if(enable_list_.find(flag) != enable_list_.end()){
+      enable_list_.erase(flag);
+    }
+    disable_list_.insert(flag);
     if constexpr (sizeof...(rest) != 0) pushDisableList(rest ...);
   }
 
@@ -70,6 +77,7 @@ public:
   void clearBufferBit(const AE_COLOR_BUFFER_MASK & mask);
   void setViewPort(const GVec4i & rect); 
   void setLineWidth(const float & width);  
+  void setPointSize(const float & size);
   void setDepthFunc(const AE_TEST_FUNC & dfunc);
   void setStencilFunc(const AE_TEST_FUNC & func, const int32_t & ref, const uint32_t & mask);
   void setStencilOps(const AE_TEST_OPS & sfail, const AE_TEST_OPS & dpfail, const AE_TEST_OPS & dppass);
@@ -91,11 +99,13 @@ protected:
     Ops_Stencil_Ops = 1 << 7,
     Ops_Blend_Func = 1 << 8,
     Ops_Polygon_model = 1 << 9,
-    Ops_Stencil_Msk = 1 << 10
+    Ops_Stencil_Msk = 1 << 10,
+    Ops_Point_Size = 1 << 11
   };
 
   struct StatusContainer{
     float line_width_ = 1.0f;
+    float point_size_ = 1.0f;
     uint8_t stencil_mask_;
     uint8_t stencil_func_mask_;
     uint8_t stencil_ref_;
@@ -115,8 +125,8 @@ protected:
     uint64_t ops_mask_ = 0x00000000; // operation mask for checking if the ops has been set before. 
   } prev_, cur_;
 
-  std::vector<AE_STATUS_TYPE> enable_list_;
-  std::vector<AE_STATUS_TYPE> disable_list_;
+  std::set<AE_STATUS_TYPE> enable_list_;
+  std::set<AE_STATUS_TYPE> disable_list_;
   std::vector<std::function<void(StatusContainer &)>> operations_;
 
   std::shared_ptr<StatusModule> status_ops_; 
