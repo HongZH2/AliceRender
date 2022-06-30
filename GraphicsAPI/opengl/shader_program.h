@@ -19,45 +19,45 @@ public:
     ~ShaderProgram();
 
     // set shader source
-    virtual void attachShaderSrc(std::shared_ptr<ShaderSrc> source) override;
-    virtual void setUpProgram(const std::string & name) override;    // set up the shader program
+    void attachShaderSrc(std::shared_ptr<ShaderSrc> source) override;
+    void setUpProgram(const std::string & name) override;    // set up the shader program
 
     // program
-    virtual void bindProgram() override;
-    virtual void unbindProgram() override;
-    virtual void createProgram();
-    virtual void attachSources();
-    virtual void linkProgram();
-    virtual void getProgramStatus();
-    virtual void parseUniforms();
-    virtual void parseAttribs();
-    virtual void parseUniformBlocks();
-    virtual void detachSources();
-    virtual void deleteProgram();
+    void bindProgram() override;
+    void unbindProgram() override;
+    void createProgram();
+    void attachSources();
+    void linkProgram();
+    void getProgramStatus();
+    void parseUniforms();
+    void parseAttribs();
+    void parseUniformBlocks();
+    void detachSources();
+    void deleteProgram();
 
 
     // get uniform location
     // TODO
-    virtual int32_t getAttribLocation(const std::string & key) override;
-    virtual int32_t getUniformLocation(const std::string &key) override;
-    virtual int32_t getUniformBlockIndex(const std::string & key) override;
+    int32_t getAttribLocation(const std::string & key) override;
+    int32_t getUniformLocation(const std::string &key) override;
+    int32_t getUniformBlockIndex(const std::string & key) override;
 
-    virtual void setUniformBlockBinding(uint32_t & index, uint32_t & binding) override; 
-    virtual void setAttributeVec3(const std::string & key, const GVec3 & vec) override;
-    virtual void setAttributeMat4(const std::string & key, const GMat4 & mat) override;
+    void setUniformBlockBinding(uint32_t & index, uint32_t & binding) override;
+    void setAttributeVec3(const std::string & key, const GVec3 & vec) override;
+    void setAttributeMat4(const std::string & key, const GMat4 & mat) override;
 
-    virtual void setUniform1fv(const std::string & key, std::vector<float> & vals);
-    // virtual void setUniform2f(const std::string & key, float val1, float val2);
-    // virtual void setUniform3f(const std::string & key, float val1, float val2, float val3) ;
-    // virtual void setUniform4f(const std::string & key, float val1, float val2, float val3, float val4);
-    virtual void setUniform1f(const std::string & key, const float & val) override;
-    virtual void setUniform1i(const std::string & key, const int32_t & val) override;
-    virtual void setUniformVec2(const std::string &key, const GVec2 & vec) override;
-    virtual void setUniformVec3(const std::string &key, const GVec3 & vec) override;
-    virtual void setUniformMat3f(const std::string &key, const GMat3 & mat3_val) override;
-    virtual void setUniformMat4f(const std::string &key, const GMat4 & mat4_val) override;
+    void setUniform1fv(const std::string & key, std::vector<float> & vals);
+    // void setUniform2f(const std::string & key, float val1, float val2);
+    // void setUniform3f(const std::string & key, float val1, float val2, float val3) ;
+    // void setUniform4f(const std::string & key, float val1, float val2, float val3, float val4);
+    void setUniform1f(const std::string & key, const float & val) override;
+    void setUniform1i(const std::string & key, const int32_t & val) override;
+    void setUniformVec2(const std::string &key, const GVec2 & vec) override;
+    void setUniformVec3(const std::string &key, const GVec3 & vec) override;
+    void setUniformMat3f(const std::string &key, const GMat3 & mat3_val) override;
+    void setUniformMat4f(const std::string &key, const GMat4 & mat4_val) override;
     // TODO: num_tex
-    virtual void setUniformTexture(const std::string & key, std::shared_ptr<TextureModule> tex) override;
+    void setUniformTexture(const std::string & key, std::shared_ptr<TextureModule> tex) override;
 
 protected:
     void saveTextureInfo(const std::string & key);

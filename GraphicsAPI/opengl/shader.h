@@ -13,16 +13,16 @@ namespace AliceAPI {
 
 class Shader : public ShaderSrc{
 public:
-    Shader(const AE_SHADER_TYPE & type);
+    explicit Shader(const AE_SHADER_TYPE & type);
     ~Shader();
 
     // shader
-    virtual void createShader();
-    virtual void linkShaderSource(const char* data, int32_t length);
-    virtual void compileShader();
-    virtual void getShaderStatus();
-    virtual void setUpShaderSource(const char* data, int32_t length) override;
-    virtual void deleteShader() override;
+    void createShader();
+    void linkShaderSource(const char* data, int32_t length);
+    void compileShader();
+    void getShaderStatus();
+    void setUpShaderSource(const char* data, int32_t length) override;
+    void deleteShader() override;
 };
 
 }

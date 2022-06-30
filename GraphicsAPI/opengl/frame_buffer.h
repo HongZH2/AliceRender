@@ -16,19 +16,19 @@ namespace AliceAPI {
 class FrameBuffer: public FBOModule{
 public:
     FrameBuffer();
-    FrameBuffer(const FBOInfo & fbo_info);
+    explicit FrameBuffer(const FBOInfo & fbo_info);
     ~FrameBuffer();
 
     // TODO: only one frame buffer for each time
-    virtual void createFBO() override;
-    virtual void deleteFBO() override;
-    virtual void bindFBO() override;
-    virtual void unbindFBO() override;
-    virtual void drawBuffer(const int32_t & color_attachment_id) override;
-    virtual void drawBuffers(const std::vector<uint32_t> & color_attachment_ids) override;
-    virtual void readBuffer(const int32_t & color_attachment_id) override;
+    void createFBO() override;
+    void deleteFBO() override;
+    void bindFBO() override;
+    void unbindFBO() override;
+    void drawBuffer(const int32_t & color_attachment_id) override;
+    void drawBuffers(const std::vector<uint32_t> & color_attachment_ids) override;
+    void readBuffer(const int32_t & color_attachment_id) override;
     // attachment
-    virtual void attachTexture(std::shared_ptr<TextureModule> tex) override;
+    void attachTexture(std::shared_ptr<TextureModule> tex) override;
 };
 
 }

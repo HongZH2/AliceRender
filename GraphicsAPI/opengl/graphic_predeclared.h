@@ -6,7 +6,6 @@
 #define ALICE_ENGINE_GRAPHIC_PREDECLARED_H
 
 #include <string>
-#include <map>
 #include <unordered_map>
 #include "GL/glew.h"
 
@@ -39,7 +38,12 @@ namespace AliceAPI {
     mapFunc (152, GL_LINES)          \
     mapFunc (153, GL_LINE_STRIP)          \
     mapFunc (154, GL_TRIANGLE_STRIP)          \
-    mapFunc (155, GL_LINE_LOOP)          \
+    mapFunc (155, GL_LINE_LOOP)  \
+    mapFunc (156, GL_LINES_ADJACENCY)  \
+    mapFunc (157, GL_TRIANGLES_ADJACENCY)    \
+    mapFunc (158, GL_LINE_STRIP_ADJACENCY)   \
+    mapFunc (159, GL_TRIANGLE_STRIP_ADJACENCY) \
+    mapFunc (160, GL_TRIANGLE_FAN)  \
     mapFunc (250, GL_DRAW_ARRAYS_COMMAND_NV)          \
     mapFunc (251, GL_DRAW_ELEMENTS_COMMAND_NV)          \
     mapFunc (252, GL_DRAW_ARRAYS_INSTANCED_COMMAND_NV)  \

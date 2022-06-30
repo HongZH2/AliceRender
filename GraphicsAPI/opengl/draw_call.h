@@ -16,10 +16,10 @@ public:
     DrawCall();
     ~DrawCall();
 
-    virtual void drawElement() override;
-    virtual void drawArrays() override;
-    virtual void drawArraysInstance() override;
-    virtual void drawElementInstance() override;
+    void drawElement() override;
+    void drawArrays() override;
+    void drawArraysInstance() override;
+    void drawElementInstance() override;
 };
 
 }
