@@ -20,6 +20,8 @@ public:
 
     void enableStatus(const AE_STATUS_TYPE & stype, const int32_t & var) override;
     int32_t checkStatus(const AE_STATUS_TYPE & stype) override;
+    int32_t getIntegerv(const uint32_t & stype) override;
+    float getFloatv(const uint32_t & stype) override;
 
     void setBlendFunc(const AE_BLEND_FUNC & sfunc, const AE_BLEND_FUNC & dfunc) override;    // set blend function
     void setDepthTestFunc(const AE_TEST_FUNC & func) override;    // set depth function

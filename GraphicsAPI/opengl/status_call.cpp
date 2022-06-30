@@ -30,6 +30,18 @@ int32_t StatusCall::checkStatus(const AE_STATUS_TYPE &stype){
     return glIsEnabled(GL_DEFS[stype]);
 }
 
+int32_t StatusCall::getIntegerv(const uint32_t &stype){
+    int32_t val;
+    glGetIntegerv(stype, &val);
+    return std::move(val);
+}
+
+float StatusCall::getFloatv(const uint32_t &stype){
+    float val;
+    glGetFloatv(stype, &val);
+    return std::move(val);
+}
+
 void StatusCall::setBlendFunc(const AE_BLEND_FUNC & sfunc, const AE_BLEND_FUNC & dfunc){
     glBlendFunc(GL_DEFS[sfunc], GL_DEFS[dfunc]);
 }

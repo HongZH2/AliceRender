@@ -18,6 +18,8 @@ public:
   // enable status 
   virtual void enableStatus(const AE_STATUS_TYPE & stype, const int32_t & var) = 0;
   virtual int32_t checkStatus(const AE_STATUS_TYPE & stype) = 0;
+  virtual int32_t getIntegerv(const uint32_t & stype) = 0;
+  virtual float getFloatv(const uint32_t & stype) = 0;
 
   // set DepthTest Function
   virtual void setDepthTestFunc(const AE_TEST_FUNC & func) = 0;
